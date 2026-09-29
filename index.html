@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Inventario ET/CD</title>
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#0d1117">
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --bg:#0d1117;
+      --surface:#161b22;
+      --surface2:#1c2330;
+      --border:#30363d;
+      --accent:#f0a500;
+      --text:#e6edf3;
+      --muted:#7d8590;
+      --ok:#3fb950;
+      --warn:#d29922;
+      --danger:#f85149;
+      --blue:#58a6ff;
+    }
+    html,body {
+      margin:0;
+      min-height:100%;
+      background:var(--bg);
+      color:var(--text);
+      font-family:Arial,sans-serif;
+    }
+    body { min-height:100vh; }
+    .header {
+      position:sticky;
+      top:0;
+      z-index:10;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:.8rem;
+      padding:.9rem 1rem;
+      background:var(--surface);
+      border-bottom:1px solid var(--border);
+    }
+    .brand-title {
+      font-size:1.2rem;
+      font-weight:700;
+      color:var(--accent);
+    }
+    .brand-sub {
+      margin-top:.15rem;
+      font-size:.74rem;
+      color:var(--muted);
+    }
+    .status {
+      padding:.35rem .55rem;
+      border:1px solid var(--border);
+      border-radius:999px;
+      font-size:.72rem;
+      font-weight:700;
+      white-space:nowrap;
+    }
+    .status.ok { color:var(--ok); border-color:#238636; }
+    .status.warn { color:var(--warn); border-color:#9e6a03; }
+    .status.err { color:var(--danger); border-color:#8b3030; }
+    .wrap {
+      min-height:calc(100vh - 65px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:1rem;
+    }
+    .card {
+      width:100%;
+      max-width:390px;
+      padding:1.25rem;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:10px;
+      box-shadow:0 8px 24px rgba(0,0,0,.35);
+    }
+    h1 {
+      margin:0 0 .35rem;
+      font-size:1.4rem;
+      color:var(--accent);
+    }
+    .lead {
+      margin:0 0 1.1rem;
+      color:var(--muted);
+      font-size:.88rem;
+      line-height:1.4;
+    }
+    .field { margin-bottom:.9rem; }
+    .field label {
+      display:block;
+      margin-bottom:.35rem;
+      color:var(--muted);
+      font-size:.76rem;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+    .field input {
+      width:100%;
+      padding:.75rem .8rem;
+      border:1px solid var(--border);
+      border-radius:6px;
+      background:var(--bg);
+      color:var(--text);
+      font-size:1rem;
+      outline:none;
+    }
+    .field input:focus { border-color:var(--accent); }
+    .pin-input {
+      letter-spacing:.35rem;
+      font-size:1.2rem !important;
+      text-align:center;
+    }
+    .btn {
+      width:100%;
+      border:0;
+      border-radius:6px;
+      padding:.78rem 1rem;
+      font-size:.95rem;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .btn:disabled { opacity:.5; cursor:not-allowed; }
+    .btn-primary { background:var(--accent); color:#111; }
+    .btn-secondary {
+      margin-top:.6rem;
+      background:var(--surface2);
+      color:var(--text);
+      border:1px solid var(--border);
+    }
+    .message {
+      display:none;
+      margin:.9rem 0 0;
+      padding:.65rem .75rem;
+      border-radius:6px;
+      font-size:.82rem;
+      line-height:1.35;
+    }
+    .message.show { display:block; }
+    .message.ok { color:var(--ok); background:#0d2e1a; border:1px solid #1a4d2a; }
+    .message.warn { color:var(--warn); background:#2a1f00; border:1px solid #4a3800; }
+    .message.err { color:var(--danger); background:#2d1515; border:1px solid #5a2020; }
+    .user-box {
+      margin:.2rem 0 1rem;
+      padding:.75rem;
+      border:1px solid var(--border);
+      border-radius:6px;
+      background:var(--surface2);
+    }
+    .user-name { font-weight:700; }
+    .user-id { margin-top:.18rem; color:var(--muted); font-size:.78rem; }
+    .screen { display:none; }
+    .screen.active { display:block; }
+    .footer {
+      margin-top:1rem;
+      text-align:center;
+      color:var(--muted);
+      font-size:.72rem;
+    }
+    .dashboard {
+      width:100%;
+      max-width:560px;
+    }
+    .dashboard .card { max-width:none; }
+    .ok-panel {
+      margin-top:1rem;
+      padding:1rem;
+      border-radius:8px;
+      background:#0d2e1a;
+      border:1px solid #1a4d2a;
+      color:var(--ok);
+      line-height:1.45;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div>
+      <div class="brand-title">⚡ Inventario ET/CD</div>
+      <div class="brand-sub">PWA de campo</div>
+    </div>
+    <div id="statusConexion" class="status warn">Comprobando…</div>
+  </header>
+
+  <main class="wrap">
+    <section id="pantallaPrimeraVez" class="screen card">
+      <h1>Vincular este móvil</h1>
+      <p class="lead">La primera identificación necesita Internet. Después este móvil quedará asociado a un único usuario y podrá ingresar sin conexión con su PIN de 4 números.</p>
+
+      <div class="field">
+        <label for="usuarioInicial">Usuario</label>
+        <input id="usuarioInicial" type="text" autocomplete="username" placeholder="Ej.: mmartinez">
+      </div>
+
+      <div class="field">
+        <label for="pinInicial">PIN</label>
+        <input id="pinInicial" class="pin-input" type="password" inputmode="numeric" maxlength="4" pattern="[0-9]*" autocomplete="current-password" placeholder="••••">
+      </div>
+
+      <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
+      <div id="msgInicial" class="message"></div>
+      <div class="footer">v0.1.0</div>
+    </section>
+
+    <section id="pantallaPin" class="screen card">
+      <h1>Ingresar</h1>
+      <p class="lead">Este móvil ya está asociado.</p>
+
+      <div class="user-box">
+        <div id="nombreGuardado" class="user-name"></div>
+        <div id="usuarioGuardado" class="user-id"></div>
+      </div>
+
+      <div class="field">
+        <label for="pinLocal">PIN</label>
+        <input id="pinLocal" class="pin-input" type="password" inputmode="numeric" maxlength="4" pattern="[0-9]*" autocomplete="current-password" placeholder="••••">
+      </div>
+
+      <button id="btnIngresar" class="btn btn-primary" onclick="ingresarConPin()">Ingresar</button>
+      <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
+      <div id="msgPin" class="message"></div>
+      <div class="footer">v0.1.0</div>
+    </section>
+
+    <section id="pantallaApp" class="screen dashboard">
+      <div class="card">
+        <h1>Acceso correcto</h1>
+        <p id="bienvenida" class="lead"></p>
+        <div class="ok-panel">
+          El login online/offline ya funciona. En la siguiente etapa vamos a traer la lista real de ET/CD desde el Sheet clonado.
+        </div>
+        <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
+        <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
+        <div class="footer">Inventario ET/CD PWA · v0.1.0</div>
+      </div>
+    </section>
+  </main>
+
+<script>
+const APP_VERSION = '0.1.0';
+const API_URL = 'https://script.google.com/macros/s/AKfycbycgdPPUL34lRg-81x76GOrGDxpj7xhscrzCff-b_3fErO2IAdx3SbeddwiRwdvjAtl/exec';
+const STORAGE_KEY = 'inventario_etcd_usuario_v1';
+const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
+
+let servidorDisponible = false;
+
+function mostrarPantalla(id) {
+  document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function mostrarMensaje(id, texto, tipo) {
+  const el = document.getElementById(id);
+  el.textContent = texto || '';
+  el.className = 'message' + (texto ? ' show ' + (tipo || 'warn') : '');
+}
+
+function limpiarPin(elId) {
+  const el = document.getElementById(elId);
+  if (el) el.value = '';
+}
+
+function perfilLocal() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+  } catch (e) {
+    return null;
+  }
+}
+
+function guardarPerfilLocal(usuario, pin) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    usuario: String(usuario.usuario || ''),
+    nombre: String(usuario.nombre || usuario.usuario || ''),
+    rol: String(usuario.rol || 'USUARIO'),
+    pin: String(pin || '')
+  }));
+}
+
+function actualizarEstadoConexion(texto, tipo) {
+  const el = document.getElementById('statusConexion');
+  el.textContent = texto;
+  el.className = 'status ' + tipo;
+}
+
+async function apiPost(payload, timeoutMs = 10000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const respuesta = await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      cache: 'no-store',
+      signal: controller.signal
+    });
+    if (!respuesta.ok) throw new Error('HTTP ' + respuesta.status);
+    return await respuesta.json();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function comprobarServidor() {
+  if (!navigator.onLine) {
+    servidorDisponible = false;
+    actualizarEstadoConexion('🟠 Sin conexión', 'warn');
+    return false;
+  }
+
+  actualizarEstadoConexion('Comprobando…', 'warn');
+  try {
+    const res = await apiPost({ accion: 'ping' }, 8000);
+    servidorDisponible = !!(res && res.ok);
+    actualizarEstadoConexion(
+      servidorDisponible ? '🟢 En línea' : '🔴 Servidor no disponible',
+      servidorDisponible ? 'ok' : 'err'
+    );
+    return servidorDisponible;
+  } catch (e) {
+    servidorDisponible = false;
+    actualizarEstadoConexion('🟠 Sin servidor', 'warn');
+    return false;
+  }
+}
+
+async function vincularMovil() {
+  const usuario = document.getElementById('usuarioInicial').value.trim();
+  const pin = document.getElementById('pinInicial').value.trim();
+  const btn = document.getElementById('btnVincular');
+
+  mostrarMensaje('msgInicial', '', '');
+
+  if (!usuario) {
+    mostrarMensaje('msgInicial', 'Ingresá el usuario.', 'err');
+    return;
+  }
+  if (!/^\d{4}$/.test(pin)) {
+    mostrarMensaje('msgInicial', 'El PIN debe tener exactamente 4 números.', 'err');
+    return;
+  }
+
+  const disponible = await comprobarServidor();
+  if (!disponible) {
+    mostrarMensaje('msgInicial', 'La primera vinculación necesita conexión con el servidor.', 'warn');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Verificando…';
+  try {
+    const res = await apiPost({ accion: 'login', usuario, pin });
+    if (!res || !res.ok) {
+      mostrarMensaje('msgInicial', (res && res.msg) || 'No se pudo validar el usuario.', 'err');
+      return;
+    }
+
+    guardarPerfilLocal(res.usuario || { usuario, nombre: usuario, rol: 'USUARIO' }, pin);
+    if (res.token) localStorage.setItem(SERVER_TOKEN_KEY, res.token);
+    mostrarMensaje('msgInicial', 'Móvil vinculado correctamente.', 'ok');
+    setTimeout(() => prepararPantallaPin(), 450);
+  } catch (e) {
+    mostrarMensaje('msgInicial', 'No se pudo conectar con el servidor.', 'warn');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Vincular móvil';
+  }
+}
+
+function prepararPantallaPin() {
+  const perfil = perfilLocal();
+  if (!perfil) {
+    mostrarPantalla('pantallaPrimeraVez');
+    return;
+  }
+  document.getElementById('nombreGuardado').textContent = perfil.nombre || perfil.usuario;
+  document.getElementById('usuarioGuardado').textContent = '@' + perfil.usuario;
+  limpiarPin('pinLocal');
+  mostrarMensaje('msgPin', '', '');
+  mostrarPantalla('pantallaPin');
+  setTimeout(() => document.getElementById('pinLocal').focus(), 150);
+}
+
+async function ingresarConPin() {
+  const perfil = perfilLocal();
+  const pin = document.getElementById('pinLocal').value.trim();
+  const btn = document.getElementById('btnIngresar');
+
+  if (!perfil) {
+    mostrarPantalla('pantallaPrimeraVez');
+    return;
+  }
+  if (!/^\d{4}$/.test(pin)) {
+    mostrarMensaje('msgPin', 'Ingresá los 4 números del PIN.', 'err');
+    return;
+  }
+  if (pin !== String(perfil.pin || '')) {
+    mostrarMensaje('msgPin', 'PIN incorrecto.', 'err');
+    limpiarPin('pinLocal');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Ingresando…';
+
+  // Si hay servidor, revalidamos silenciosamente el mismo usuario/PIN.
+  // Si no hay servidor, el PIN local alcanza para entrar al modo campo.
+  const disponible = await comprobarServidor();
+  if (disponible) {
+    try {
+      const res = await apiPost({ accion: 'login', usuario: perfil.usuario, pin });
+      if (!res || !res.ok) {
+        mostrarMensaje('msgPin', (res && res.msg) || 'El usuario no pudo ser validado.', 'err');
+        btn.disabled = false;
+        btn.textContent = 'Ingresar';
+        return;
+      }
+      guardarPerfilLocal(res.usuario || perfil, pin);
+      if (res.token) localStorage.setItem(SERVER_TOKEN_KEY, res.token);
+    } catch (e) {
+      // Falla de transporte: permitimos continuar con el PIN local.
+      actualizarEstadoConexion('🟠 Sin servidor', 'warn');
+    }
+  }
+
+  abrirApp();
+  btn.disabled = false;
+  btn.textContent = 'Ingresar';
+}
+
+function abrirApp() {
+  const perfil = perfilLocal();
+  document.getElementById('bienvenida').textContent =
+    'Usuario: ' + (perfil ? (perfil.nombre || perfil.usuario) : '') +
+    (servidorDisponible ? ' · sesión online' : ' · modo offline');
+  mostrarPantalla('pantallaApp');
+}
+
+function bloquearApp() {
+  prepararPantallaPin();
+}
+
+function cambiarUsuario() {
+  if (!confirm('¿Desvincular el usuario de este móvil? La próxima vinculación necesitará Internet.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(SERVER_TOKEN_KEY);
+  document.getElementById('usuarioInicial').value = '';
+  document.getElementById('pinInicial').value = '';
+  mostrarMensaje('msgInicial', '', '');
+  mostrarPantalla('pantallaPrimeraVez');
+}
+
+window.addEventListener('online', comprobarServidor);
+window.addEventListener('offline', () => {
+  servidorDisponible = false;
+  actualizarEstadoConexion('🟠 Sin conexión', 'warn');
+});
+
+document.getElementById('pinInicial').addEventListener('keydown', e => {
+  if (e.key === 'Enter') vincularMovil();
+});
+document.getElementById('pinLocal').addEventListener('keydown', e => {
+  if (e.key === 'Enter') ingresarConPin();
+});
+
+async function iniciar() {
+  await comprobarServidor();
+  if (perfilLocal()) prepararPantallaPin();
+  else mostrarPantalla('pantallaPrimeraVez');
+}
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(console.error);
+}
+
+iniciar();
+</script>
+</body>
+</html>
