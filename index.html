@@ -210,9 +210,60 @@
       line-height:1.25;
     }
     .inst-meta {
-      margin-top:.25rem;
+      margin-top:.35rem;
       color:var(--muted);
-      font-size:.76rem;
+      font-size:clamp(.9rem, 3.7vw, 1rem);
+    }
+
+    /* v0.3.0 — mejor lectura en celular */
+    body {
+      font-size:clamp(17px, 4vw, 20px);
+    }
+    h1 {
+      font-size:clamp(1.75rem, 7vw, 2.25rem);
+    }
+    button,
+    input {
+      font-size:clamp(1rem, 4vw, 1.12rem);
+    }
+    .btn {
+      min-height:54px;
+    }
+    .inst-card {
+      padding:1rem 1.05rem;
+      cursor:pointer;
+      transition:transform .08s ease, opacity .08s ease;
+    }
+    .inst-card:active {
+      transform:scale(.99);
+    }
+    .inst-name {
+      font-size:clamp(1.05rem, 4.6vw, 1.28rem);
+    }
+    .inst-status {
+      margin-top:.45rem;
+      font-size:clamp(.88rem, 3.6vw, .98rem);
+      font-weight:700;
+    }
+    .inst-card.autorizada {
+      border-color:rgba(46, 204, 113, .55);
+    }
+    .inst-card.autorizada .inst-status {
+      color:#6ee7a2;
+    }
+    .inst-card.bloqueada {
+      opacity:.72;
+      border-style:dashed;
+    }
+    .inst-card.bloqueada .inst-status {
+      color:#ffcf66;
+    }
+    .inst-card.sin-hoja {
+      opacity:.58;
+      cursor:default;
+    }
+    .inst-card.sin-hoja .inst-status {
+      color:var(--muted);
     }
     .empty-state {
       padding:1rem;
@@ -250,7 +301,7 @@
 
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.2.1</div>
+      <div class="footer">v0.3.0</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -270,7 +321,7 @@
       <button id="btnIngresar" class="btn btn-primary" onclick="ingresarConPin()">Ingresar</button>
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.2.1</div>
+      <div class="footer">v0.3.0</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -290,7 +341,7 @@
         <button class="btn btn-secondary" onclick="actualizarInstalacionesManual()">Actualizar instalaciones</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.2.1</div>
+        <div class="footer">Inventario ET/CD PWA · v0.3.0</div>
       </div>
     </section>
   </main>
@@ -305,7 +356,7 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.2.1';
+const APP_VERSION = '0.3.0';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
@@ -351,6 +402,9 @@ function guardarPerfilLocal(usuario, pin) {
     usuario: String(usuario.usuario || ''),
     nombre: String(usuario.nombre || usuario.usuario || ''),
     rol: String(usuario.rol || 'USUARIO'),
+    instalaciones: Array.isArray(usuario.instalaciones)
+      ? usuario.instalaciones.map(v => String(v || '').trim()).filter(Boolean)
+      : [],
     pin: String(pin || '')
   }));
 }
@@ -651,10 +705,23 @@ function renderInstalaciones(instalaciones, origen, fecha) {
     return;
   }
 
+  const perfil = perfilLocal();
+  const permitidas = new Set(
+    perfil && Array.isArray(perfil.instalaciones)
+      ? perfil.instalaciones.map(v => String(v || '').trim()).filter(Boolean)
+      : []
+  );
+
   lista.innerHTML = '';
+
   datos.forEach(inst => {
+    const pestana = String(inst.pestana || '').trim();
+    const tieneHoja = !!pestana;
+    const autorizada = tieneHoja && permitidas.has(pestana);
+
     const card = document.createElement('div');
-    card.className = 'inst-card';
+    card.className = 'inst-card ' +
+      (!tieneHoja ? 'sin-hoja' : (autorizada ? 'autorizada' : 'bloqueada'));
 
     const nombre = document.createElement('div');
     nombre.className = 'inst-name';
@@ -664,11 +731,33 @@ function renderInstalaciones(instalaciones, origen, fecha) {
     meta.className = 'inst-meta';
     const partes = [];
     if (inst.tipo) partes.push(inst.tipo);
-    if (inst.pestana) partes.push(inst.pestana);
+    if (pestana) partes.push(pestana);
     meta.textContent = partes.join(' · ');
+
+    const acceso = document.createElement('div');
+    acceso.className = 'inst-status';
+
+    if (!tieneHoja) {
+      acceso.textContent = '⚪ Sin hoja de inventario asociada';
+    } else if (autorizada) {
+      acceso.textContent = '✓ Autorizada';
+      card.addEventListener('click', () => {
+        alert('Acceso autorizado a ' + (inst.nombre || pestana) + '.\n\nEn el próximo paso conectaremos esta tarjeta con sus equipos.');
+      });
+    } else {
+      acceso.textContent = '🔒 Sin permiso';
+      card.addEventListener('click', () => {
+        alert(
+          'No tenés autorización para ingresar a ' +
+          (inst.nombre || pestana) +
+          '.\n\nEn el próximo paso agregaremos Cancelar / Solicitar permiso.'
+        );
+      });
+    }
 
     card.appendChild(nombre);
     card.appendChild(meta);
+    card.appendChild(acceso);
     lista.appendChild(card);
   });
 
