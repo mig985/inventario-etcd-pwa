@@ -215,7 +215,7 @@
       font-size:clamp(.9rem, 3.7vw, 1rem);
     }
 
-    /* v0.3.1 — mejor lectura en celular */
+    /* v0.3.2 — mejor lectura en celular */
     body {
       font-size:clamp(17px, 4vw, 20px);
     }
@@ -274,7 +274,7 @@
       line-height:1.4;
     }
   
-    /* v0.3.1 — solicitud de acceso */
+    /* v0.3.2 — solicitud de acceso */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -319,6 +319,58 @@
       color: #ffcf66;
     }
 
+
+    /* v0.3.2 — administración de solicitudes */
+    .admin-list {
+      display:grid;
+      gap:.75rem;
+      margin-top:.9rem;
+    }
+
+    .request-card {
+      padding:1rem;
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:10px;
+    }
+
+    .request-user {
+      font-weight:700;
+      font-size:clamp(1.05rem, 4.5vw, 1.25rem);
+    }
+
+    .request-meta {
+      margin-top:.35rem;
+      color:var(--muted);
+      font-size:clamp(.88rem, 3.5vw, .98rem);
+      line-height:1.45;
+    }
+
+    .request-installation {
+      margin-top:.55rem;
+      color:var(--accent);
+      font-weight:700;
+    }
+
+    .request-actions {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:.7rem;
+      margin-top:.9rem;
+    }
+
+    .btn-danger {
+      background:#5a2020;
+      color:#fff;
+      border:1px solid #8b3030;
+    }
+
+    .btn-ok {
+      background:#1a4d2a;
+      color:#fff;
+      border:1px solid #238636;
+    }
+
 </style>
 </head>
 <body>
@@ -346,8 +398,9 @@
       </div>
 
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
+      <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.3.1</div>
+      <div class="footer">v0.3.2</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -366,8 +419,9 @@
 
       <button id="btnIngresar" class="btn btn-primary" onclick="ingresarConPin()">Ingresar</button>
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
+      <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.3.1</div>
+      <div class="footer">v0.3.2</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -385,11 +439,49 @@
         </div>
 
         <button class="btn btn-secondary" onclick="actualizarInstalacionesManual()">Actualizar instalaciones</button>
+        <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.3.1</div>
+        <div class="footer">Inventario ET/CD PWA · v0.3.2</div>
       </div>
     </section>
+
+    <section id="pantallaAdminLogin" class="screen card">
+      <h1>Administrador</h1>
+      <p class="lead">Acceso online para revisar y resolver solicitudes de instalaciones.</p>
+
+      <div class="field">
+        <label for="claveAdmin">Contraseña</label>
+        <input id="claveAdmin" type="password" autocomplete="current-password" placeholder="Contraseña de administrador">
+      </div>
+
+      <button id="btnAdminLogin" class="btn btn-primary" onclick="loginAdmin()">Ingresar como administrador</button>
+      <button class="btn btn-secondary" onclick="salirAdmin()">Cancelar</button>
+      <div id="msgAdminLogin" class="message"></div>
+      <div class="footer">v0.3.2</div>
+    </section>
+
+    <section id="pantallaAdminSolicitudes" class="screen dashboard">
+      <div class="card">
+        <h1>Solicitudes de acceso</h1>
+        <p class="lead">Autorizá o rechazá las solicitudes pendientes.</p>
+
+        <div class="app-toolbar">
+          <h2>Pendientes</h2>
+          <div id="estadoSolicitudesAdmin" class="mini-status">Cargando…</div>
+        </div>
+
+        <div id="listaSolicitudesAdmin" class="admin-list">
+          <div class="empty-state">Cargando solicitudes…</div>
+        </div>
+
+        <button class="btn btn-secondary" onclick="cargarSolicitudesAdmin()">Actualizar</button>
+        <button class="btn btn-secondary" onclick="salirAdmin()">Salir del administrador</button>
+        <div id="msgAdminSolicitudes" class="message"></div>
+        <div class="footer">Inventario ET/CD PWA · v0.3.2</div>
+      </div>
+    </section>
+
   </main>
 
 
@@ -415,7 +507,7 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.3.1';
+const APP_VERSION = '0.3.2';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
@@ -433,6 +525,7 @@ let bridgeOrigin = '';
 let bridgeSecuencia = 0;
 const bridgePendientes = new Map();
 let instalacionSolicitudActual = null;
+let adminTokenPwa = '';
 
 function mostrarPantalla(id) {
   document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
@@ -994,7 +1087,239 @@ async function actualizarInstalacionesManual() {
     if (cache) renderInstalaciones(cache.instalaciones, 'cache', cache.fecha);
     return;
   }
+
+  // También renueva el perfil para traer permisos recién aprobados.
+  if (perfilLocal()) {
+    await revalidarSesionServidor();
+  }
+
   await cargarInstalaciones({forzar:true});
+}
+
+
+function abrirAdminLogin() {
+  if (!navigator.onLine || !servidorDisponible) {
+    alert('El modo administrador necesita conexión con el servidor.');
+    return;
+  }
+
+  adminTokenPwa = '';
+  document.getElementById('claveAdmin').value = '';
+  mostrarMensaje('msgAdminLogin', '', '');
+  mostrarPantalla('pantallaAdminLogin');
+
+  setTimeout(() => {
+    const input = document.getElementById('claveAdmin');
+    if (input) input.focus();
+  }, 50);
+}
+
+function salirAdmin() {
+  adminTokenPwa = '';
+  mostrarMensaje('msgAdminLogin', '', '');
+  mostrarMensaje('msgAdminSolicitudes', '', '');
+
+  if (perfilLocal()) prepararPantallaPin();
+  else mostrarPantalla('pantallaPrimeraVez');
+}
+
+async function loginAdmin() {
+  const clave = document.getElementById('claveAdmin').value.trim();
+  const btn = document.getElementById('btnAdminLogin');
+
+  mostrarMensaje('msgAdminLogin', '', '');
+
+  if (!clave) {
+    mostrarMensaje('msgAdminLogin', 'Ingresá la contraseña de administrador.', 'err');
+    return;
+  }
+
+  const disponible = await comprobarServidor();
+  if (!disponible) {
+    mostrarMensaje('msgAdminLogin', 'El administrador necesita conexión con el servidor.', 'warn');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Verificando…';
+
+  try {
+    const res = await bridgeCall('adminlogin', { clave }, 12000);
+
+    if (!res || !res.ok || !res.token) {
+      mostrarMensaje(
+        'msgAdminLogin',
+        (res && res.msg) || 'No se pudo validar al administrador.',
+        'err'
+      );
+      return;
+    }
+
+    adminTokenPwa = res.token;
+    mostrarPantalla('pantallaAdminSolicitudes');
+    await cargarSolicitudesAdmin();
+
+  } catch (e) {
+    mostrarMensaje(
+      'msgAdminLogin',
+      e && e.message ? e.message : String(e),
+      'err'
+    );
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Ingresar como administrador';
+  }
+}
+
+function renderSolicitudesAdmin(solicitudes) {
+  const lista = document.getElementById('listaSolicitudesAdmin');
+  const estado = document.getElementById('estadoSolicitudesAdmin');
+  const datos = Array.isArray(solicitudes) ? solicitudes : [];
+
+  lista.innerHTML = '';
+
+  if (!datos.length) {
+    lista.innerHTML =
+      '<div class="empty-state">No hay solicitudes pendientes.</div>';
+    estado.textContent = '0 pendientes';
+    return;
+  }
+
+  datos.forEach(sol => {
+    const card = document.createElement('div');
+    card.className = 'request-card';
+
+    const usuario = document.createElement('div');
+    usuario.className = 'request-user';
+    usuario.textContent = sol.nombre || sol.usuario || '(sin usuario)';
+
+    const meta = document.createElement('div');
+    meta.className = 'request-meta';
+    meta.textContent =
+      '@' + (sol.usuario || '') +
+      (sol.fechaSolicitud ? ' · ' + sol.fechaSolicitud : '');
+
+    const instalacion = document.createElement('div');
+    instalacion.className = 'request-installation';
+    instalacion.textContent = sol.instalacion || '(sin instalación)';
+
+    const acciones = document.createElement('div');
+    acciones.className = 'request-actions';
+
+    const rechazar = document.createElement('button');
+    rechazar.className = 'btn btn-danger';
+    rechazar.textContent = 'Rechazar';
+    rechazar.onclick = () => resolverSolicitudAdmin(sol.id, false);
+
+    const autorizar = document.createElement('button');
+    autorizar.className = 'btn btn-ok';
+    autorizar.textContent = 'Autorizar';
+    autorizar.onclick = () => resolverSolicitudAdmin(sol.id, true);
+
+    acciones.appendChild(rechazar);
+    acciones.appendChild(autorizar);
+
+    card.appendChild(usuario);
+    card.appendChild(meta);
+    card.appendChild(instalacion);
+    card.appendChild(acciones);
+    lista.appendChild(card);
+  });
+
+  estado.textContent =
+    datos.length + (datos.length === 1 ? ' pendiente' : ' pendientes');
+}
+
+async function cargarSolicitudesAdmin() {
+  const lista = document.getElementById('listaSolicitudesAdmin');
+  const estado = document.getElementById('estadoSolicitudesAdmin');
+
+  if (!adminTokenPwa) {
+    salirAdmin();
+    return;
+  }
+
+  if (!navigator.onLine || !servidorDisponible) {
+    lista.innerHTML =
+      '<div class="empty-state">Sin conexión con el servidor.</div>';
+    estado.textContent = 'Sin conexión';
+    return;
+  }
+
+  estado.textContent = 'Actualizando…';
+  mostrarMensaje('msgAdminSolicitudes', '', '');
+
+  try {
+    const res = await bridgeCall('adminsolicitudes', {
+      adminToken: adminTokenPwa
+    }, 15000);
+
+    if (!res || !res.ok) {
+      mostrarMensaje(
+        'msgAdminSolicitudes',
+        (res && res.msg) || 'No se pudieron cargar las solicitudes.',
+        'err'
+      );
+
+      if (res && String(res.msg || '').toLowerCase().includes('sesión')) {
+        adminTokenPwa = '';
+      }
+      return;
+    }
+
+    renderSolicitudesAdmin(res.solicitudes || []);
+
+  } catch (e) {
+    mostrarMensaje(
+      'msgAdminSolicitudes',
+      e && e.message ? e.message : String(e),
+      'err'
+    );
+    estado.textContent = 'Error';
+  }
+}
+
+async function resolverSolicitudAdmin(solicitudId, aprobar) {
+  if (!adminTokenPwa) return;
+
+  const accion = aprobar ? 'autorizar' : 'rechazar';
+  if (!confirm('¿Confirmar ' + accion + ' esta solicitud?')) return;
+
+  mostrarMensaje('msgAdminSolicitudes', 'Procesando…', 'warn');
+
+  try {
+    const res = await bridgeCall('adminresolver', {
+      solicitudId,
+      aprobar: aprobar === true,
+      adminToken: adminTokenPwa
+    }, 15000);
+
+    if (!res || !res.ok) {
+      mostrarMensaje(
+        'msgAdminSolicitudes',
+        (res && res.msg) || 'No se pudo resolver la solicitud.',
+        'err'
+      );
+      return;
+    }
+
+    mostrarMensaje(
+      'msgAdminSolicitudes',
+      aprobar
+        ? 'Acceso autorizado correctamente.'
+        : 'Solicitud rechazada.',
+      aprobar ? 'ok' : 'warn'
+    );
+
+    await cargarSolicitudesAdmin();
+
+  } catch (e) {
+    mostrarMensaje(
+      'msgAdminSolicitudes',
+      e && e.message ? e.message : String(e),
+      'err'
+    );
+  }
 }
 
 function abrirApp() {
@@ -1068,6 +1393,10 @@ document.getElementById('pinInicial').addEventListener('keydown', e => {
 
 document.getElementById('pinLocal').addEventListener('keydown', e => {
   if (e.key === 'Enter') ingresarConPin();
+});
+
+document.getElementById('claveAdmin').addEventListener('keydown', e => {
+  if (e.key === 'Enter') loginAdmin();
 });
 
 async function iniciar() {
