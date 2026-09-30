@@ -215,7 +215,7 @@
       font-size:clamp(.9rem, 3.7vw, 1rem);
     }
 
-    /* v0.4.0 — mejor lectura en celular */
+    /* v0.4.1 — mejor lectura en celular */
     body {
       font-size:clamp(17px, 4vw, 20px);
     }
@@ -274,7 +274,7 @@
       line-height:1.4;
     }
   
-    /* v0.4.0 — solicitud de acceso */
+    /* v0.4.1 — solicitud de acceso */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -320,7 +320,7 @@
     }
 
 
-    /* v0.4.0 — administración de solicitudes */
+    /* v0.4.1 — administración de solicitudes */
     .admin-list {
       display:grid;
       gap:.75rem;
@@ -372,7 +372,7 @@
     }
 
 
-    /* v0.4.0 — inventario de equipos */
+    /* v0.4.1 — inventario de equipos */
     .equipment-list {
       display:grid;
       gap:.65rem;
@@ -437,6 +437,76 @@
       margin:.25rem 0 0;
     }
 
+
+    /* v0.4.1 — detalle de equipo */
+    .equipment-card {
+      cursor:pointer;
+    }
+
+    .detail-grid {
+      display:grid;
+      gap:.65rem;
+      margin-top:.8rem;
+    }
+
+    .detail-row {
+      padding:.8rem .9rem;
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:9px;
+    }
+
+    .detail-label {
+      color:var(--muted);
+      font-size:clamp(.82rem,3.2vw,.93rem);
+      margin-bottom:.2rem;
+    }
+
+    .detail-value {
+      color:var(--text);
+      font-size:clamp(1rem,4vw,1.15rem);
+      font-weight:600;
+      overflow-wrap:anywhere;
+    }
+
+    .detail-value.missing {
+      color:var(--warn);
+    }
+
+    .section-title {
+      margin:1.15rem 0 .55rem;
+      font-size:clamp(1.08rem,4.2vw,1.28rem);
+    }
+
+    .comment-card, .photo-card {
+      padding:.85rem .9rem;
+      margin-top:.55rem;
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:9px;
+    }
+
+    .comment-text {
+      white-space:pre-wrap;
+      line-height:1.4;
+    }
+
+    .comment-meta, .photo-meta {
+      margin-top:.35rem;
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
+    .policy-note {
+      margin:.85rem 0 0;
+      padding:.8rem .9rem;
+      border:1px dashed var(--border);
+      border-radius:9px;
+      color:var(--muted);
+      font-size:.9rem;
+      line-height:1.4;
+    }
+
 </style>
 </head>
 <body>
@@ -466,7 +536,7 @@
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.4.0</div>
+      <div class="footer">v0.4.1</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -487,7 +557,7 @@
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.4.0</div>
+      <div class="footer">v0.4.1</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -508,7 +578,7 @@
         <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.4.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.1</div>
       </div>
     </section>
 
@@ -534,7 +604,38 @@
 
         <button class="btn btn-secondary" onclick="actualizarEquiposManual()">Actualizar equipos</button>
         <div id="msgEquipos" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.4.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.1</div>
+      </div>
+    </section>
+
+
+    <section id="pantallaDetalleEquipo" class="screen dashboard">
+      <div class="card">
+        <div class="back-row">
+          <button class="btn btn-secondary" onclick="volverAEquipos()">← Volver</button>
+          <div class="installation-title">
+            <h1 id="tituloDetalleEquipo">Equipo</h1>
+            <p id="subtituloDetalleEquipo" class="lead"></p>
+          </div>
+        </div>
+
+        <div id="estadoDetalleEquipo" class="mini-status"></div>
+
+        <h2 class="section-title">Datos</h2>
+        <div id="detalleParametros" class="detail-grid"></div>
+
+        <h2 class="section-title">Comentarios</h2>
+        <div id="detalleComentarios"></div>
+
+        <h2 class="section-title">Fotos</h2>
+        <div id="detalleFotos"></div>
+
+        <div class="policy-note">
+          Solo lectura en esta etapa. Cuando se habilite edición offline,
+          cualquier conflicto con datos del servidor requerirá validación del administrador.
+        </div>
+
+        <div class="footer">Inventario ET/CD PWA · v0.4.1</div>
       </div>
     </section>
 
@@ -550,7 +651,7 @@
       <button id="btnAdminLogin" class="btn btn-primary" onclick="loginAdmin()">Ingresar como administrador</button>
       <button class="btn btn-secondary" onclick="salirAdmin()">Cancelar</button>
       <div id="msgAdminLogin" class="message"></div>
-      <div class="footer">v0.4.0</div>
+      <div class="footer">v0.4.1</div>
     </section>
 
     <section id="pantallaAdminSolicitudes" class="screen dashboard">
@@ -570,7 +671,7 @@
         <button class="btn btn-secondary" onclick="cargarSolicitudesAdmin()">Actualizar</button>
         <button class="btn btn-secondary" onclick="salirAdmin()">Salir del administrador</button>
         <div id="msgAdminSolicitudes" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.4.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.1</div>
       </div>
     </section>
 
@@ -599,7 +700,7 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.4.0';
+const APP_VERSION = '0.4.1';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
@@ -620,6 +721,7 @@ const bridgePendientes = new Map();
 let instalacionSolicitudActual = null;
 let adminTokenPwa = '';
 let instalacionActual = null;
+let equipoActual = null;
 
 function mostrarPantalla(id) {
   document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
@@ -1067,9 +1169,38 @@ function guardarEquiposLocal(inst, respuesta) {
           nombre: String(e.nombre || ''),
           tipo: String(e.tipo || ''),
           params: e.params && typeof e.params === 'object' ? e.params : {},
+          fotoId: String(e.fotoId || ''),
+          fotoIds: Array.isArray(e.fotoIds) ? e.fotoIds.map(v => String(v || '')) : [],
+          fotoInfos: Array.isArray(e.fotoInfos) ? e.fotoInfos.map(f => ({
+            id: String(f.id || ''),
+            fechaHora: String(f.fechaHora || ''),
+            usuario: String(f.usuario || ''),
+            nombre: String(f.nombre || ''),
+            rol: String(f.rol || '')
+          })) : [],
+          comentarios: Array.isArray(e.comentarios) ? e.comentarios.map(c => ({
+            id: String(c.id || ''),
+            texto: String(c.texto || ''),
+            fechaHora: String(c.fechaHora || ''),
+            timestamp: Number(c.timestamp || 0),
+            usuario: String(c.usuario || ''),
+            nombre: String(c.nombre || ''),
+            rol: String(c.rol || ''),
+            editadoPor: String(c.editadoPor || ''),
+            fechaEdicion: String(c.fechaEdicion || '')
+          })) : [],
           completo: e.completo === true,
           camposFaltantes: Array.isArray(e.camposFaltantes) ? e.camposFaltantes : [],
-          estado: String(e.estado || '')
+          estado: String(e.estado || ''),
+          creadoPor: String(e.creadoPor || ''),
+          creadoNombre: String(e.creadoNombre || ''),
+          fechaAlta: String(e.fechaAlta || ''),
+          modificadoPor: String(e.modificadoPor || ''),
+          modificadoNombre: String(e.modificadoNombre || ''),
+          fechaModificacion: String(e.fechaModificacion || ''),
+          ultimaAccion: String(e.ultimaAccion || ''),
+          validadoPor: String(e.validadoPor || ''),
+          fechaValidacion: String(e.fechaValidacion || '')
         }))
       : [];
 
@@ -1172,6 +1303,9 @@ function renderEquipos(paquete, origen) {
     card.appendChild(nombre);
     card.appendChild(meta);
     card.appendChild(status);
+
+    card.addEventListener('click', () => abrirDetalleEquipo(e));
+
     lista.appendChild(card);
   });
 
@@ -1185,7 +1319,157 @@ function renderEquipos(paquete, origen) {
     (fechaTxt ? ' · ' + fechaTxt : '');
 }
 
+
+function valorVisibleParametro(valor) {
+  const s = String(valor == null ? '' : valor).trim();
+  return s === '' || s === '-' ? 'Sin dato' : s;
+}
+
+function abrirDetalleEquipo(equipo) {
+  equipoActual = equipo || null;
+  if (!equipoActual) return;
+
+  document.getElementById('tituloDetalleEquipo').textContent =
+    equipoActual.nombre || equipoActual.id || 'Equipo';
+
+  document.getElementById('subtituloDetalleEquipo').textContent =
+    [equipoActual.id, equipoActual.tipo].filter(Boolean).join(' · ');
+
+  const estado = document.getElementById('estadoDetalleEquipo');
+  estado.textContent = equipoActual.completo
+    ? '✓ Datos completos'
+    : '⚠ Datos incompletos';
+
+  renderDetalleParametros(equipoActual);
+  renderDetalleComentarios(equipoActual);
+  renderDetalleFotos(equipoActual);
+
+  mostrarPantalla('pantallaDetalleEquipo');
+}
+
+function volverAEquipos() {
+  mostrarPantalla('pantallaEquipos');
+}
+
+function renderDetalleParametros(equipo) {
+  const cont = document.getElementById('detalleParametros');
+  cont.innerHTML = '';
+
+  const params = equipo && equipo.params && typeof equipo.params === 'object'
+    ? equipo.params
+    : {};
+
+  const claves = Object.keys(params);
+
+  if (!claves.length) {
+    cont.innerHTML = '<div class="empty-state">No hay parámetros cargados.</div>';
+    return;
+  }
+
+  claves.forEach(clave => {
+    const raw = params[clave];
+    const valor = valorVisibleParametro(raw);
+    const falta = valor === 'Sin dato';
+
+    const row = document.createElement('div');
+    row.className = 'detail-row';
+
+    const label = document.createElement('div');
+    label.className = 'detail-label';
+    label.textContent = clave;
+
+    const value = document.createElement('div');
+    value.className = 'detail-value' + (falta ? ' missing' : '');
+    value.textContent = valor;
+
+    row.appendChild(label);
+    row.appendChild(value);
+    cont.appendChild(row);
+  });
+}
+
+function renderDetalleComentarios(equipo) {
+  const cont = document.getElementById('detalleComentarios');
+  cont.innerHTML = '';
+
+  const comentarios = Array.isArray(equipo && equipo.comentarios)
+    ? equipo.comentarios
+    : [];
+
+  if (!comentarios.length) {
+    cont.innerHTML = '<div class="empty-state">Sin comentarios.</div>';
+    return;
+  }
+
+  comentarios.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'comment-card';
+
+    const texto = document.createElement('div');
+    texto.className = 'comment-text';
+    texto.textContent = c.texto || '';
+
+    const meta = document.createElement('div');
+    meta.className = 'comment-meta';
+
+    const autor = c.nombre || c.usuario || 'Usuario';
+    const fecha = c.fechaHora || '';
+    meta.textContent = [autor, fecha].filter(Boolean).join(' · ');
+
+    card.appendChild(texto);
+    card.appendChild(meta);
+    cont.appendChild(card);
+  });
+}
+
+function renderDetalleFotos(equipo) {
+  const cont = document.getElementById('detalleFotos');
+  cont.innerHTML = '';
+
+  const infos = Array.isArray(equipo && equipo.fotoInfos)
+    ? equipo.fotoInfos
+    : [];
+
+  const ids = Array.isArray(equipo && equipo.fotoIds)
+    ? equipo.fotoIds
+    : [];
+
+  if (!infos.length && !ids.length) {
+    cont.innerHTML = '<div class="empty-state">Sin fotos asociadas.</div>';
+    return;
+  }
+
+  const cantidad = Math.max(infos.length, ids.length);
+
+  for (let i = 0; i < cantidad; i++) {
+    const info = infos[i] || {};
+    const id = info.id || ids[i] || '';
+
+    const card = document.createElement('div');
+    card.className = 'photo-card';
+
+    const titulo = document.createElement('div');
+    titulo.className = 'detail-value';
+    titulo.textContent = 'Foto ' + (i + 1);
+
+    const meta = document.createElement('div');
+    meta.className = 'photo-meta';
+
+    const autor = info.nombre || info.usuario || '';
+    meta.textContent = [
+      info.fechaHora || '',
+      autor,
+      id ? 'ID: ' + id : ''
+    ].filter(Boolean).join(' · ');
+
+    card.appendChild(titulo);
+    card.appendChild(meta);
+    cont.appendChild(card);
+  }
+}
+
 function volverAInstalaciones() {
+  equipoActual = null;
   mostrarMensaje('msgEquipos', '', '');
   mostrarPantalla('pantallaApp');
 }
