@@ -215,7 +215,7 @@
       font-size:clamp(.9rem, 3.7vw, 1rem);
     }
 
-    /* v0.3.2 — mejor lectura en celular */
+    /* v0.4.0 — mejor lectura en celular */
     body {
       font-size:clamp(17px, 4vw, 20px);
     }
@@ -274,7 +274,7 @@
       line-height:1.4;
     }
   
-    /* v0.3.2 — solicitud de acceso */
+    /* v0.4.0 — solicitud de acceso */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -320,7 +320,7 @@
     }
 
 
-    /* v0.3.2 — administración de solicitudes */
+    /* v0.4.0 — administración de solicitudes */
     .admin-list {
       display:grid;
       gap:.75rem;
@@ -371,6 +371,72 @@
       border:1px solid #238636;
     }
 
+
+    /* v0.4.0 — inventario de equipos */
+    .equipment-list {
+      display:grid;
+      gap:.65rem;
+      margin-top:.8rem;
+    }
+
+    .equipment-card {
+      padding:1rem 1.05rem;
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:9px;
+    }
+
+    .equipment-name {
+      font-size:clamp(1.03rem, 4.4vw, 1.23rem);
+      font-weight:700;
+      line-height:1.28;
+      color:var(--text);
+    }
+
+    .equipment-meta {
+      margin-top:.35rem;
+      color:var(--muted);
+      font-size:clamp(.88rem, 3.6vw, .98rem);
+      line-height:1.35;
+    }
+
+    .equipment-status {
+      margin-top:.45rem;
+      font-size:clamp(.84rem, 3.4vw, .94rem);
+      font-weight:700;
+    }
+
+    .equipment-status.complete { color:var(--ok); }
+    .equipment-status.incomplete { color:var(--warn); }
+
+    .back-row {
+      display:flex;
+      align-items:center;
+      gap:.7rem;
+      margin-bottom:.9rem;
+    }
+
+    .back-row .btn {
+      width:auto;
+      min-height:46px;
+      padding:.55rem .8rem;
+      margin:0;
+    }
+
+    .installation-title {
+      flex:1;
+      min-width:0;
+    }
+
+    .installation-title h1 {
+      margin:0;
+      line-height:1.15;
+    }
+
+    .installation-title .lead {
+      margin:.25rem 0 0;
+    }
+
 </style>
 </head>
 <body>
@@ -400,7 +466,7 @@
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.3.2</div>
+      <div class="footer">v0.4.0</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -421,7 +487,7 @@
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.3.2</div>
+      <div class="footer">v0.4.0</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -442,7 +508,33 @@
         <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.3.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.0</div>
+      </div>
+    </section>
+
+
+    <section id="pantallaEquipos" class="screen dashboard">
+      <div class="card">
+        <div class="back-row">
+          <button class="btn btn-secondary" onclick="volverAInstalaciones()">← Volver</button>
+          <div class="installation-title">
+            <h1 id="tituloInstalacionEquipos">Instalación</h1>
+            <p id="subtituloInstalacionEquipos" class="lead"></p>
+          </div>
+        </div>
+
+        <div class="app-toolbar">
+          <h2>Equipos</h2>
+          <div id="estadoEquipos" class="mini-status">Cargando…</div>
+        </div>
+
+        <div id="listaEquipos" class="equipment-list">
+          <div class="empty-state">Cargando equipos…</div>
+        </div>
+
+        <button class="btn btn-secondary" onclick="actualizarEquiposManual()">Actualizar equipos</button>
+        <div id="msgEquipos" class="message"></div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.0</div>
       </div>
     </section>
 
@@ -458,7 +550,7 @@
       <button id="btnAdminLogin" class="btn btn-primary" onclick="loginAdmin()">Ingresar como administrador</button>
       <button class="btn btn-secondary" onclick="salirAdmin()">Cancelar</button>
       <div id="msgAdminLogin" class="message"></div>
-      <div class="footer">v0.3.2</div>
+      <div class="footer">v0.4.0</div>
     </section>
 
     <section id="pantallaAdminSolicitudes" class="screen dashboard">
@@ -478,7 +570,7 @@
         <button class="btn btn-secondary" onclick="cargarSolicitudesAdmin()">Actualizar</button>
         <button class="btn btn-secondary" onclick="salirAdmin()">Salir del administrador</button>
         <div id="msgAdminSolicitudes" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.3.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.0</div>
       </div>
     </section>
 
@@ -507,12 +599,13 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.3.2';
+const APP_VERSION = '0.4.0';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
 const INSTALLATIONS_KEY = 'inventario_etcd_instalaciones_v1';
 const ACCESS_REQUESTS_KEY = 'inventario_etcd_solicitudes_pendientes_v1';
+const EQUIPMENT_CACHE_PREFIX = 'inventario_etcd_equipos_v1:';
 
 const CHANNEL_TO_BRIDGE = 'inventario-etcd-pwa';
 const CHANNEL_FROM_BRIDGE = 'inventario-etcd-bridge';
@@ -526,6 +619,7 @@ let bridgeSecuencia = 0;
 const bridgePendientes = new Map();
 let instalacionSolicitudActual = null;
 let adminTokenPwa = '';
+let instalacionActual = null;
 
 function mostrarPantalla(id) {
   document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
@@ -955,6 +1049,287 @@ async function enviarSolicitudAcceso() {
   }
 }
 
+
+function claveCacheEquipos(pestana) {
+  const perfil = perfilLocal();
+  const usuario = perfil ? String(perfil.usuario || '').trim() : '';
+  return EQUIPMENT_CACHE_PREFIX +
+    encodeURIComponent(usuario) + ':' +
+    encodeURIComponent(String(pestana || '').trim());
+}
+
+function guardarEquiposLocal(inst, respuesta) {
+  try {
+    const equipos = Array.isArray(respuesta && respuesta.equipos)
+      ? respuesta.equipos.map(e => ({
+          fila: e.fila,
+          id: String(e.id || ''),
+          nombre: String(e.nombre || ''),
+          tipo: String(e.tipo || ''),
+          params: e.params && typeof e.params === 'object' ? e.params : {},
+          completo: e.completo === true,
+          camposFaltantes: Array.isArray(e.camposFaltantes) ? e.camposFaltantes : [],
+          estado: String(e.estado || '')
+        }))
+      : [];
+
+    const paquete = {
+      fecha: new Date().toISOString(),
+      pestana: String(inst.pestana || ''),
+      nombre: String(inst.nombre || inst.pestana || ''),
+      tipo: String(inst.tipo || ''),
+      parametros: Array.isArray(respuesta && respuesta.parametros)
+        ? respuesta.parametros
+        : [],
+      equipos
+    };
+
+    localStorage.setItem(
+      claveCacheEquipos(inst.pestana),
+      JSON.stringify(paquete)
+    );
+
+    return paquete;
+  } catch (e) {
+    console.warn('No se pudo guardar el inventario offline:', e);
+    return null;
+  }
+}
+
+function leerEquiposLocal(pestana) {
+  try {
+    return JSON.parse(
+      localStorage.getItem(claveCacheEquipos(pestana)) || 'null'
+    );
+  } catch (e) {
+    return null;
+  }
+}
+
+function limpiarCachesEquipos() {
+  try {
+    const borrar = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith(EQUIPMENT_CACHE_PREFIX)) borrar.push(k);
+    }
+    borrar.forEach(k => localStorage.removeItem(k));
+  } catch (e) {}
+}
+
+function renderEquipos(paquete, origen) {
+  const lista = document.getElementById('listaEquipos');
+  const estado = document.getElementById('estadoEquipos');
+  const equipos = paquete && Array.isArray(paquete.equipos)
+    ? paquete.equipos
+    : [];
+
+  lista.innerHTML = '';
+
+  if (!equipos.length) {
+    lista.innerHTML =
+      '<div class="empty-state">No hay equipos cargados para esta instalación.</div>';
+
+    estado.textContent =
+      (origen === 'cache' ? 'Guardado' : 'Servidor') +
+      (paquete && paquete.fecha
+        ? ' · ' + formatearFechaCorta(paquete.fecha)
+        : '');
+    return;
+  }
+
+  equipos.forEach(e => {
+    const card = document.createElement('div');
+    card.className = 'equipment-card';
+
+    const nombre = document.createElement('div');
+    nombre.className = 'equipment-name';
+    nombre.textContent = e.nombre || e.id || '(equipo sin nombre)';
+
+    const meta = document.createElement('div');
+    meta.className = 'equipment-meta';
+
+    const partes = [];
+    if (e.id) partes.push(e.id);
+    if (e.tipo) partes.push(e.tipo);
+    meta.textContent = partes.join(' · ');
+
+    const status = document.createElement('div');
+    status.className = 'equipment-status ' +
+      (e.completo ? 'complete' : 'incomplete');
+
+    if (e.completo) {
+      status.textContent = '✓ Datos completos';
+    } else {
+      const faltan = Array.isArray(e.camposFaltantes)
+        ? e.camposFaltantes.length
+        : 0;
+      status.textContent = faltan
+        ? '⚠ ' + faltan + ' dato' + (faltan === 1 ? '' : 's') + ' pendiente' + (faltan === 1 ? '' : 's')
+        : '⚠ Datos incompletos';
+    }
+
+    card.appendChild(nombre);
+    card.appendChild(meta);
+    card.appendChild(status);
+    lista.appendChild(card);
+  });
+
+  const origenTxt = origen === 'servidor' ? 'Servidor' : 'Guardado';
+  const fechaTxt = paquete && paquete.fecha
+    ? formatearFechaCorta(paquete.fecha)
+    : '';
+
+  estado.textContent =
+    equipos.length + ' equipos · ' + origenTxt +
+    (fechaTxt ? ' · ' + fechaTxt : '');
+}
+
+function volverAInstalaciones() {
+  mostrarMensaje('msgEquipos', '', '');
+  mostrarPantalla('pantallaApp');
+}
+
+async function abrirInstalacion(inst) {
+  instalacionActual = inst;
+
+  document.getElementById('tituloInstalacionEquipos').textContent =
+    inst.nombre || inst.pestana || 'Instalación';
+
+  document.getElementById('subtituloInstalacionEquipos').textContent =
+    [inst.tipo, inst.pestana].filter(Boolean).join(' · ');
+
+  document.getElementById('listaEquipos').innerHTML =
+    '<div class="empty-state">Cargando equipos…</div>';
+
+  document.getElementById('estadoEquipos').textContent = 'Cargando…';
+  mostrarMensaje('msgEquipos', '', '');
+  mostrarPantalla('pantallaEquipos');
+
+  await cargarEquiposInstalacion(inst);
+}
+
+async function obtenerEquiposServidor(inst, reintentarSesion = true) {
+  let token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
+
+  if (!token || !sesionOnline) {
+    const ok = await revalidarSesionServidor();
+    if (!ok) throw new Error('No se pudo validar la sesión online.');
+    token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
+  }
+
+  let res = await bridgeCall('getequipos', {
+    pestana: inst.pestana,
+    actorToken: token
+  }, 30000);
+
+  if (res && res.error &&
+      reintentarSesion &&
+      String(res.error).toLowerCase().includes('sesión')) {
+
+    const ok = await revalidarSesionServidor();
+    if (ok) {
+      token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
+      res = await bridgeCall('getequipos', {
+        pestana: inst.pestana,
+        actorToken: token
+      }, 30000);
+    }
+  }
+
+  return res;
+}
+
+async function cargarEquiposInstalacion(inst, {forzar = false} = {}) {
+  const cache = leerEquiposLocal(inst.pestana);
+
+  if (cache) {
+    renderEquipos(cache, 'cache');
+  }
+
+  if (!navigator.onLine || !servidorDisponible) {
+    if (!cache) {
+      document.getElementById('listaEquipos').innerHTML =
+        '<div class="empty-state">No hay inventario guardado en este celular para esta instalación.</div>';
+      document.getElementById('estadoEquipos').textContent =
+        'Sin conexión · sin datos guardados';
+    }
+    return;
+  }
+
+  if (forzar) {
+    document.getElementById('estadoEquipos').textContent = 'Actualizando…';
+  }
+
+  try {
+    const res = await obtenerEquiposServidor(inst);
+
+    if (!res) {
+      throw new Error('Respuesta vacía del servidor.');
+    }
+
+    if (res.error) {
+      throw new Error(res.error);
+    }
+
+    const paquete = guardarEquiposLocal(inst, res) || {
+      fecha: new Date().toISOString(),
+      pestana: inst.pestana,
+      nombre: inst.nombre,
+      tipo: inst.tipo,
+      parametros: Array.isArray(res.parametros) ? res.parametros : [],
+      equipos: Array.isArray(res.equipos) ? res.equipos : []
+    };
+
+    renderEquipos(paquete, 'servidor');
+    mostrarMensaje('msgEquipos', '', '');
+
+  } catch (e) {
+    const detalle = e && e.message ? e.message : String(e);
+
+    if (!cache) {
+      document.getElementById('listaEquipos').innerHTML =
+        '<div class="empty-state">No se pudieron cargar los equipos.<br><br>' +
+        '<strong>Error:</strong> ' + detalle +
+        '</div>';
+    }
+
+    document.getElementById('estadoEquipos').textContent =
+      cache ? 'Usando datos guardados' : 'Error';
+
+    mostrarMensaje(
+      'msgEquipos',
+      cache
+        ? 'No se pudo actualizar. Se muestran los datos guardados.'
+        : detalle,
+      cache ? 'warn' : 'err'
+    );
+  }
+}
+
+async function actualizarEquiposManual() {
+  if (!instalacionActual) return;
+
+  const disponible = await comprobarServidor(true);
+
+  if (!disponible) {
+    const cache = leerEquiposLocal(instalacionActual.pestana);
+    if (cache) renderEquipos(cache, 'cache');
+
+    mostrarMensaje(
+      'msgEquipos',
+      cache
+        ? 'Sin conexión. Se mantienen los datos guardados.'
+        : 'Sin conexión y sin inventario guardado.',
+      'warn'
+    );
+    return;
+  }
+
+  await revalidarSesionServidor();
+  await cargarEquiposInstalacion(instalacionActual, {forzar:true});
+}
+
 function renderInstalaciones(instalaciones, origen, fecha) {
   const lista = document.getElementById('listaInstalaciones');
   const estado = document.getElementById('estadoInstalaciones');
@@ -1008,9 +1383,7 @@ function renderInstalaciones(instalaciones, origen, fecha) {
       acceso.textContent = '⚪ Sin hoja de inventario asociada';
     } else if (autorizada) {
       acceso.textContent = '✓ Autorizada';
-      card.addEventListener('click', () => {
-        alert('Acceso autorizado a ' + (inst.nombre || pestana) + '.\n\nEn el próximo paso conectaremos esta tarjeta con sus equipos.');
-      });
+      card.addEventListener('click', () => abrirInstalacion(inst));
     } else if (pendiente) {
       acceso.textContent = '⏳ Solicitud pendiente';
       card.addEventListener('click', () => abrirModalAcceso(inst));
@@ -1342,6 +1715,7 @@ function cambiarUsuario() {
   localStorage.removeItem(SERVER_TOKEN_KEY);
   localStorage.removeItem(INSTALLATIONS_KEY);
   localStorage.removeItem(ACCESS_REQUESTS_KEY);
+  limpiarCachesEquipos();
   sesionOnline = false;
   document.getElementById('usuarioInicial').value = '';
   document.getElementById('pinInicial').value = '';
@@ -1367,6 +1741,13 @@ window.addEventListener('online', async () => {
     const pantallaApp = document.getElementById('pantallaApp');
     if (pantallaApp && pantallaApp.classList.contains('active')) {
       await cargarInstalaciones({forzar:true});
+    }
+
+    const pantallaEquipos = document.getElementById('pantallaEquipos');
+    if (pantallaEquipos &&
+        pantallaEquipos.classList.contains('active') &&
+        instalacionActual) {
+      await cargarEquiposInstalacion(instalacionActual, {forzar:true});
     }
   }
 });
