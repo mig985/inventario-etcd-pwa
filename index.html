@@ -215,7 +215,7 @@
       font-size:clamp(.9rem, 3.7vw, 1rem);
     }
 
-    /* v0.4.1 — mejor lectura en celular */
+    /* v0.4.2 — mejor lectura en celular */
     body {
       font-size:clamp(17px, 4vw, 20px);
     }
@@ -274,7 +274,7 @@
       line-height:1.4;
     }
   
-    /* v0.4.1 — solicitud de acceso */
+    /* v0.4.2 — solicitud de acceso */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -320,7 +320,7 @@
     }
 
 
-    /* v0.4.1 — administración de solicitudes */
+    /* v0.4.2 — administración de solicitudes */
     .admin-list {
       display:grid;
       gap:.75rem;
@@ -372,7 +372,7 @@
     }
 
 
-    /* v0.4.1 — inventario de equipos */
+    /* v0.4.2 — inventario de equipos */
     .equipment-list {
       display:grid;
       gap:.65rem;
@@ -438,7 +438,7 @@
     }
 
 
-    /* v0.4.1 — detalle de equipo */
+    /* v0.4.2 — detalle de equipo */
     .equipment-card {
       cursor:pointer;
     }
@@ -507,6 +507,37 @@
       line-height:1.4;
     }
 
+
+    /* v0.4.2 — menú intermedio del equipo */
+    .equipment-menu {
+      display:grid;
+      gap:1rem;
+      margin-top:1rem;
+    }
+
+    .equipment-menu-btn {
+      min-height:92px;
+      padding:1.1rem 1rem;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:var(--surface2);
+      color:var(--text);
+      font-size:clamp(1.2rem,5vw,1.5rem);
+      font-weight:800;
+      letter-spacing:.03em;
+      cursor:pointer;
+      text-align:left;
+    }
+
+    .equipment-menu-btn small {
+      display:block;
+      margin-top:.3rem;
+      color:var(--muted);
+      font-size:clamp(.84rem,3.3vw,.95rem);
+      font-weight:500;
+      letter-spacing:0;
+    }
+
 </style>
 </head>
 <body>
@@ -536,7 +567,7 @@
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.4.1</div>
+      <div class="footer">v0.4.2</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -557,7 +588,7 @@
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.4.1</div>
+      <div class="footer">v0.4.2</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -578,7 +609,7 @@
         <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.4.1</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.2</div>
       </div>
     </section>
 
@@ -604,38 +635,96 @@
 
         <button class="btn btn-secondary" onclick="actualizarEquiposManual()">Actualizar equipos</button>
         <div id="msgEquipos" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.4.1</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.2</div>
       </div>
     </section>
 
 
-    <section id="pantallaDetalleEquipo" class="screen dashboard">
+
+    <section id="pantallaMenuEquipo" class="screen dashboard">
       <div class="card">
         <div class="back-row">
           <button class="btn btn-secondary" onclick="volverAEquipos()">← Volver</button>
           <div class="installation-title">
-            <h1 id="tituloDetalleEquipo">Equipo</h1>
-            <p id="subtituloDetalleEquipo" class="lead"></p>
+            <h1 id="tituloMenuEquipo">Equipo</h1>
+            <p id="subtituloMenuEquipo" class="lead"></p>
           </div>
         </div>
 
-        <div id="estadoDetalleEquipo" class="mini-status"></div>
+        <div id="estadoMenuEquipo" class="mini-status"></div>
 
-        <h2 class="section-title">Datos</h2>
-        <div id="detalleParametros" class="detail-grid"></div>
+        <div class="equipment-menu">
+          <button class="equipment-menu-btn" onclick="abrirDatosEquipo()">
+            DATOS
+            <small>Parámetros técnicos y estado del relevamiento</small>
+          </button>
 
-        <h2 class="section-title">Comentarios</h2>
-        <div id="detalleComentarios"></div>
+          <button class="equipment-menu-btn" onclick="abrirFotosEquipo()">
+            FOTOS
+            <small>Fotos asociadas al equipo</small>
+          </button>
 
-        <h2 class="section-title">Fotos</h2>
-        <div id="detalleFotos"></div>
-
-        <div class="policy-note">
-          Solo lectura en esta etapa. Cuando se habilite edición offline,
-          cualquier conflicto con datos del servidor requerirá validación del administrador.
+          <button class="equipment-menu-btn" onclick="abrirComentariosEquipo()">
+            COMENTARIOS
+            <small>Observaciones y comentarios registrados</small>
+          </button>
         </div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.4.1</div>
+        <div class="policy-note">
+          Solo lectura en esta etapa. Si más adelante existe conflicto entre un cambio offline
+          y los datos del servidor, la resolución final corresponde al administrador.
+        </div>
+
+        <div class="footer">Inventario ET/CD PWA · v0.4.2</div>
+      </div>
+    </section>
+
+    <section id="pantallaDatosEquipo" class="screen dashboard">
+      <div class="card">
+        <div class="back-row">
+          <button class="btn btn-secondary" onclick="volverAMenuEquipo()">← Volver</button>
+          <div class="installation-title">
+            <h1 id="tituloDatosEquipo">Datos</h1>
+            <p id="subtituloDatosEquipo" class="lead"></p>
+          </div>
+        </div>
+
+        <div id="estadoDatosEquipo" class="mini-status"></div>
+        <div id="detalleParametros" class="detail-grid"></div>
+
+        <div class="footer">Inventario ET/CD PWA · v0.4.2</div>
+      </div>
+    </section>
+
+    <section id="pantallaComentariosEquipo" class="screen dashboard">
+      <div class="card">
+        <div class="back-row">
+          <button class="btn btn-secondary" onclick="volverAMenuEquipo()">← Volver</button>
+          <div class="installation-title">
+            <h1 id="tituloComentariosEquipo">Comentarios</h1>
+            <p id="subtituloComentariosEquipo" class="lead"></p>
+          </div>
+        </div>
+
+        <div id="detalleComentarios"></div>
+
+        <div class="footer">Inventario ET/CD PWA · v0.4.2</div>
+      </div>
+    </section>
+
+    <section id="pantallaFotosEquipo" class="screen dashboard">
+      <div class="card">
+        <div class="back-row">
+          <button class="btn btn-secondary" onclick="volverAMenuEquipo()">← Volver</button>
+          <div class="installation-title">
+            <h1 id="tituloFotosEquipo">Fotos</h1>
+            <p id="subtituloFotosEquipo" class="lead"></p>
+          </div>
+        </div>
+
+        <div id="detalleFotos"></div>
+
+        <div class="footer">Inventario ET/CD PWA · v0.4.2</div>
       </div>
     </section>
 
@@ -651,7 +740,7 @@
       <button id="btnAdminLogin" class="btn btn-primary" onclick="loginAdmin()">Ingresar como administrador</button>
       <button class="btn btn-secondary" onclick="salirAdmin()">Cancelar</button>
       <div id="msgAdminLogin" class="message"></div>
-      <div class="footer">v0.4.1</div>
+      <div class="footer">v0.4.2</div>
     </section>
 
     <section id="pantallaAdminSolicitudes" class="screen dashboard">
@@ -671,7 +760,7 @@
         <button class="btn btn-secondary" onclick="cargarSolicitudesAdmin()">Actualizar</button>
         <button class="btn btn-secondary" onclick="salirAdmin()">Salir del administrador</button>
         <div id="msgAdminSolicitudes" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.4.1</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.2</div>
       </div>
     </section>
 
@@ -700,7 +789,7 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.4.1';
+const APP_VERSION = '0.4.2';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
@@ -1325,30 +1414,74 @@ function valorVisibleParametro(valor) {
   return s === '' || s === '-' ? 'Sin dato' : s;
 }
 
+
 function abrirDetalleEquipo(equipo) {
   equipoActual = equipo || null;
   if (!equipoActual) return;
 
-  document.getElementById('tituloDetalleEquipo').textContent =
-    equipoActual.nombre || equipoActual.id || 'Equipo';
+  const titulo = equipoActual.nombre || equipoActual.id || 'Equipo';
+  const subtitulo = [equipoActual.id, equipoActual.tipo].filter(Boolean).join(' · ');
+  const estado = equipoActual.completo ? '✓ Datos completos' : '⚠ Datos incompletos';
 
-  document.getElementById('subtituloDetalleEquipo').textContent =
-    [equipoActual.id, equipoActual.tipo].filter(Boolean).join(' · ');
+  document.getElementById('tituloMenuEquipo').textContent = titulo;
+  document.getElementById('subtituloMenuEquipo').textContent = subtitulo;
+  document.getElementById('estadoMenuEquipo').textContent = estado;
 
-  const estado = document.getElementById('estadoDetalleEquipo');
-  estado.textContent = equipoActual.completo
-    ? '✓ Datos completos'
-    : '⚠ Datos incompletos';
-
-  renderDetalleParametros(equipoActual);
-  renderDetalleComentarios(equipoActual);
-  renderDetalleFotos(equipoActual);
-
-  mostrarPantalla('pantallaDetalleEquipo');
+  mostrarPantalla('pantallaMenuEquipo');
 }
 
 function volverAEquipos() {
   mostrarPantalla('pantallaEquipos');
+}
+
+function volverAMenuEquipo() {
+  if (!equipoActual) {
+    volverAEquipos();
+    return;
+  }
+  mostrarPantalla('pantallaMenuEquipo');
+}
+
+function abrirDatosEquipo() {
+  if (!equipoActual) return;
+
+  document.getElementById('tituloDatosEquipo').textContent =
+    equipoActual.nombre || equipoActual.id || 'Equipo';
+
+  document.getElementById('subtituloDatosEquipo').textContent =
+    [equipoActual.id, equipoActual.tipo].filter(Boolean).join(' · ');
+
+  document.getElementById('estadoDatosEquipo').textContent =
+    equipoActual.completo ? '✓ Datos completos' : '⚠ Datos incompletos';
+
+  renderDetalleParametros(equipoActual);
+  mostrarPantalla('pantallaDatosEquipo');
+}
+
+function abrirComentariosEquipo() {
+  if (!equipoActual) return;
+
+  document.getElementById('tituloComentariosEquipo').textContent =
+    equipoActual.nombre || equipoActual.id || 'Equipo';
+
+  document.getElementById('subtituloComentariosEquipo').textContent =
+    [equipoActual.id, equipoActual.tipo].filter(Boolean).join(' · ');
+
+  renderDetalleComentarios(equipoActual);
+  mostrarPantalla('pantallaComentariosEquipo');
+}
+
+function abrirFotosEquipo() {
+  if (!equipoActual) return;
+
+  document.getElementById('tituloFotosEquipo').textContent =
+    equipoActual.nombre || equipoActual.id || 'Equipo';
+
+  document.getElementById('subtituloFotosEquipo').textContent =
+    [equipoActual.id, equipoActual.tipo].filter(Boolean).join(' · ');
+
+  renderDetalleFotos(equipoActual);
+  mostrarPantalla('pantallaFotosEquipo');
 }
 
 function renderDetalleParametros(equipo) {
