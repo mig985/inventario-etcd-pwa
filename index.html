@@ -215,7 +215,7 @@
       font-size:clamp(.9rem, 3.7vw, 1rem);
     }
 
-    /* v0.3.0 — mejor lectura en celular */
+    /* v0.3.1 — mejor lectura en celular */
     body {
       font-size:clamp(17px, 4vw, 20px);
     }
@@ -273,7 +273,53 @@
       text-align:center;
       line-height:1.4;
     }
-  </style>
+  
+    /* v0.3.1 — solicitud de acceso */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: rgba(0,0,0,.72);
+    }
+    .modal-backdrop.show { display: flex; }
+    .modal-card {
+      width: 100%;
+      max-width: 430px;
+      padding: 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.5);
+    }
+    .modal-card h3 {
+      margin: 0 0 .7rem;
+      color: var(--accent);
+      font-size: clamp(1.35rem, 5vw, 1.65rem);
+    }
+    .modal-card p {
+      margin: .4rem 0 1rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .modal-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .75rem;
+      margin-top: 1rem;
+    }
+    .modal-actions .btn { margin: 0; }
+    .inst-card.pendiente {
+      border-color: rgba(255, 193, 7, .55);
+    }
+    .inst-card.pendiente .inst-status {
+      color: #ffcf66;
+    }
+
+</style>
 </head>
 <body>
   <header class="header">
@@ -301,7 +347,7 @@
 
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.3.0</div>
+      <div class="footer">v0.3.1</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -321,7 +367,7 @@
       <button id="btnIngresar" class="btn btn-primary" onclick="ingresarConPin()">Ingresar</button>
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.3.0</div>
+      <div class="footer">v0.3.1</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -341,10 +387,23 @@
         <button class="btn btn-secondary" onclick="actualizarInstalacionesManual()">Actualizar instalaciones</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.3.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.3.1</div>
       </div>
     </section>
   </main>
+
+
+  <div id="modalAcceso" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalAccesoTitulo">
+    <div class="modal-card">
+      <h3 id="modalAccesoTitulo">Acceso restringido</h3>
+      <p id="modalAccesoTexto"></p>
+      <div id="modalAccesoMsg" class="message"></div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="cerrarModalAcceso()">Cancelar</button>
+        <button id="btnSolicitarAcceso" class="btn btn-primary" onclick="enviarSolicitudAcceso()">Solicitar permiso</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Puente invisible hacia Apps Script -->
   <iframe
@@ -356,11 +415,12 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.3.0';
+const APP_VERSION = '0.3.1';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
 const INSTALLATIONS_KEY = 'inventario_etcd_instalaciones_v1';
+const ACCESS_REQUESTS_KEY = 'inventario_etcd_solicitudes_pendientes_v1';
 
 const CHANNEL_TO_BRIDGE = 'inventario-etcd-pwa';
 const CHANNEL_FROM_BRIDGE = 'inventario-etcd-bridge';
@@ -372,6 +432,7 @@ let bridgeWindow = null;
 let bridgeOrigin = '';
 let bridgeSecuencia = 0;
 const bridgePendientes = new Map();
+let instalacionSolicitudActual = null;
 
 function mostrarPantalla(id) {
   document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
@@ -694,6 +755,113 @@ function formatearFechaCorta(iso) {
   });
 }
 
+
+function leerSolicitudesPendientesLocales() {
+  try {
+    const arr = JSON.parse(localStorage.getItem(ACCESS_REQUESTS_KEY) || '[]');
+    return Array.isArray(arr) ? arr : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function marcarSolicitudPendienteLocal(pestana) {
+  const actual = new Set(leerSolicitudesPendientesLocales());
+  actual.add(String(pestana || '').trim());
+  localStorage.setItem(ACCESS_REQUESTS_KEY, JSON.stringify(Array.from(actual)));
+}
+
+function abrirModalAcceso(inst) {
+  instalacionSolicitudActual = inst || null;
+
+  const nombre = inst && inst.nombre
+    ? inst.nombre
+    : (inst && inst.pestana ? inst.pestana : 'esta instalación');
+
+  document.getElementById('modalAccesoTexto').textContent =
+    'No tenés autorización para ingresar a ' + nombre +
+    '. Podés volver atrás o solicitar permiso al administrador.';
+
+  const msg = document.getElementById('modalAccesoMsg');
+  msg.className = 'message';
+  msg.textContent = '';
+
+  const btn = document.getElementById('btnSolicitarAcceso');
+  const puedeSolicitar = navigator.onLine && servidorDisponible;
+  btn.disabled = !puedeSolicitar;
+
+  if (!puedeSolicitar) {
+    msg.textContent = 'Necesitás conexión para solicitar acceso.';
+    msg.className = 'message show warn';
+  }
+
+  document.getElementById('modalAcceso').classList.add('show');
+}
+
+function cerrarModalAcceso() {
+  document.getElementById('modalAcceso').classList.remove('show');
+  instalacionSolicitudActual = null;
+}
+
+async function enviarSolicitudAcceso() {
+  const perfil = perfilLocal();
+  const inst = instalacionSolicitudActual;
+  const btn = document.getElementById('btnSolicitarAcceso');
+  const msg = document.getElementById('modalAccesoMsg');
+
+  if (!perfil || !inst || !inst.pestana) return;
+
+  if (!navigator.onLine || !servidorDisponible) {
+    msg.textContent = 'Necesitás conexión para solicitar acceso.';
+    msg.className = 'message show warn';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Enviando…';
+  msg.className = 'message';
+  msg.textContent = '';
+
+  try {
+    const res = await bridgeCall('solicitaracceso', {
+      usuario: perfil.usuario,
+      instalacion: inst.pestana
+    }, 15000);
+
+    if (res && res.ok) {
+      marcarSolicitudPendienteLocal(inst.pestana);
+      msg.textContent = res.msg || 'Solicitud enviada al administrador.';
+      msg.className = 'message show ok';
+
+      setTimeout(() => {
+        cerrarModalAcceso();
+        const cache = leerInstalacionesLocal();
+        if (cache && Array.isArray(cache.instalaciones)) {
+          renderInstalaciones(cache.instalaciones, 'cache', cache.fecha);
+        }
+      }, 700);
+
+    } else if (res && res.pendiente) {
+      marcarSolicitudPendienteLocal(inst.pestana);
+      msg.textContent = res.msg || 'Ya existe una solicitud pendiente.';
+      msg.className = 'message show warn';
+
+    } else {
+      msg.textContent = (res && res.msg)
+        ? res.msg
+        : 'No se pudo enviar la solicitud.';
+      msg.className = 'message show err';
+    }
+
+  } catch (e) {
+    msg.textContent = e && e.message ? e.message : String(e);
+    msg.className = 'message show err';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Solicitar permiso';
+  }
+}
+
 function renderInstalaciones(instalaciones, origen, fecha) {
   const lista = document.getElementById('listaInstalaciones');
   const estado = document.getElementById('estadoInstalaciones');
@@ -712,6 +880,8 @@ function renderInstalaciones(instalaciones, origen, fecha) {
       : []
   );
 
+  const pendientes = new Set(leerSolicitudesPendientesLocales());
+
   lista.innerHTML = '';
 
   datos.forEach(inst => {
@@ -719,9 +889,13 @@ function renderInstalaciones(instalaciones, origen, fecha) {
     const tieneHoja = !!pestana;
     const autorizada = tieneHoja && permitidas.has(pestana);
 
+    const pendiente = tieneHoja && !autorizada && pendientes.has(pestana);
+
     const card = document.createElement('div');
     card.className = 'inst-card ' +
-      (!tieneHoja ? 'sin-hoja' : (autorizada ? 'autorizada' : 'bloqueada'));
+      (!tieneHoja
+        ? 'sin-hoja'
+        : (autorizada ? 'autorizada' : (pendiente ? 'pendiente' : 'bloqueada')));
 
     const nombre = document.createElement('div');
     nombre.className = 'inst-name';
@@ -744,15 +918,12 @@ function renderInstalaciones(instalaciones, origen, fecha) {
       card.addEventListener('click', () => {
         alert('Acceso autorizado a ' + (inst.nombre || pestana) + '.\n\nEn el próximo paso conectaremos esta tarjeta con sus equipos.');
       });
+    } else if (pendiente) {
+      acceso.textContent = '⏳ Solicitud pendiente';
+      card.addEventListener('click', () => abrirModalAcceso(inst));
     } else {
       acceso.textContent = '🔒 Sin permiso';
-      card.addEventListener('click', () => {
-        alert(
-          'No tenés autorización para ingresar a ' +
-          (inst.nombre || pestana) +
-          '.\n\nEn el próximo paso agregaremos Cancelar / Solicitar permiso.'
-        );
-      });
+      card.addEventListener('click', () => abrirModalAcceso(inst));
     }
 
     card.appendChild(nombre);
@@ -845,6 +1016,7 @@ function cambiarUsuario() {
   localStorage.removeItem(STORAGE_KEY);
   localStorage.removeItem(SERVER_TOKEN_KEY);
   localStorage.removeItem(INSTALLATIONS_KEY);
+  localStorage.removeItem(ACCESS_REQUESTS_KEY);
   sesionOnline = false;
   document.getElementById('usuarioInicial').value = '';
   document.getElementById('pinInicial').value = '';

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'inventario-etcd-pwa-v0.3.0';
+const CACHE_NAME = 'inventario-etcd-pwa-v0.3.1';
 
 const APP_SHELL = [
   './',
