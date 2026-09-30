@@ -175,6 +175,53 @@
       color:var(--ok);
       line-height:1.45;
     }
+
+    .app-toolbar {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:.75rem;
+      margin-bottom:.8rem;
+    }
+    .app-toolbar h2 {
+      margin:0;
+      color:var(--accent);
+      font-size:1.05rem;
+    }
+    .mini-status {
+      color:var(--muted);
+      font-size:.75rem;
+      text-align:right;
+    }
+    .inst-list {
+      display:grid;
+      gap:.65rem;
+      margin-top:.8rem;
+    }
+    .inst-card {
+      padding:.8rem .9rem;
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:8px;
+    }
+    .inst-name {
+      font-weight:700;
+      color:var(--text);
+      line-height:1.25;
+    }
+    .inst-meta {
+      margin-top:.25rem;
+      color:var(--muted);
+      font-size:.76rem;
+    }
+    .empty-state {
+      padding:1rem;
+      border:1px dashed var(--border);
+      border-radius:8px;
+      color:var(--muted);
+      text-align:center;
+      line-height:1.4;
+    }
   </style>
 </head>
 <body>
@@ -203,7 +250,7 @@
 
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.1.2</div>
+      <div class="footer">v0.2.0</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -223,19 +270,27 @@
       <button id="btnIngresar" class="btn btn-primary" onclick="ingresarConPin()">Ingresar</button>
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.1.2</div>
+      <div class="footer">v0.2.0</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
       <div class="card">
-        <h1>Acceso correcto</h1>
+        <h1>Inventario</h1>
         <p id="bienvenida" class="lead"></p>
-        <div class="ok-panel">
-          El login online/offline ya funciona. En la siguiente etapa vamos a traer la lista real de ET/CD desde el Sheet clonado.
+
+        <div class="app-toolbar">
+          <h2>Instalaciones</h2>
+          <div id="estadoInstalaciones" class="mini-status">Cargando…</div>
         </div>
+
+        <div id="listaInstalaciones" class="inst-list">
+          <div class="empty-state">Cargando instalaciones…</div>
+        </div>
+
+        <button class="btn btn-secondary" onclick="actualizarInstalacionesManual()">Actualizar instalaciones</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.1.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.2.0</div>
       </div>
     </section>
   </main>
@@ -250,10 +305,11 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.1.2';
+const APP_VERSION = '0.2.0';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
+const INSTALLATIONS_KEY = 'inventario_etcd_instalaciones_v1';
 
 const CHANNEL_TO_BRIDGE = 'inventario-etcd-pwa';
 const CHANNEL_FROM_BRIDGE = 'inventario-etcd-bridge';
@@ -540,12 +596,126 @@ async function ingresarConPin() {
   btn.textContent = 'Ingresar';
 }
 
+function guardarInstalacionesLocal(instalaciones) {
+  localStorage.setItem(INSTALLATIONS_KEY, JSON.stringify({
+    fecha: new Date().toISOString(),
+    instalaciones: Array.isArray(instalaciones) ? instalaciones : []
+  }));
+}
+
+function leerInstalacionesLocal() {
+  try {
+    return JSON.parse(localStorage.getItem(INSTALLATIONS_KEY) || 'null');
+  } catch (e) {
+    return null;
+  }
+}
+
+function formatearFechaCorta(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  return d.toLocaleString('es-AR', {
+    day:'2-digit', month:'2-digit', year:'2-digit',
+    hour:'2-digit', minute:'2-digit'
+  });
+}
+
+function renderInstalaciones(instalaciones, origen, fecha) {
+  const lista = document.getElementById('listaInstalaciones');
+  const estado = document.getElementById('estadoInstalaciones');
+  const datos = Array.isArray(instalaciones) ? instalaciones : [];
+
+  if (!datos.length) {
+    lista.innerHTML = '<div class="empty-state">No hay instalaciones disponibles.</div>';
+    estado.textContent = origen === 'cache' ? 'Sin datos guardados' : 'Sin instalaciones';
+    return;
+  }
+
+  lista.innerHTML = '';
+  datos.forEach(inst => {
+    const card = document.createElement('div');
+    card.className = 'inst-card';
+
+    const nombre = document.createElement('div');
+    nombre.className = 'inst-name';
+    nombre.textContent = inst.nombre || '(sin nombre)';
+
+    const meta = document.createElement('div');
+    meta.className = 'inst-meta';
+    const partes = [];
+    if (inst.tipo) partes.push(inst.tipo);
+    if (inst.pestana) partes.push(inst.pestana);
+    meta.textContent = partes.join(' · ');
+
+    card.appendChild(nombre);
+    card.appendChild(meta);
+    lista.appendChild(card);
+  });
+
+  const etiquetaOrigen = origen === 'servidor' ? 'Servidor' : 'Guardado';
+  const txtFecha = formatearFechaCorta(fecha);
+  estado.textContent = `${datos.length} · ${etiquetaOrigen}${txtFecha ? ' · ' + txtFecha : ''}`;
+}
+
+async function cargarInstalaciones({forzar = false} = {}) {
+  const cache = leerInstalacionesLocal();
+
+  if (cache && Array.isArray(cache.instalaciones)) {
+    renderInstalaciones(cache.instalaciones, 'cache', cache.fecha);
+  }
+
+  if (!navigator.onLine || !servidorDisponible) {
+    if (!cache) {
+      renderInstalaciones([], 'cache', '');
+      document.getElementById('estadoInstalaciones').textContent = 'Sin conexión · sin cache';
+    }
+    return;
+  }
+
+  const token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
+  if (!token) {
+    document.getElementById('estadoInstalaciones').textContent = 'Sesión online sin token';
+    return;
+  }
+
+  if (forzar) {
+    document.getElementById('estadoInstalaciones').textContent = 'Actualizando…';
+  }
+
+  try {
+    const res = await bridgeCall('getinstalaciones', { token }, 15000);
+    const instalaciones = Array.isArray(res) ? res : [];
+    guardarInstalacionesLocal(instalaciones);
+    const nuevoCache = leerInstalacionesLocal();
+    renderInstalaciones(instalaciones, 'servidor', nuevoCache && nuevoCache.fecha);
+  } catch (e) {
+    if (!cache) {
+      document.getElementById('listaInstalaciones').innerHTML =
+        '<div class="empty-state">No se pudieron cargar las instalaciones.</div>';
+    }
+    document.getElementById('estadoInstalaciones').textContent =
+      cache ? 'Usando datos guardados' : 'Error de actualización';
+  }
+}
+
+async function actualizarInstalacionesManual() {
+  const disponible = await comprobarServidor(true);
+  if (!disponible) {
+    const cache = leerInstalacionesLocal();
+    if (cache) renderInstalaciones(cache.instalaciones, 'cache', cache.fecha);
+    return;
+  }
+  await cargarInstalaciones({forzar:true});
+}
+
 function abrirApp() {
   const perfil = perfilLocal();
   document.getElementById('bienvenida').textContent =
     'Usuario: ' + (perfil ? (perfil.nombre || perfil.usuario) : '') +
     (servidorDisponible ? ' · sesión online' : ' · modo offline');
   mostrarPantalla('pantallaApp');
+  cargarInstalaciones();
 }
 
 function bloquearApp() {
@@ -557,6 +727,7 @@ function cambiarUsuario() {
 
   localStorage.removeItem(STORAGE_KEY);
   localStorage.removeItem(SERVER_TOKEN_KEY);
+  localStorage.removeItem(INSTALLATIONS_KEY);
   document.getElementById('usuarioInicial').value = '';
   document.getElementById('pinInicial').value = '';
   mostrarMensaje('msgInicial', '', '');
