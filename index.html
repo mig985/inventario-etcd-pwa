@@ -250,7 +250,7 @@
 
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.2.0</div>
+      <div class="footer">v0.2.1</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -270,7 +270,7 @@
       <button id="btnIngresar" class="btn btn-primary" onclick="ingresarConPin()">Ingresar</button>
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.2.0</div>
+      <div class="footer">v0.2.1</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -290,7 +290,7 @@
         <button class="btn btn-secondary" onclick="actualizarInstalacionesManual()">Actualizar instalaciones</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.2.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.2.1</div>
       </div>
     </section>
   </main>
@@ -305,7 +305,7 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.2.0';
+const APP_VERSION = '0.2.1';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
@@ -315,6 +315,7 @@ const CHANNEL_TO_BRIDGE = 'inventario-etcd-pwa';
 const CHANNEL_FROM_BRIDGE = 'inventario-etcd-bridge';
 
 let servidorDisponible = false;
+let sesionOnline = false;
 let bridgeReady = false;
 let bridgeWindow = null;
 let bridgeOrigin = '';
@@ -515,6 +516,7 @@ async function vincularMovil() {
 
     guardarPerfilLocal(res.usuario || { usuario, nombre: usuario, rol: 'USUARIO' }, pin);
     if (res.token) localStorage.setItem(SERVER_TOKEN_KEY, res.token);
+    sesionOnline = true;
     mostrarMensaje('msgInicial', 'Móvil vinculado correctamente.', 'ok');
     setTimeout(() => prepararPantallaPin(), 450);
 
@@ -541,6 +543,42 @@ function prepararPantallaPin() {
   setTimeout(() => document.getElementById('pinLocal').focus(), 150);
 }
 
+async function revalidarSesionServidor() {
+  const perfil = perfilLocal();
+
+  if (!perfil || !navigator.onLine) {
+    sesionOnline = false;
+    return false;
+  }
+
+  const disponible = await comprobarServidor();
+  if (!disponible) {
+    sesionOnline = false;
+    return false;
+  }
+
+  try {
+    const res = await bridgeCall('login', {
+      usuario: perfil.usuario,
+      pin: String(perfil.pin || '')
+    }, 12000);
+
+    if (!res || !res.ok) {
+      sesionOnline = false;
+      return false;
+    }
+
+    guardarPerfilLocal(res.usuario || perfil, perfil.pin);
+    if (res.token) localStorage.setItem(SERVER_TOKEN_KEY, res.token);
+    sesionOnline = true;
+    return true;
+
+  } catch (e) {
+    sesionOnline = false;
+    return false;
+  }
+}
+
 async function ingresarConPin() {
   const perfil = perfilLocal();
   const pin = document.getElementById('pinLocal').value.trim();
@@ -565,33 +603,14 @@ async function ingresarConPin() {
   btn.disabled = true;
   btn.textContent = 'Ingresando…';
 
-  // Si el servidor responde, revalidamos silenciosamente.
-  // Si estamos sin conexión, el PIN guardado localmente permite entrar.
-  const disponible = await comprobarServidor();
-
-  if (disponible) {
-    try {
-      const res = await bridgeCall('login', {
-        usuario: perfil.usuario,
-        pin: pin
-      }, 12000);
-
-      if (!res || !res.ok) {
-        mostrarMensaje('msgPin', (res && res.msg) || 'El usuario no pudo ser validado.', 'err');
-        btn.disabled = false;
-        btn.textContent = 'Ingresar';
-        return;
-      }
-
-      guardarPerfilLocal(res.usuario || perfil, pin);
-      if (res.token) localStorage.setItem(SERVER_TOKEN_KEY, res.token);
-
-    } catch (e) {
-      actualizarEstadoConexion('🟠 Sin servidor', 'warn');
-    }
+  if (navigator.onLine) {
+    await revalidarSesionServidor();
+  } else {
+    sesionOnline = false;
   }
 
   abrirApp();
+
   btn.disabled = false;
   btn.textContent = 'Ingresar';
 }
@@ -668,14 +687,8 @@ async function cargarInstalaciones({forzar = false} = {}) {
   if (!navigator.onLine || !servidorDisponible) {
     if (!cache) {
       renderInstalaciones([], 'cache', '');
-      document.getElementById('estadoInstalaciones').textContent = 'Sin conexión · sin cache';
+      document.getElementById('estadoInstalaciones').textContent = 'Sin conexión · sin datos guardados';
     }
-    return;
-  }
-
-  const token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
-  if (!token) {
-    document.getElementById('estadoInstalaciones').textContent = 'Sesión online sin token';
     return;
   }
 
@@ -684,18 +697,33 @@ async function cargarInstalaciones({forzar = false} = {}) {
   }
 
   try {
-    const res = await bridgeCall('getinstalaciones', { token }, 15000);
+    const res = await bridgeCall('getinstalaciones', {}, 15000);
     const instalaciones = Array.isArray(res) ? res : [];
+
     guardarInstalacionesLocal(instalaciones);
+
     const nuevoCache = leerInstalacionesLocal();
-    renderInstalaciones(instalaciones, 'servidor', nuevoCache && nuevoCache.fecha);
+    renderInstalaciones(
+      instalaciones,
+      'servidor',
+      nuevoCache && nuevoCache.fecha
+    );
+
   } catch (e) {
+    const detalle = e && e.message ? e.message : String(e);
+
     if (!cache) {
       document.getElementById('listaInstalaciones').innerHTML =
-        '<div class="empty-state">No se pudieron cargar las instalaciones.</div>';
+        '<div class="empty-state">' +
+        'No se pudieron cargar las instalaciones.<br><br>' +
+        '<strong>Error:</strong> ' + detalle +
+        '</div>';
     }
+
     document.getElementById('estadoInstalaciones').textContent =
-      cache ? 'Usando datos guardados' : 'Error de actualización';
+      cache ? 'Usando datos guardados · error: ' + detalle : 'Error: ' + detalle;
+
+    console.error('Error cargando instalaciones:', e);
   }
 }
 
@@ -713,7 +741,7 @@ function abrirApp() {
   const perfil = perfilLocal();
   document.getElementById('bienvenida').textContent =
     'Usuario: ' + (perfil ? (perfil.nombre || perfil.usuario) : '') +
-    (servidorDisponible ? ' · sesión online' : ' · modo offline');
+    (sesionOnline ? ' · sesión online' : ' · modo offline');
   mostrarPantalla('pantallaApp');
   cargarInstalaciones();
 }
@@ -728,6 +756,7 @@ function cambiarUsuario() {
   localStorage.removeItem(STORAGE_KEY);
   localStorage.removeItem(SERVER_TOKEN_KEY);
   localStorage.removeItem(INSTALLATIONS_KEY);
+  sesionOnline = false;
   document.getElementById('usuarioInicial').value = '';
   document.getElementById('pinInicial').value = '';
   mostrarMensaje('msgInicial', '', '');
@@ -737,14 +766,39 @@ function cambiarUsuario() {
 window.addEventListener('online', async () => {
   cargarBridge(true);
   await comprobarServidor();
+
+  if (perfilLocal()) {
+    await revalidarSesionServidor();
+
+    const bienvenida = document.getElementById('bienvenida');
+    if (bienvenida) {
+      const perfil = perfilLocal();
+      bienvenida.textContent =
+        'Usuario: ' + (perfil ? (perfil.nombre || perfil.usuario) : '') +
+        (sesionOnline ? ' · sesión online' : ' · modo offline');
+    }
+
+    const pantallaApp = document.getElementById('pantallaApp');
+    if (pantallaApp && pantallaApp.classList.contains('active')) {
+      await cargarInstalaciones({forzar:true});
+    }
+  }
 });
 
 window.addEventListener('offline', () => {
   servidorDisponible = false;
+  sesionOnline = false;
   bridgeReady = false;
   bridgeWindow = null;
   bridgeOrigin = '';
   actualizarEstadoConexion('🟠 Sin conexión', 'warn');
+
+  const bienvenida = document.getElementById('bienvenida');
+  const perfil = perfilLocal();
+  if (bienvenida && perfil) {
+    bienvenida.textContent =
+      'Usuario: ' + (perfil.nombre || perfil.usuario) + ' · modo offline';
+  }
 });
 
 document.getElementById('pinInicial').addEventListener('keydown', e => {
