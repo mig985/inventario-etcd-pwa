@@ -215,7 +215,7 @@
       font-size:clamp(.9rem, 3.7vw, 1rem);
     }
 
-    /* v0.4.3 — mejor lectura en celular */
+    /* v0.4.4 — mejor lectura en celular */
     body {
       font-size:clamp(17px, 4vw, 20px);
     }
@@ -274,7 +274,7 @@
       line-height:1.4;
     }
   
-    /* v0.4.3 — solicitud de acceso */
+    /* v0.4.4 — solicitud de acceso */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -320,7 +320,7 @@
     }
 
 
-    /* v0.4.3 — administración de solicitudes */
+    /* v0.4.4 — administración de solicitudes */
     .admin-list {
       display:grid;
       gap:.75rem;
@@ -372,7 +372,7 @@
     }
 
 
-    /* v0.4.3 — inventario de equipos */
+    /* v0.4.4 — inventario de equipos */
     .equipment-list {
       display:grid;
       gap:.65rem;
@@ -438,7 +438,7 @@
     }
 
 
-    /* v0.4.3 — detalle de equipo */
+    /* v0.4.4 — detalle de equipo */
     .equipment-card {
       cursor:pointer;
     }
@@ -508,7 +508,7 @@
     }
 
 
-    /* v0.4.3 — menú intermedio del equipo */
+    /* v0.4.4 — menú intermedio del equipo */
     .equipment-menu {
       display:grid;
       gap:1rem;
@@ -539,7 +539,7 @@
     }
 
 
-    /* v0.4.3 — fotos reales y contadores */
+    /* v0.4.4 — fotos reales y contadores */
     .menu-count {
       float:right;
       min-width:2rem;
@@ -590,6 +590,40 @@
       font-weight:700;
     }
 
+
+    /* v0.4.4 — alta de comentarios */
+    .comment-editor {
+      margin-bottom:1rem;
+      padding:1rem;
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:10px;
+    }
+
+    .comment-editor label {
+      display:block;
+      margin-bottom:.45rem;
+      font-weight:700;
+    }
+
+    .comment-editor textarea {
+      width:100%;
+      min-height:110px;
+      box-sizing:border-box;
+      resize:vertical;
+      padding:.8rem .9rem;
+      border-radius:9px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      color:var(--text);
+      font:inherit;
+      line-height:1.4;
+    }
+
+    .comment-editor .btn {
+      margin-top:.7rem;
+    }
+
 </style>
 </head>
 <body>
@@ -619,7 +653,7 @@
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.4.3</div>
+      <div class="footer">v0.4.4</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -640,7 +674,7 @@
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.4.3</div>
+      <div class="footer">v0.4.4</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -661,7 +695,7 @@
         <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.4.3</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.4</div>
       </div>
     </section>
 
@@ -687,7 +721,7 @@
 
         <button class="btn btn-secondary" onclick="actualizarEquiposManual()">Actualizar equipos</button>
         <div id="msgEquipos" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.4.3</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.4</div>
       </div>
     </section>
 
@@ -727,7 +761,7 @@
           y los datos del servidor, la resolución final corresponde al administrador.
         </div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.4.3</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.4</div>
       </div>
     </section>
 
@@ -744,7 +778,7 @@
         <div id="estadoDatosEquipo" class="mini-status"></div>
         <div id="detalleParametros" class="detail-grid"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.4.3</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.4</div>
       </div>
     </section>
 
@@ -758,9 +792,24 @@
           </div>
         </div>
 
+        <div class="comment-editor">
+          <label for="nuevoComentario">Nuevo comentario</label>
+          <textarea
+            id="nuevoComentario"
+            maxlength="2000"
+            placeholder="Escribí una observación sobre este equipo..."
+          ></textarea>
+          <button
+            id="btnGuardarComentario"
+            class="btn btn-primary"
+            onclick="guardarComentarioDesdePwa()"
+          >Guardar comentario</button>
+          <div id="msgComentario" class="message"></div>
+        </div>
+
         <div id="detalleComentarios"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.4.3</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.4</div>
       </div>
     </section>
 
@@ -776,7 +825,7 @@
 
         <div id="detalleFotos"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.4.3</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.4</div>
       </div>
     </section>
 
@@ -792,7 +841,7 @@
       <button id="btnAdminLogin" class="btn btn-primary" onclick="loginAdmin()">Ingresar como administrador</button>
       <button class="btn btn-secondary" onclick="salirAdmin()">Cancelar</button>
       <div id="msgAdminLogin" class="message"></div>
-      <div class="footer">v0.4.3</div>
+      <div class="footer">v0.4.4</div>
     </section>
 
     <section id="pantallaAdminSolicitudes" class="screen dashboard">
@@ -812,7 +861,7 @@
         <button class="btn btn-secondary" onclick="cargarSolicitudesAdmin()">Actualizar</button>
         <button class="btn btn-secondary" onclick="salirAdmin()">Salir del administrador</button>
         <div id="msgAdminSolicitudes" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.4.3</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.4</div>
       </div>
     </section>
 
@@ -841,7 +890,7 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.4.3';
+const APP_VERSION = '0.4.4';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
@@ -1533,6 +1582,10 @@ function abrirComentariosEquipo() {
   document.getElementById('subtituloComentariosEquipo').textContent =
     [equipoActual.id, equipoActual.tipo].filter(Boolean).join(' · ');
 
+  const entrada = document.getElementById('nuevoComentario');
+  if (entrada) entrada.value = '';
+  mostrarMensaje('msgComentario', '', '');
+
   renderDetalleComentarios(equipoActual);
   mostrarPantalla('pantallaComentariosEquipo');
 }
@@ -1585,6 +1638,128 @@ function renderDetalleParametros(equipo) {
     row.appendChild(value);
     cont.appendChild(row);
   });
+}
+
+
+function actualizarComentarioEnCache(comentarios) {
+  if (!instalacionActual || !equipoActual) return;
+
+  const paquete = leerEquiposLocal(instalacionActual.pestana);
+  if (!paquete || !Array.isArray(paquete.equipos)) return;
+
+  const idx = paquete.equipos.findIndex(e =>
+    String(e.id || '') === String(equipoActual.id || '') ||
+    Number(e.fila) === Number(equipoActual.fila)
+  );
+
+  if (idx < 0) return;
+
+  paquete.equipos[idx].comentarios = Array.isArray(comentarios)
+    ? comentarios
+    : [];
+  paquete.fecha = new Date().toISOString();
+
+  localStorage.setItem(
+    claveCacheEquipos(instalacionActual.pestana),
+    JSON.stringify(paquete)
+  );
+}
+
+async function guardarComentarioDesdePwa() {
+  if (!instalacionActual || !equipoActual) return;
+
+  const textarea = document.getElementById('nuevoComentario');
+  const btn = document.getElementById('btnGuardarComentario');
+  const texto = String(textarea ? textarea.value : '').trim();
+
+  mostrarMensaje('msgComentario', '', '');
+
+  if (!texto) {
+    mostrarMensaje('msgComentario', 'Escribí un comentario.', 'err');
+    return;
+  }
+
+  if (!navigator.onLine || !servidorDisponible) {
+    mostrarMensaje(
+      'msgComentario',
+      'En esta versión el comentario necesita conexión para guardarse. La cola offline se agregará en el próximo paso.',
+      'warn'
+    );
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Guardando…';
+
+  try {
+    let token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
+
+    if (!token || !sesionOnline) {
+      const ok = await revalidarSesionServidor();
+      if (!ok) throw new Error('No se pudo validar la sesión.');
+      token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
+    }
+
+    let res = await bridgeCall('guardarcomentario', {
+      pestana: instalacionActual.pestana,
+      filaNum: equipoActual.fila,
+      equipoId: equipoActual.id,
+      texto,
+      actorToken: token
+    }, 20000);
+
+    if (res && !res.ok &&
+        String(res.msg || '').toLowerCase().includes('sesión')) {
+      const ok = await revalidarSesionServidor();
+      if (ok) {
+        token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
+        res = await bridgeCall('guardarcomentario', {
+          pestana: instalacionActual.pestana,
+          filaNum: equipoActual.fila,
+          equipoId: equipoActual.id,
+          texto,
+          actorToken: token
+        }, 20000);
+      }
+    }
+
+    if (!res || !res.ok) {
+      throw new Error(
+        (res && res.msg) || 'No se pudo guardar el comentario.'
+      );
+    }
+
+    equipoActual.comentarios = Array.isArray(res.comentarios)
+      ? res.comentarios
+      : [];
+
+    actualizarComentarioEnCache(equipoActual.comentarios);
+
+    renderDetalleComentarios(equipoActual);
+
+    const contador = document.getElementById('countComentariosEquipo');
+    if (contador) {
+      contador.textContent = equipoActual.comentarios.length;
+    }
+
+    if (textarea) textarea.value = '';
+
+    mostrarMensaje(
+      'msgComentario',
+      'Comentario guardado correctamente.',
+      'ok'
+    );
+
+  } catch (e) {
+    mostrarMensaje(
+      'msgComentario',
+      e && e.message ? e.message : String(e),
+      'err'
+    );
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Guardar comentario';
+  }
 }
 
 function renderDetalleComentarios(equipo) {
@@ -1863,9 +2038,32 @@ function renderInstalaciones(instalaciones, origen, fecha) {
 
   const pendientes = new Set(leerSolicitudesPendientesLocales());
 
+  // Orden visual:
+  // 1) autorizadas, 2) solicitud pendiente, 3) sin permiso, 4) sin hoja.
+  // Dentro de cada grupo se conserva el orden original.
+  const datosOrdenados = datos
+    .map((inst, indiceOriginal) => {
+      const pestana = String(inst.pestana || '').trim();
+      const tieneHoja = !!pestana;
+      const autorizada = tieneHoja && permitidas.has(pestana);
+      const pendiente = tieneHoja && !autorizada && pendientes.has(pestana);
+
+      let grupo = 3;
+      if (autorizada) grupo = 0;
+      else if (pendiente) grupo = 1;
+      else if (tieneHoja) grupo = 2;
+
+      return { inst, indiceOriginal, grupo };
+    })
+    .sort((a, b) =>
+      a.grupo - b.grupo ||
+      a.indiceOriginal - b.indiceOriginal
+    )
+    .map(item => item.inst);
+
   lista.innerHTML = '';
 
-  datos.forEach(inst => {
+  datosOrdenados.forEach(inst => {
     const pestana = String(inst.pestana || '').trim();
     const tieneHoja = !!pestana;
     const autorizada = tieneHoja && permitidas.has(pestana);
