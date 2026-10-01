@@ -215,7 +215,7 @@
       font-size:clamp(.9rem, 3.7vw, 1rem);
     }
 
-    /* v0.4.2 — mejor lectura en celular */
+    /* v0.4.3 — mejor lectura en celular */
     body {
       font-size:clamp(17px, 4vw, 20px);
     }
@@ -274,7 +274,7 @@
       line-height:1.4;
     }
   
-    /* v0.4.2 — solicitud de acceso */
+    /* v0.4.3 — solicitud de acceso */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -320,7 +320,7 @@
     }
 
 
-    /* v0.4.2 — administración de solicitudes */
+    /* v0.4.3 — administración de solicitudes */
     .admin-list {
       display:grid;
       gap:.75rem;
@@ -372,7 +372,7 @@
     }
 
 
-    /* v0.4.2 — inventario de equipos */
+    /* v0.4.3 — inventario de equipos */
     .equipment-list {
       display:grid;
       gap:.65rem;
@@ -438,7 +438,7 @@
     }
 
 
-    /* v0.4.2 — detalle de equipo */
+    /* v0.4.3 — detalle de equipo */
     .equipment-card {
       cursor:pointer;
     }
@@ -508,7 +508,7 @@
     }
 
 
-    /* v0.4.2 — menú intermedio del equipo */
+    /* v0.4.3 — menú intermedio del equipo */
     .equipment-menu {
       display:grid;
       gap:1rem;
@@ -536,6 +536,58 @@
       font-size:clamp(.84rem,3.3vw,.95rem);
       font-weight:500;
       letter-spacing:0;
+    }
+
+
+    /* v0.4.3 — fotos reales y contadores */
+    .menu-count {
+      float:right;
+      min-width:2rem;
+      padding:.12rem .5rem;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      color:var(--text);
+      text-align:center;
+      font-size:.95rem;
+      font-weight:800;
+    }
+
+    .photo-card {
+      overflow:hidden;
+    }
+
+    .photo-image-wrap {
+      margin:-.1rem -.1rem .75rem;
+      border-radius:8px;
+      overflow:hidden;
+      background:#111;
+      min-height:140px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .photo-image {
+      display:block;
+      width:100%;
+      max-height:520px;
+      object-fit:contain;
+      background:#111;
+    }
+
+    .photo-fallback {
+      padding:1rem;
+      color:var(--muted);
+      text-align:center;
+      line-height:1.4;
+    }
+
+    .photo-open-link {
+      display:inline-block;
+      margin-top:.55rem;
+      color:var(--accent);
+      text-decoration:none;
+      font-weight:700;
     }
 
 </style>
@@ -567,7 +619,7 @@
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.4.2</div>
+      <div class="footer">v0.4.3</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -588,7 +640,7 @@
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.4.2</div>
+      <div class="footer">v0.4.3</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -609,7 +661,7 @@
         <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.4.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.3</div>
       </div>
     </section>
 
@@ -635,7 +687,7 @@
 
         <button class="btn btn-secondary" onclick="actualizarEquiposManual()">Actualizar equipos</button>
         <div id="msgEquipos" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.4.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.3</div>
       </div>
     </section>
 
@@ -655,17 +707,17 @@
 
         <div class="equipment-menu">
           <button class="equipment-menu-btn" onclick="abrirDatosEquipo()">
-            DATOS
+            DATOS <span id="countDatosEquipo" class="menu-count">—</span>
             <small>Parámetros técnicos y estado del relevamiento</small>
           </button>
 
           <button class="equipment-menu-btn" onclick="abrirFotosEquipo()">
-            FOTOS
+            FOTOS <span id="countFotosEquipo" class="menu-count">0</span>
             <small>Fotos asociadas al equipo</small>
           </button>
 
           <button class="equipment-menu-btn" onclick="abrirComentariosEquipo()">
-            COMENTARIOS
+            COMENTARIOS <span id="countComentariosEquipo" class="menu-count">0</span>
             <small>Observaciones y comentarios registrados</small>
           </button>
         </div>
@@ -675,7 +727,7 @@
           y los datos del servidor, la resolución final corresponde al administrador.
         </div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.4.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.3</div>
       </div>
     </section>
 
@@ -692,7 +744,7 @@
         <div id="estadoDatosEquipo" class="mini-status"></div>
         <div id="detalleParametros" class="detail-grid"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.4.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.3</div>
       </div>
     </section>
 
@@ -708,7 +760,7 @@
 
         <div id="detalleComentarios"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.4.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.3</div>
       </div>
     </section>
 
@@ -724,7 +776,7 @@
 
         <div id="detalleFotos"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.4.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.3</div>
       </div>
     </section>
 
@@ -740,7 +792,7 @@
       <button id="btnAdminLogin" class="btn btn-primary" onclick="loginAdmin()">Ingresar como administrador</button>
       <button class="btn btn-secondary" onclick="salirAdmin()">Cancelar</button>
       <div id="msgAdminLogin" class="message"></div>
-      <div class="footer">v0.4.2</div>
+      <div class="footer">v0.4.3</div>
     </section>
 
     <section id="pantallaAdminSolicitudes" class="screen dashboard">
@@ -760,7 +812,7 @@
         <button class="btn btn-secondary" onclick="cargarSolicitudesAdmin()">Actualizar</button>
         <button class="btn btn-secondary" onclick="salirAdmin()">Salir del administrador</button>
         <div id="msgAdminSolicitudes" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.4.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.3</div>
       </div>
     </section>
 
@@ -789,7 +841,7 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.4.2';
+const APP_VERSION = '0.4.3';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
@@ -1427,6 +1479,20 @@ function abrirDetalleEquipo(equipo) {
   document.getElementById('subtituloMenuEquipo').textContent = subtitulo;
   document.getElementById('estadoMenuEquipo').textContent = estado;
 
+  const params = equipoActual.params && typeof equipoActual.params === 'object'
+    ? Object.keys(equipoActual.params)
+    : [];
+  const fotos = Array.isArray(equipoActual.fotoIds)
+    ? equipoActual.fotoIds.filter(Boolean)
+    : [];
+  const comentarios = Array.isArray(equipoActual.comentarios)
+    ? equipoActual.comentarios
+    : [];
+
+  document.getElementById('countDatosEquipo').textContent = params.length;
+  document.getElementById('countFotosEquipo').textContent = fotos.length;
+  document.getElementById('countComentariosEquipo').textContent = comentarios.length;
+
   mostrarPantalla('pantallaMenuEquipo');
 }
 
@@ -1564,7 +1630,7 @@ function renderDetalleFotos(equipo) {
     : [];
 
   const ids = Array.isArray(equipo && equipo.fotoIds)
-    ? equipo.fotoIds
+    ? equipo.fotoIds.filter(Boolean)
     : [];
 
   if (!infos.length && !ids.length) {
@@ -1577,9 +1643,31 @@ function renderDetalleFotos(equipo) {
   for (let i = 0; i < cantidad; i++) {
     const info = infos[i] || {};
     const id = info.id || ids[i] || '';
+    if (!id) continue;
 
     const card = document.createElement('div');
     card.className = 'photo-card';
+
+    const wrap = document.createElement('div');
+    wrap.className = 'photo-image-wrap';
+
+    const img = document.createElement('img');
+    img.className = 'photo-image';
+    img.loading = 'lazy';
+    img.alt = 'Foto ' + (i + 1) + ' del equipo';
+    img.src =
+      'https://drive.google.com/thumbnail?id=' +
+      encodeURIComponent(id) +
+      '&sz=w1200';
+
+    img.onerror = function() {
+      wrap.innerHTML =
+        '<div class="photo-fallback">' +
+        'No se pudo mostrar esta imagen. Puede requerir conexión o permisos de Drive.' +
+        '</div>';
+    };
+
+    wrap.appendChild(img);
 
     const titulo = document.createElement('div');
     titulo.className = 'detail-value';
@@ -1591,12 +1679,20 @@ function renderDetalleFotos(equipo) {
     const autor = info.nombre || info.usuario || '';
     meta.textContent = [
       info.fechaHora || '',
-      autor,
-      id ? 'ID: ' + id : ''
+      autor
     ].filter(Boolean).join(' · ');
 
+    const link = document.createElement('a');
+    link.className = 'photo-open-link';
+    link.href = 'https://drive.google.com/file/d/' + encodeURIComponent(id) + '/view';
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = 'Abrir foto';
+
+    card.appendChild(wrap);
     card.appendChild(titulo);
     card.appendChild(meta);
+    card.appendChild(link);
     cont.appendChild(card);
   }
 }
