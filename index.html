@@ -215,7 +215,7 @@
       font-size:clamp(.9rem, 3.7vw, 1rem);
     }
 
-    /* v0.6.2 — mejor lectura en celular */
+    /* v0.6.3 — mejor lectura en celular */
     body {
       font-size:clamp(17px, 4vw, 20px);
     }
@@ -274,7 +274,7 @@
       line-height:1.4;
     }
   
-    /* v0.6.2 — solicitud de acceso */
+    /* v0.6.3 — solicitud de acceso */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -320,7 +320,7 @@
     }
 
 
-    /* v0.6.2 — administración de solicitudes */
+    /* v0.6.3 — administración de solicitudes */
     .admin-list {
       display:grid;
       gap:.75rem;
@@ -372,7 +372,7 @@
     }
 
 
-    /* v0.6.2 — inventario de equipos */
+    /* v0.6.3 — inventario de equipos */
     .equipment-list {
       display:grid;
       gap:.65rem;
@@ -438,7 +438,7 @@
     }
 
 
-    /* v0.6.2 — detalle de equipo */
+    /* v0.6.3 — detalle de equipo */
     .equipment-card {
       cursor:pointer;
     }
@@ -508,7 +508,7 @@
     }
 
 
-    /* v0.6.2 — menú intermedio del equipo */
+    /* v0.6.3 — menú intermedio del equipo */
     .equipment-menu {
       display:grid;
       gap:1rem;
@@ -539,7 +539,7 @@
     }
 
 
-    /* v0.6.2 — fotos reales y contadores */
+    /* v0.6.3 — fotos reales y contadores */
     .menu-count {
       float:right;
       min-width:2rem;
@@ -591,7 +591,7 @@
     }
 
 
-    /* v0.6.2 — alta de comentarios */
+    /* v0.6.3 — alta de comentarios */
     .comment-editor {
       margin-bottom:1rem;
       padding:1rem;
@@ -625,7 +625,7 @@
     }
 
 
-    /* v0.6.2 — cola offline de comentarios */
+    /* v0.6.3 — cola offline de comentarios */
     .sync-pending {
       color:var(--warn);
       font-weight:700;
@@ -649,7 +649,7 @@
     }
 
 
-    /* v0.6.2 — edición de datos online/offline */
+    /* v0.6.3 — edición de datos online/offline */
     .data-actions {
       display:flex;
       gap:.6rem;
@@ -707,7 +707,7 @@
     .conflict-values strong { color:var(--text); }
 
 
-    /* v0.6.2 — bloqueo visual durante operaciones */
+    /* v0.6.3 — bloqueo visual durante operaciones */
     .busy-overlay {
       position:fixed;
       inset:0;
@@ -755,7 +755,7 @@
     @keyframes busy-spin { to { transform:rotate(360deg); } }
 
 
-    /* v0.6.2 — fotos online/offline */
+    /* v0.6.3 — fotos online/offline */
     .photo-editor {margin-bottom:1rem;padding:1rem;background:var(--surface2);border:1px solid var(--border);border-radius:10px;}
     .photo-actions {display:flex;gap:.65rem;flex-wrap:wrap;}
     .photo-pending-title {margin:.9rem 0 .55rem;font-weight:700;color:var(--text);}
@@ -763,7 +763,7 @@
     .photo-pending-badge {display:inline-block;margin-top:.45rem;font-size:.82rem;font-weight:700;color:var(--warn);}
 
 
-    /* v0.6.2 — propuestas de fotos con validación administrativa */
+    /* v0.6.3 — propuestas de fotos con validación administrativa */
     .photo-pending-server {
       border:1px dashed var(--accent);
       background:var(--surface2);
@@ -803,7 +803,7 @@
     }
 
 
-    /* v0.6.2 — acciones de foto offline + validación */
+    /* v0.6.3 — acciones de foto offline + validación */
     .photo-request-note {
       margin-top:.45rem;
       font-size:.82rem;
@@ -819,9 +819,116 @@
       display:none;
     }
 
+
+    /* v0.6.3 — visor de fotos para revisión ADMIN */
+    .photo-viewer {
+      position:fixed;
+      inset:0;
+      z-index:100000;
+      display:none;
+      flex-direction:column;
+      background:rgba(4,8,12,.97);
+      color:var(--text);
+    }
+
+    .photo-viewer.show {
+      display:flex;
+    }
+
+    .photo-viewer-bar {
+      display:flex;
+      align-items:center;
+      gap:.55rem;
+      flex-wrap:wrap;
+      padding:.7rem;
+      background:var(--surface);
+      border-bottom:1px solid var(--border);
+      box-shadow:0 3px 16px rgba(0,0,0,.35);
+    }
+
+    .photo-viewer-title {
+      flex:1 1 180px;
+      min-width:0;
+      font-weight:700;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .photo-viewer-zoom {
+      min-width:62px;
+      text-align:center;
+      color:var(--muted);
+      font-size:.85rem;
+      font-weight:700;
+    }
+
+    .photo-viewer-body {
+      flex:1;
+      overflow:auto;
+      padding:1rem;
+      display:block;
+      text-align:center;
+      overscroll-behavior:contain;
+    }
+
+    .photo-viewer-img {
+      display:inline-block;
+      width:100%;
+      max-width:none;
+      height:auto;
+      object-fit:contain;
+      border-radius:8px;
+      box-shadow:0 12px 40px rgba(0,0,0,.55);
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+
+    .admin-photo-preview {
+      cursor:zoom-in;
+    }
+
+    .admin-photo-open {
+      margin-top:.5rem;
+      width:100%;
+    }
+
 </style>
 </head>
 <body>
+
+
+<div id="photoViewerAdmin" class="photo-viewer" aria-hidden="true">
+  <div class="photo-viewer-bar">
+    <div id="photoViewerTitle" class="photo-viewer-title">Foto</div>
+
+    <button class="btn btn-secondary" type="button" onclick="cambiarZoomFotoAdmin(-0.25)">
+      −
+    </button>
+
+    <div id="photoViewerZoom" class="photo-viewer-zoom">100%</div>
+
+    <button class="btn btn-secondary" type="button" onclick="cambiarZoomFotoAdmin(0.25)">
+      +
+    </button>
+
+    <button class="btn btn-secondary" type="button" onclick="resetZoomFotoAdmin()">
+      100%
+    </button>
+
+    <button class="btn btn-secondary" type="button" onclick="abrirFotoAdminEnDrive()">
+      Abrir en Drive
+    </button>
+
+    <button class="btn btn-danger" type="button" onclick="cerrarVisorFotoAdmin()">
+      Cerrar
+    </button>
+  </div>
+
+  <div id="photoViewerBody" class="photo-viewer-body">
+    <img id="photoViewerImg" class="photo-viewer-img" alt="Foto para revisar">
+  </div>
+</div>
 
 <div id="busyOverlay" class="busy-overlay" aria-hidden="true" aria-live="polite">
   <div class="busy-box" role="status" aria-busy="true">
@@ -857,7 +964,7 @@
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.6.2</div>
+      <div class="footer">v0.6.3</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -878,7 +985,7 @@
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.6.2</div>
+      <div class="footer">v0.6.3</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -899,7 +1006,7 @@
         <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.6.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.6.3</div>
       </div>
     </section>
 
@@ -925,7 +1032,7 @@
 
         <button class="btn btn-secondary" onclick="actualizarEquiposManual()">Actualizar equipos</button>
         <div id="msgEquipos" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.6.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.6.3</div>
       </div>
     </section>
 
@@ -965,7 +1072,7 @@
           trabajabas offline, la PWA no lo pisa: el conflicto queda para decisión del administrador.
         </div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.6.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.6.3</div>
       </div>
     </section>
 
@@ -991,7 +1098,7 @@
         <div id="estadoColaDatos" class="queue-status"></div>
         <div id="detalleParametros" class="detail-grid"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.6.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.6.3</div>
       </div>
     </section>
 
@@ -1023,7 +1130,7 @@
 
         <div id="detalleComentarios"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.6.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.6.3</div>
       </div>
     </section>
 
@@ -1051,7 +1158,7 @@
         <div id="detalleFotosPendientes"></div>
         <div id="detalleFotos"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.6.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.6.3</div>
       </div>
     </section>
 
@@ -1067,7 +1174,7 @@
       <button id="btnAdminLogin" class="btn btn-primary" onclick="loginAdmin()">Ingresar como administrador</button>
       <button class="btn btn-secondary" onclick="salirAdmin()">Cancelar</button>
       <div id="msgAdminLogin" class="message"></div>
-      <div class="footer">v0.6.2</div>
+      <div class="footer">v0.6.3</div>
     </section>
 
     <section id="pantallaAdminSolicitudes" class="screen dashboard">
@@ -1131,7 +1238,7 @@
         <button class="btn btn-secondary" onclick="cargarPanelAdmin()">Actualizar</button>
         <button class="btn btn-secondary" onclick="salirAdmin()">Salir del administrador</button>
         <div id="msgAdminSolicitudes" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.6.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.6.3</div>
       </div>
     </section>
 
@@ -1160,7 +1267,7 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.6.2';
+const APP_VERSION = '0.6.3';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
@@ -5654,6 +5761,130 @@ async function resolverRevisionAdmin(rev, decision) {
 }
 
 
+
+let fotoAdminViewerId = '';
+let fotoAdminViewerZoom = 1;
+
+function abrirVisorFotoAdmin(fotoId, titulo = 'Foto') {
+  fotoId = String(fotoId || '').trim();
+
+  if (!fotoId) {
+    mostrarMensaje(
+      'msgAdminFotos',
+      'No se encontró el identificador de la foto.',
+      'err'
+    );
+    return;
+  }
+
+  fotoAdminViewerId = fotoId;
+  fotoAdminViewerZoom = 1;
+
+  const visor = document.getElementById('photoViewerAdmin');
+  const img = document.getElementById('photoViewerImg');
+  const title = document.getElementById('photoViewerTitle');
+  const body = document.getElementById('photoViewerBody');
+
+  if (!visor || !img) return;
+
+  if (title) {
+    title.textContent = String(titulo || 'Foto');
+  }
+
+  img.src =
+    'https://drive.google.com/thumbnail?id=' +
+    encodeURIComponent(fotoId) +
+    '&sz=w2400';
+
+  visor.classList.add('show');
+  visor.setAttribute('aria-hidden', 'false');
+
+  document.body.style.overflow = 'hidden';
+
+  if (body) {
+    body.scrollTop = 0;
+    body.scrollLeft = 0;
+  }
+
+  aplicarZoomFotoAdmin();
+}
+
+function cerrarVisorFotoAdmin() {
+  const visor = document.getElementById('photoViewerAdmin');
+
+  if (visor) {
+    visor.classList.remove('show');
+    visor.setAttribute('aria-hidden', 'true');
+  }
+
+  document.body.style.overflow = '';
+  fotoAdminViewerId = '';
+  fotoAdminViewerZoom = 1;
+}
+
+function aplicarZoomFotoAdmin() {
+  const img = document.getElementById('photoViewerImg');
+  const label = document.getElementById('photoViewerZoom');
+
+  if (img) {
+    img.style.width =
+      Math.round(fotoAdminViewerZoom * 100) + '%';
+  }
+
+  if (label) {
+    label.textContent =
+      Math.round(fotoAdminViewerZoom * 100) + '%';
+  }
+}
+
+function cambiarZoomFotoAdmin(delta) {
+  fotoAdminViewerZoom = Math.min(
+    4,
+    Math.max(
+      0.5,
+      fotoAdminViewerZoom + Number(delta || 0)
+    )
+  );
+
+  aplicarZoomFotoAdmin();
+}
+
+function resetZoomFotoAdmin() {
+  fotoAdminViewerZoom = 1;
+  aplicarZoomFotoAdmin();
+
+  const body = document.getElementById('photoViewerBody');
+
+  if (body) {
+    body.scrollTop = 0;
+    body.scrollLeft = 0;
+  }
+}
+
+function abrirFotoAdminEnDrive() {
+  if (!fotoAdminViewerId) return;
+
+  window.open(
+    'https://drive.google.com/file/d/' +
+      encodeURIComponent(fotoAdminViewerId) +
+      '/view',
+    '_blank',
+    'noopener'
+  );
+}
+
+// Cerrar el visor con ESC.
+document.addEventListener('keydown', event => {
+  if (
+    event.key === 'Escape' &&
+    document
+      .getElementById('photoViewerAdmin')
+      ?.classList.contains('show')
+  ) {
+    cerrarVisorFotoAdmin();
+  }
+});
+
 function renderFotosAdmin(fotos) {
   const lista = document.getElementById('listaFotosAdmin');
   const estado = document.getElementById('estadoFotosAdmin');
@@ -5704,9 +5935,34 @@ function renderFotosAdmin(fotos) {
           : 'Foto actual';
       const img = document.createElement('img');
       img.className = 'admin-photo-preview';
-      img.src = 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(item.fotoObjetivoId) + '&sz=w900';
+      img.src =
+        'https://drive.google.com/thumbnail?id=' +
+        encodeURIComponent(item.fotoObjetivoId) +
+        '&sz=w900';
+      img.title = 'Tocar para examinar';
+      img.onclick = () =>
+        abrirVisorFotoAdmin(
+          item.fotoObjetivoId,
+          modo === 'BORRAR'
+            ? 'Foto a borrar'
+            : 'Foto actual'
+        );
+
+      const abrir = document.createElement('button');
+      abrir.type = 'button';
+      abrir.className = 'btn btn-secondary admin-photo-open';
+      abrir.textContent = 'Examinar foto';
+      abrir.onclick = () =>
+        abrirVisorFotoAdmin(
+          item.fotoObjetivoId,
+          modo === 'BORRAR'
+            ? 'Foto a borrar'
+            : 'Foto actual'
+        );
+
       anterior.appendChild(lab);
       anterior.appendChild(img);
+      anterior.appendChild(abrir);
       previews.appendChild(anterior);
     }
 
@@ -5721,8 +5977,26 @@ function renderFotosAdmin(fotos) {
         'https://drive.google.com/thumbnail?id=' +
         encodeURIComponent(item.fotoNuevaId || '') +
         '&sz=w900';
+      imgNueva.title = 'Tocar para examinar';
+      imgNueva.onclick = () =>
+        abrirVisorFotoAdmin(
+          item.fotoNuevaId,
+          'Foto propuesta'
+        );
+
+      const abrirNueva = document.createElement('button');
+      abrirNueva.type = 'button';
+      abrirNueva.className = 'btn btn-secondary admin-photo-open';
+      abrirNueva.textContent = 'Examinar foto';
+      abrirNueva.onclick = () =>
+        abrirVisorFotoAdmin(
+          item.fotoNuevaId,
+          'Foto propuesta'
+        );
+
       propuesta.appendChild(labNueva);
       propuesta.appendChild(imgNueva);
+      propuesta.appendChild(abrirNueva);
       previews.appendChild(propuesta);
     }
 
