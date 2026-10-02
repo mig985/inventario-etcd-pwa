@@ -215,7 +215,7 @@
       font-size:clamp(.9rem, 3.7vw, 1rem);
     }
 
-    /* v0.6.3 — mejor lectura en celular */
+    /* v0.7.0 — mejor lectura en celular */
     body {
       font-size:clamp(17px, 4vw, 20px);
     }
@@ -274,7 +274,7 @@
       line-height:1.4;
     }
   
-    /* v0.6.3 — solicitud de acceso */
+    /* v0.7.0 — solicitud de acceso */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -320,7 +320,7 @@
     }
 
 
-    /* v0.6.3 — administración de solicitudes */
+    /* v0.7.0 — administración de solicitudes */
     .admin-list {
       display:grid;
       gap:.75rem;
@@ -372,7 +372,7 @@
     }
 
 
-    /* v0.6.3 — inventario de equipos */
+    /* v0.7.0 — inventario de equipos */
     .equipment-list {
       display:grid;
       gap:.65rem;
@@ -438,7 +438,7 @@
     }
 
 
-    /* v0.6.3 — detalle de equipo */
+    /* v0.7.0 — detalle de equipo */
     .equipment-card {
       cursor:pointer;
     }
@@ -508,7 +508,7 @@
     }
 
 
-    /* v0.6.3 — menú intermedio del equipo */
+    /* v0.7.0 — menú intermedio del equipo */
     .equipment-menu {
       display:grid;
       gap:1rem;
@@ -539,7 +539,7 @@
     }
 
 
-    /* v0.6.3 — fotos reales y contadores */
+    /* v0.7.0 — fotos reales y contadores */
     .menu-count {
       float:right;
       min-width:2rem;
@@ -591,7 +591,7 @@
     }
 
 
-    /* v0.6.3 — alta de comentarios */
+    /* v0.7.0 — alta de comentarios */
     .comment-editor {
       margin-bottom:1rem;
       padding:1rem;
@@ -625,7 +625,7 @@
     }
 
 
-    /* v0.6.3 — cola offline de comentarios */
+    /* v0.7.0 — cola offline de comentarios */
     .sync-pending {
       color:var(--warn);
       font-weight:700;
@@ -649,7 +649,7 @@
     }
 
 
-    /* v0.6.3 — edición de datos online/offline */
+    /* v0.7.0 — edición de datos online/offline */
     .data-actions {
       display:flex;
       gap:.6rem;
@@ -707,7 +707,7 @@
     .conflict-values strong { color:var(--text); }
 
 
-    /* v0.6.3 — bloqueo visual durante operaciones */
+    /* v0.7.0 — bloqueo visual durante operaciones */
     .busy-overlay {
       position:fixed;
       inset:0;
@@ -755,7 +755,7 @@
     @keyframes busy-spin { to { transform:rotate(360deg); } }
 
 
-    /* v0.6.3 — fotos online/offline */
+    /* v0.7.0 — fotos online/offline */
     .photo-editor {margin-bottom:1rem;padding:1rem;background:var(--surface2);border:1px solid var(--border);border-radius:10px;}
     .photo-actions {display:flex;gap:.65rem;flex-wrap:wrap;}
     .photo-pending-title {margin:.9rem 0 .55rem;font-weight:700;color:var(--text);}
@@ -763,7 +763,7 @@
     .photo-pending-badge {display:inline-block;margin-top:.45rem;font-size:.82rem;font-weight:700;color:var(--warn);}
 
 
-    /* v0.6.3 — propuestas de fotos con validación administrativa */
+    /* v0.7.0 — propuestas de fotos con validación administrativa */
     .photo-pending-server {
       border:1px dashed var(--accent);
       background:var(--surface2);
@@ -803,7 +803,7 @@
     }
 
 
-    /* v0.6.3 — acciones de foto offline + validación */
+    /* v0.7.0 — acciones de foto offline + validación */
     .photo-request-note {
       margin-top:.45rem;
       font-size:.82rem;
@@ -820,7 +820,7 @@
     }
 
 
-    /* v0.6.3 — visor de fotos para revisión ADMIN */
+    /* v0.7.0 — visor de fotos para revisión ADMIN */
     .photo-viewer {
       position:fixed;
       inset:0;
@@ -891,6 +891,88 @@
     .admin-photo-open {
       margin-top:.5rem;
       width:100%;
+    }
+
+
+    /* v0.7.0 — altas/bajas de equipos con trabajo offline */
+    .equipment-actions {
+      display:flex;
+      gap:.65rem;
+      flex-wrap:wrap;
+      margin-top:.8rem;
+    }
+
+    .equipment-card.proposed {
+      border-style:dashed;
+      border-color:var(--accent);
+      cursor:default;
+    }
+
+    .equipment-card.pending-delete {
+      border-color:#b94a48;
+    }
+
+    .equipment-proposal-note {
+      margin-top:.45rem;
+      font-size:.82rem;
+      font-weight:700;
+      color:var(--warn);
+    }
+
+    .new-equipment-form {
+      display:grid;
+      gap:.85rem;
+    }
+
+    .new-equipment-row {
+      display:grid;
+      gap:.35rem;
+    }
+
+    .new-equipment-row label {
+      font-weight:700;
+      color:var(--text);
+    }
+
+    .new-equipment-row input,
+    .new-equipment-row select {
+      width:100%;
+      box-sizing:border-box;
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:.72rem .75rem;
+      background:var(--surface2);
+      color:var(--text);
+      font:inherit;
+    }
+
+    .new-equipment-help {
+      color:var(--muted);
+      font-size:.8rem;
+      line-height:1.35;
+    }
+
+    .proposal-summary {
+      display:grid;
+      gap:.35rem;
+      margin-top:.65rem;
+      padding:.75rem;
+      border:1px solid var(--border);
+      border-radius:8px;
+      background:var(--surface2);
+      font-size:.88rem;
+    }
+
+    .proposal-summary-row {
+      display:grid;
+      grid-template-columns:minmax(120px, .9fr) minmax(0, 1.6fr);
+      gap:.6rem;
+      align-items:start;
+    }
+
+    .proposal-summary-row strong {
+      color:var(--muted);
+      font-weight:700;
     }
 
 </style>
@@ -964,7 +1046,7 @@
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.6.3</div>
+      <div class="footer">v0.7.0</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -985,7 +1067,7 @@
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.6.3</div>
+      <div class="footer">v0.7.0</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -1006,7 +1088,7 @@
         <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.6.3</div>
+        <div class="footer">Inventario ET/CD PWA · v0.7.0</div>
       </div>
     </section>
 
@@ -1030,13 +1112,62 @@
           <div class="empty-state">Cargando equipos…</div>
         </div>
 
-        <button class="btn btn-secondary" onclick="actualizarEquiposManual()">Actualizar equipos</button>
+        <div class="equipment-actions">
+          <button class="btn btn-primary" onclick="abrirNuevoEquipo()">+ Nuevo equipo</button>
+          <button class="btn btn-secondary" onclick="actualizarEquiposManual()">Actualizar equipos</button>
+        </div>
         <div id="msgEquipos" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.6.3</div>
+        <div class="footer">Inventario ET/CD PWA · v0.7.0</div>
       </div>
     </section>
 
 
+
+
+    <section id="pantallaNuevoEquipo" class="screen dashboard">
+      <div class="card">
+        <div class="back-row">
+          <button class="btn btn-secondary" onclick="volverDesdeNuevoEquipo()">← Volver</button>
+          <div class="installation-title">
+            <h1>Nuevo equipo</h1>
+            <p id="subtituloNuevoEquipo" class="lead"></p>
+          </div>
+        </div>
+
+        <div class="policy-note">
+          Podés preparar el alta con o sin señal. El equipo no se incorpora al inventario oficial
+          hasta sincronizar y ser aprobado por el administrador.
+        </div>
+
+        <div class="new-equipment-form">
+          <div class="new-equipment-row">
+            <label for="nuevoEquipoNombre">Nombre del equipo *</label>
+            <input id="nuevoEquipoNombre" type="text" maxlength="150"
+              placeholder="Ej.: Interruptor 132 kV Campo Mercedes 1">
+          </div>
+
+          <div class="new-equipment-row">
+            <label for="nuevoEquipoTipo">Tipo de equipo *</label>
+            <select id="nuevoEquipoTipo" onchange="renderCamposNuevoEquipo()">
+              <option value="">— Seleccionar —</option>
+            </select>
+          </div>
+
+          <div id="camposNuevoEquipo"></div>
+
+          <div class="equipment-actions">
+            <button id="btnGuardarNuevoEquipo" class="btn btn-primary" onclick="guardarNuevoEquipoPropuesto()">
+              Guardar propuesta
+            </button>
+            <button class="btn btn-secondary" onclick="volverDesdeNuevoEquipo()">Cancelar</button>
+          </div>
+
+          <div id="msgNuevoEquipo" class="message"></div>
+        </div>
+
+        <div class="footer">Inventario ET/CD PWA · v0.7.0</div>
+      </div>
+    </section>
 
     <section id="pantallaMenuEquipo" class="screen dashboard">
       <div class="card">
@@ -1067,12 +1198,18 @@
           </button>
         </div>
 
+        <div class="equipment-actions">
+          <button id="btnSolicitarBajaEquipo" class="btn btn-danger" onclick="solicitarBajaEquipo()">
+            Solicitar baja del equipo
+          </button>
+        </div>
+
         <div class="policy-note">
           Los datos pueden editarse con o sin señal. Si un valor del servidor cambió mientras
           trabajabas offline, la PWA no lo pisa: el conflicto queda para decisión del administrador.
         </div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.6.3</div>
+        <div class="footer">Inventario ET/CD PWA · v0.7.0</div>
       </div>
     </section>
 
@@ -1098,7 +1235,7 @@
         <div id="estadoColaDatos" class="queue-status"></div>
         <div id="detalleParametros" class="detail-grid"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.6.3</div>
+        <div class="footer">Inventario ET/CD PWA · v0.7.0</div>
       </div>
     </section>
 
@@ -1130,7 +1267,7 @@
 
         <div id="detalleComentarios"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.6.3</div>
+        <div class="footer">Inventario ET/CD PWA · v0.7.0</div>
       </div>
     </section>
 
@@ -1158,7 +1295,7 @@
         <div id="detalleFotosPendientes"></div>
         <div id="detalleFotos"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.6.3</div>
+        <div class="footer">Inventario ET/CD PWA · v0.7.0</div>
       </div>
     </section>
 
@@ -1174,7 +1311,7 @@
       <button id="btnAdminLogin" class="btn btn-primary" onclick="loginAdmin()">Ingresar como administrador</button>
       <button class="btn btn-secondary" onclick="salirAdmin()">Cancelar</button>
       <div id="msgAdminLogin" class="message"></div>
-      <div class="footer">v0.6.3</div>
+      <div class="footer">v0.7.0</div>
     </section>
 
     <section id="pantallaAdminSolicitudes" class="screen dashboard">
@@ -1190,6 +1327,17 @@
         <div id="listaSolicitudesAdmin" class="admin-list">
           <div class="empty-state">Cargando solicitudes…</div>
         </div>
+
+        <div class="app-toolbar" style="margin-top:1.2rem">
+          <h2>Altas y bajas de equipos</h2>
+          <div id="estadoEquiposAdmin" class="mini-status">Cargando…</div>
+        </div>
+
+        <div id="listaEquiposAdmin" class="admin-list">
+          <div class="empty-state">Cargando altas y bajas pendientes…</div>
+        </div>
+
+        <div id="msgAdminEquipos" class="message"></div>
 
         <div class="app-toolbar" style="margin-top:1.2rem">
           <h2>Cambios de datos por validar</h2>
@@ -1238,7 +1386,7 @@
         <button class="btn btn-secondary" onclick="cargarPanelAdmin()">Actualizar</button>
         <button class="btn btn-secondary" onclick="salirAdmin()">Salir del administrador</button>
         <div id="msgAdminSolicitudes" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.6.3</div>
+        <div class="footer">Inventario ET/CD PWA · v0.7.0</div>
       </div>
     </section>
 
@@ -1267,7 +1415,7 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.6.3';
+const APP_VERSION = '0.7.0';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
@@ -1277,6 +1425,7 @@ const EQUIPMENT_CACHE_PREFIX = 'inventario_etcd_equipos_v1:';
 const COMMENT_QUEUE_PREFIX = 'inventario_etcd_cola_comentarios_v1:';
 const DATA_QUEUE_PREFIX = 'inventario_etcd_cola_datos_v1:';
 const PHOTO_PENDING_COUNT_PREFIX = 'inventario_etcd_fotos_pendientes_v1:';
+const EQUIPMENT_REQUEST_QUEUE_PREFIX = 'inventario_etcd_cola_solicitudes_equipo_v1:';
 const PHOTO_DB_NAME = 'inventario_etcd_media_v1';
 const PHOTO_DB_VERSION = 1;
 const PHOTO_PENDING_STORE = 'fotosPendientes';
@@ -1652,6 +1801,7 @@ async function ingresarConPin() {
         await sincronizarColaComentarios({ silencioso: true });
         await sincronizarColaDatos({ silencioso: true });
         await sincronizarColaFotos({ silencioso: true });
+        await sincronizarColaSolicitudesEquipo({ silencioso: true });
       }
     } else {
       sesionOnline = false;
@@ -1919,30 +2069,152 @@ function limpiarCachesEquipos() {
   } catch (e) {}
 }
 
+
+function claveColaSolicitudesEquipo() {
+  const perfil = perfilLocal();
+  const usuario = perfil ? String(perfil.usuario || '').trim() : '';
+  return EQUIPMENT_REQUEST_QUEUE_PREFIX + encodeURIComponent(usuario);
+}
+
+function leerColaSolicitudesEquipo() {
+  try {
+    const arr = JSON.parse(
+      localStorage.getItem(claveColaSolicitudesEquipo()) || '[]'
+    );
+    return Array.isArray(arr) ? arr : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function guardarColaSolicitudesEquipo(items) {
+  localStorage.setItem(
+    claveColaSolicitudesEquipo(),
+    JSON.stringify(Array.isArray(items) ? items : [])
+  );
+}
+
+function generarClientIdSolicitudEquipo() {
+  if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+    return window.crypto.randomUUID();
+  }
+
+  return (
+    'eq-' +
+    Date.now() +
+    '-' +
+    Math.random().toString(36).slice(2, 12)
+  );
+}
+
+function solicitudesEquipoInstalacion(pestana) {
+  return leerColaSolicitudesEquipo().filter(item =>
+    String(item.pestana || '') === String(pestana || '')
+  );
+}
+
+function solicitudBajaEquipoLocal(pestana, equipoId) {
+  return solicitudesEquipoInstalacion(pestana).find(item =>
+    String(item.modo || '').toUpperCase() === 'BAJA' &&
+    String(item.equipoId || '').toUpperCase() ===
+      String(equipoId || '').toUpperCase()
+  ) || null;
+}
+
+function refrescarListaEquiposDesdeCache() {
+  if (!instalacionActual) return;
+
+  const paquete = leerEquiposLocal(instalacionActual.pestana);
+
+  if (paquete) {
+    renderEquipos(paquete, 'cache');
+  }
+}
+
 function renderEquipos(paquete, origen) {
   const lista = document.getElementById('listaEquipos');
   const estado = document.getElementById('estadoEquipos');
+
   const equipos = paquete && Array.isArray(paquete.equipos)
     ? paquete.equipos
     : [];
 
+  const pestana =
+    paquete && paquete.pestana
+      ? String(paquete.pestana)
+      : (instalacionActual ? String(instalacionActual.pestana || '') : '');
+
+  const solicitudes =
+    solicitudesEquipoInstalacion(pestana);
+
+  const altas = solicitudes.filter(item =>
+    String(item.modo || '').toUpperCase() === 'ALTA'
+  );
+
+  const bajas = {};
+  solicitudes
+    .filter(item =>
+      String(item.modo || '').toUpperCase() === 'BAJA'
+    )
+    .forEach(item => {
+      bajas[String(item.equipoId || '').toUpperCase()] = item;
+    });
+
   lista.innerHTML = '';
 
-  if (!equipos.length) {
-    lista.innerHTML =
-      '<div class="empty-state">No hay equipos cargados para esta instalación.</div>';
+  altas.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'equipment-card proposed';
 
-    estado.textContent =
-      (origen === 'cache' ? 'Guardado' : 'Servidor') +
-      (paquete && paquete.fecha
-        ? ' · ' + formatearFechaCorta(paquete.fecha)
-        : '');
-    return;
-  }
+    const nombre = document.createElement('div');
+    nombre.className = 'equipment-name';
+    nombre.textContent =
+      (item.datos && item.datos.nombre) ||
+      item.equipoNombre ||
+      '(equipo propuesto)';
+
+    const meta = document.createElement('div');
+    meta.className = 'equipment-meta';
+    meta.textContent =
+      [
+        'ID a asignar al aprobar',
+        (item.datos && item.datos.tipo) || item.tipo || ''
+      ]
+        .filter(Boolean)
+        .join(' · ');
+
+    const status = document.createElement('div');
+    status.className = 'equipment-status incomplete';
+
+    const enSync =
+      String(item.estadoLocal || 'SYNC').toUpperCase() === 'SYNC';
+
+    status.textContent = enSync
+      ? '⏳ Alta pendiente de sincronización'
+      : '🕵️ Alta pendiente de aprobación';
+
+    const nota = document.createElement('div');
+    nota.className = 'equipment-proposal-note';
+    nota.textContent =
+      'Equipo propuesto · todavía no forma parte del inventario oficial';
+
+    card.appendChild(nombre);
+    card.appendChild(meta);
+    card.appendChild(status);
+    card.appendChild(nota);
+    lista.appendChild(card);
+  });
 
   equipos.forEach(e => {
     const card = document.createElement('div');
     card.className = 'equipment-card';
+
+    const baja =
+      bajas[String(e.id || '').toUpperCase()] || null;
+
+    if (baja) {
+      card.classList.add('pending-delete');
+    }
 
     const nombre = document.createElement('div');
     nombre.className = 'equipment-name';
@@ -1960,14 +2232,28 @@ function renderEquipos(paquete, origen) {
     status.className = 'equipment-status ' +
       (e.completo ? 'complete' : 'incomplete');
 
-    if (e.completo) {
+    if (baja) {
+      const enSync =
+        String(baja.estadoLocal || 'SYNC').toUpperCase() === 'SYNC';
+
+      status.className = 'equipment-status incomplete';
+      status.textContent = enSync
+        ? '⏳ Baja pendiente de sincronización'
+        : '🕵️ Baja pendiente de aprobación';
+    } else if (e.completo) {
       status.textContent = '✓ Datos completos';
     } else {
       const faltan = Array.isArray(e.camposFaltantes)
         ? e.camposFaltantes.length
         : 0;
+
       status.textContent = faltan
-        ? '⚠ ' + faltan + ' dato' + (faltan === 1 ? '' : 's') + ' pendiente' + (faltan === 1 ? '' : 's')
+        ? '⚠ ' +
+          faltan +
+          ' dato' +
+          (faltan === 1 ? '' : 's') +
+          ' pendiente' +
+          (faltan === 1 ? '' : 's')
         : '⚠ Datos incompletos';
     }
 
@@ -1975,20 +2261,833 @@ function renderEquipos(paquete, origen) {
     card.appendChild(meta);
     card.appendChild(status);
 
-    card.addEventListener('click', () => abrirDetalleEquipo(e));
+    if (baja) {
+      const nota = document.createElement('div');
+      nota.className = 'equipment-proposal-note';
+      nota.textContent =
+        'El equipo sigue vigente hasta que el administrador apruebe la baja.';
+      card.appendChild(nota);
+    }
 
+    card.addEventListener('click', () => abrirDetalleEquipo(e));
     lista.appendChild(card);
   });
+
+  if (!equipos.length && !altas.length) {
+    lista.innerHTML =
+      '<div class="empty-state">No hay equipos cargados para esta instalación.</div>';
+  }
 
   const origenTxt = origen === 'servidor' ? 'Servidor' : 'Guardado';
   const fechaTxt = paquete && paquete.fecha
     ? formatearFechaCorta(paquete.fecha)
     : '';
 
+  const piezas = [
+    equipos.length + ' oficiales'
+  ];
+
+  if (altas.length) {
+    piezas.push(
+      altas.length +
+      ' propuesta' +
+      (altas.length === 1 ? '' : 's')
+    );
+  }
+
   estado.textContent =
-    equipos.length + ' equipos · ' + origenTxt +
+    piezas.join(' · ') +
+    ' · ' +
+    origenTxt +
     (fechaTxt ? ' · ' + fechaTxt : '');
 }
+
+function obtenerCatalogoInstalacionActual() {
+  if (!instalacionActual) return null;
+
+  const paquete =
+    leerEquiposLocal(instalacionActual.pestana);
+
+  return paquete &&
+    paquete.catalogo &&
+    typeof paquete.catalogo === 'object'
+      ? paquete.catalogo
+      : null;
+}
+
+function abrirNuevoEquipo() {
+  if (!instalacionActual) return;
+
+  const catalogo =
+    obtenerCatalogoInstalacionActual();
+
+  if (
+    !catalogo ||
+    !Array.isArray(catalogo.tipos) ||
+    !catalogo.tipos.length
+  ) {
+    mostrarMensaje(
+      'msgEquipos',
+      'No está disponible el catálogo de tipos. Abrí esta instalación con Internet al menos una vez.',
+      'warn'
+    );
+    return;
+  }
+
+  document.getElementById('subtituloNuevoEquipo').textContent =
+    instalacionActual.nombre ||
+    instalacionActual.pestana ||
+    '';
+
+  const nombre =
+    document.getElementById('nuevoEquipoNombre');
+
+  const select =
+    document.getElementById('nuevoEquipoTipo');
+
+  const campos =
+    document.getElementById('camposNuevoEquipo');
+
+  if (nombre) nombre.value = '';
+
+  if (select) {
+    select.innerHTML =
+      '<option value="">— Seleccionar —</option>';
+
+    catalogo.tipos.forEach(tipo => {
+      const op = document.createElement('option');
+      op.value = String(tipo);
+      op.textContent = String(tipo);
+      select.appendChild(op);
+    });
+
+    select.value = '';
+  }
+
+  if (campos) {
+    campos.innerHTML =
+      '<div class="empty-state">Seleccioná el tipo de equipo para cargar sus parámetros.</div>';
+  }
+
+  mostrarMensaje('msgNuevoEquipo', '', '');
+  mostrarPantalla('pantallaNuevoEquipo');
+}
+
+function volverDesdeNuevoEquipo() {
+  mostrarPantalla('pantallaEquipos');
+}
+
+function renderCamposNuevoEquipo() {
+  const cont =
+    document.getElementById('camposNuevoEquipo');
+
+  const select =
+    document.getElementById('nuevoEquipoTipo');
+
+  if (!cont || !select) return;
+
+  const tipo =
+    String(select.value || '').trim();
+
+  cont.innerHTML = '';
+
+  if (!tipo) {
+    cont.innerHTML =
+      '<div class="empty-state">Seleccioná el tipo de equipo para cargar sus parámetros.</div>';
+    return;
+  }
+
+  const catalogo =
+    obtenerCatalogoInstalacionActual();
+
+  const defs =
+    catalogo &&
+    catalogo.definiciones &&
+    Array.isArray(catalogo.definiciones[tipo])
+      ? catalogo.definiciones[tipo]
+      : [];
+
+  if (!defs.length) {
+    cont.innerHTML =
+      '<div class="empty-state">Este tipo no tiene parámetros definidos.</div>';
+    return;
+  }
+
+  defs.forEach(def => {
+    const row =
+      document.createElement('div');
+
+    row.className =
+      'new-equipment-row';
+
+    const label =
+      document.createElement('label');
+
+    label.textContent =
+      String(def.parametro || '') +
+      (def.obligatorio ? ' *' : '');
+
+    let input;
+
+    if (
+      Array.isArray(def.opciones) &&
+      def.opciones.length
+    ) {
+      input =
+        document.createElement('select');
+
+      const vacio =
+        document.createElement('option');
+
+      vacio.value = '';
+      vacio.textContent =
+        '— Seleccionar —';
+
+      input.appendChild(vacio);
+
+      def.opciones.forEach(valor => {
+        const op =
+          document.createElement('option');
+
+        op.value = String(valor);
+        op.textContent = String(valor);
+        input.appendChild(op);
+      });
+
+    } else {
+      input =
+        document.createElement('input');
+
+      input.type = 'text';
+      input.maxLength = 500;
+
+      const tipoDato =
+        String(def.tipoDato || '')
+          .toLowerCase();
+
+      if (
+        tipoDato.includes('number') ||
+        tipoDato.includes('numero') ||
+        tipoDato.includes('número') ||
+        tipoDato.includes('decimal')
+      ) {
+        input.inputMode = 'decimal';
+      }
+    }
+
+    input.className =
+      'new-equipment-param';
+
+    input.dataset.campo =
+      String(def.parametro || '');
+
+    input.dataset.obligatorio =
+      def.obligatorio ? '1' : '0';
+
+    row.appendChild(label);
+    row.appendChild(input);
+
+    if (def.ayuda) {
+      const help =
+        document.createElement('div');
+
+      help.className =
+        'new-equipment-help';
+
+      help.textContent =
+        String(def.ayuda);
+
+      row.appendChild(help);
+    }
+
+    cont.appendChild(row);
+  });
+}
+
+async function guardarNuevoEquipoPropuesto() {
+  if (!instalacionActual) return;
+
+  const nombre =
+    String(
+      document.getElementById('nuevoEquipoNombre')?.value || ''
+    ).trim();
+
+  const tipo =
+    String(
+      document.getElementById('nuevoEquipoTipo')?.value || ''
+    ).trim();
+
+  if (!nombre) {
+    mostrarMensaje(
+      'msgNuevoEquipo',
+      'Ingresá el nombre del equipo.',
+      'err'
+    );
+    return;
+  }
+
+  if (!tipo) {
+    mostrarMensaje(
+      'msgNuevoEquipo',
+      'Seleccioná el tipo de equipo.',
+      'err'
+    );
+    return;
+  }
+
+  const params = {};
+  const faltantes = [];
+
+  document
+    .querySelectorAll('#camposNuevoEquipo .new-equipment-param')
+    .forEach(input => {
+      const campo =
+        String(input.dataset.campo || '');
+
+      const valor =
+        String(input.value == null ? '' : input.value).trim();
+
+      if (campo) {
+        params[campo] = valor;
+      }
+
+      if (
+        input.dataset.obligatorio === '1' &&
+        !valor
+      ) {
+        faltantes.push(campo);
+      }
+    });
+
+  if (faltantes.length) {
+    mostrarMensaje(
+      'msgNuevoEquipo',
+      'Completá los campos obligatorios: ' +
+      faltantes.join(', '),
+      'err'
+    );
+    return;
+  }
+
+  const perfil = perfilLocal();
+
+  if (!perfil) {
+    mostrarMensaje(
+      'msgNuevoEquipo',
+      'No hay un usuario vinculado.',
+      'err'
+    );
+    return;
+  }
+
+  const item = {
+    clientId:
+      generarClientIdSolicitudEquipo(),
+    usuario:
+      String(perfil.usuario || ''),
+    nombre:
+      String(
+        perfil.nombre ||
+        perfil.usuario ||
+        ''
+      ),
+    pestana:
+      String(
+        instalacionActual.pestana || ''
+      ),
+    instalacionNombre:
+      String(
+        instalacionActual.nombre ||
+        instalacionActual.pestana ||
+        ''
+      ),
+    modo: 'ALTA',
+    equipoId: '',
+    equipoNombre: nombre,
+    tipo: tipo,
+    datos: {
+      nombre,
+      tipo,
+      params
+    },
+    creadoEn: Date.now(),
+    estadoLocal: 'SYNC',
+    solicitudId: ''
+  };
+
+  const cola =
+    leerColaSolicitudesEquipo();
+
+  cola.push(item);
+
+  guardarColaSolicitudesEquipo(cola);
+  refrescarListaEquiposDesdeCache();
+
+  mostrarMensaje(
+    'msgNuevoEquipo',
+    navigator.onLine && servidorDisponible
+      ? 'Propuesta guardada. Sincronizando…'
+      : 'Propuesta guardada en el celular. ⏳ Pendiente de sincronización.',
+    'warn'
+  );
+
+  if (
+    navigator.onLine &&
+    servidorDisponible
+  ) {
+    await conPantallaBloqueada(
+      'Sincronizando alta…',
+      () =>
+        sincronizarColaSolicitudesEquipo(),
+      'Enviando el equipo para aprobación del administrador.'
+    );
+  }
+
+  volverDesdeNuevoEquipo();
+  refrescarListaEquiposDesdeCache();
+}
+
+async function solicitarBajaEquipo() {
+  if (!equipoActual || !instalacionActual) return;
+
+  const existente =
+    solicitudBajaEquipoLocal(
+      instalacionActual.pestana,
+      equipoActual.id
+    );
+
+  if (existente) {
+    alert('Este equipo ya tiene una baja pendiente.');
+    return;
+  }
+
+  if (
+    !confirm(
+      '¿Solicitar la baja de ' +
+      (equipoActual.nombre ||
+        equipoActual.id ||
+        'este equipo') +
+      '?\n\nEl equipo seguirá visible y operativo hasta que el administrador apruebe la baja.'
+    )
+  ) {
+    return;
+  }
+
+  const perfil = perfilLocal();
+
+  if (!perfil) {
+    alert('No hay un usuario vinculado.');
+    return;
+  }
+
+  const item = {
+    clientId:
+      generarClientIdSolicitudEquipo(),
+    usuario:
+      String(perfil.usuario || ''),
+    nombre:
+      String(
+        perfil.nombre ||
+        perfil.usuario ||
+        ''
+      ),
+    pestana:
+      String(
+        instalacionActual.pestana || ''
+      ),
+    instalacionNombre:
+      String(
+        instalacionActual.nombre ||
+        instalacionActual.pestana ||
+        ''
+      ),
+    modo: 'BAJA',
+    equipoId:
+      String(equipoActual.id || ''),
+    equipoNombre:
+      String(
+        equipoActual.nombre ||
+        equipoActual.id ||
+        ''
+      ),
+    tipo:
+      String(equipoActual.tipo || ''),
+    snapshot: {
+      id: String(equipoActual.id || ''),
+      nombre: String(equipoActual.nombre || ''),
+      tipo: String(equipoActual.tipo || ''),
+      params:
+        equipoActual.params &&
+        typeof equipoActual.params === 'object'
+          ? equipoActual.params
+          : {}
+    },
+    filaNum:
+      Number(equipoActual.fila || 0),
+    creadoEn: Date.now(),
+    estadoLocal: 'SYNC',
+    solicitudId: ''
+  };
+
+  const cola =
+    leerColaSolicitudesEquipo();
+
+  cola.push(item);
+
+  guardarColaSolicitudesEquipo(cola);
+
+  abrirDetalleEquipo(equipoActual);
+  refrescarListaEquiposDesdeCache();
+
+  if (
+    navigator.onLine &&
+    servidorDisponible
+  ) {
+    await conPantallaBloqueada(
+      'Sincronizando baja…',
+      () =>
+        sincronizarColaSolicitudesEquipo(),
+      'Enviando la solicitud para aprobación del administrador.'
+    );
+  } else {
+    alert(
+      'La baja quedó guardada en el celular y se enviará cuando vuelva Internet.'
+    );
+  }
+}
+
+async function enviarSolicitudEquipoCola(item, actorToken) {
+  const modo =
+    String(item.modo || '').toUpperCase();
+
+  if (modo === 'ALTA') {
+    return bridgeCall(
+      'proponeraltaequipo',
+      {
+        pestana: item.pestana,
+        datos: item.datos || {},
+        clientId: item.clientId,
+        actorToken
+      },
+      30000
+    );
+  }
+
+  if (modo === 'BAJA') {
+    return bridgeCall(
+      'proponerbajaequipo',
+      {
+        pestana: item.pestana,
+        filaNum: item.filaNum,
+        equipoId: item.equipoId,
+        clientId: item.clientId,
+        actorToken
+      },
+      30000
+    );
+  }
+
+  return {
+    ok: false,
+    msg: 'Operación de equipo no válida'
+  };
+}
+
+async function sincronizarColaSolicitudesEquipo(
+  { silencioso = false } = {}
+) {
+  let cola =
+    leerColaSolicitudesEquipo();
+
+  const pendientesSync =
+    cola.filter(item =>
+      String(item.estadoLocal || 'SYNC')
+        .toUpperCase() === 'SYNC'
+    );
+
+  if (!pendientesSync.length) {
+    return {
+      ok: true,
+      enviados: 0,
+      pendientes: 0
+    };
+  }
+
+  if (
+    !navigator.onLine ||
+    !servidorDisponible
+  ) {
+    return {
+      ok: false,
+      enviados: 0,
+      pendientes:
+        pendientesSync.length,
+      msg: 'Sin conexión'
+    };
+  }
+
+  let token =
+    localStorage.getItem(
+      SERVER_TOKEN_KEY
+    ) || '';
+
+  if (!token || !sesionOnline) {
+    const ok =
+      await revalidarSesionServidor();
+
+    if (!ok) {
+      return {
+        ok: false,
+        enviados: 0,
+        pendientes:
+          pendientesSync.length,
+        msg: 'No se pudo validar la sesión'
+      };
+    }
+
+    token =
+      localStorage.getItem(
+        SERVER_TOKEN_KEY
+      ) || '';
+  }
+
+  let enviados = 0;
+  let ultimoError = '';
+
+  for (const item of pendientesSync) {
+    try {
+      let res =
+        await enviarSolicitudEquipoCola(
+          item,
+          token
+        );
+
+      if (
+        res &&
+        !res.ok &&
+        String(res.msg || '')
+          .toLowerCase()
+          .includes('sesión')
+      ) {
+        const ok =
+          await revalidarSesionServidor();
+
+        if (!ok) {
+          ultimoError =
+            'Sesión vencida';
+          break;
+        }
+
+        token =
+          localStorage.getItem(
+            SERVER_TOKEN_KEY
+          ) || '';
+
+        res =
+          await enviarSolicitudEquipoCola(
+            item,
+            token
+          );
+      }
+
+      if (!res || !res.ok) {
+        ultimoError =
+          (res && res.msg) ||
+          'No se pudo sincronizar una solicitud de equipo';
+        break;
+      }
+
+      cola =
+        leerColaSolicitudesEquipo();
+
+      const idx =
+        cola.findIndex(x =>
+          String(x.clientId || '') ===
+          String(item.clientId || '')
+        );
+
+      if (idx >= 0) {
+        cola[idx].estadoLocal =
+          'VALIDACION';
+
+        cola[idx].solicitudId =
+          String(
+            res.solicitudId || ''
+          );
+
+        guardarColaSolicitudesEquipo(
+          cola
+        );
+      }
+
+      enviados++;
+
+    } catch (e) {
+      ultimoError =
+        e && e.message
+          ? e.message
+          : String(e);
+      break;
+    }
+  }
+
+  refrescarListaEquiposDesdeCache();
+
+  const pantallaMenu =
+    document.getElementById('pantallaMenuEquipo');
+
+  if (
+    pantallaMenu &&
+    pantallaMenu.classList.contains('active') &&
+    equipoActual
+  ) {
+    abrirDetalleEquipo(equipoActual);
+  }
+
+  const restantes =
+    leerColaSolicitudesEquipo()
+      .filter(item =>
+        String(item.estadoLocal || 'SYNC')
+          .toUpperCase() === 'SYNC'
+      ).length;
+
+  if (
+    !silencioso &&
+    ultimoError
+  ) {
+    mostrarMensaje(
+      'msgEquipos',
+      'Quedaron solicitudes pendientes: ' +
+      ultimoError,
+      'warn'
+    );
+  }
+
+  return {
+    ok: restantes === 0,
+    enviados,
+    pendientes: restantes,
+    msg: ultimoError
+  };
+}
+
+async function reconciliarSolicitudesEquipoUsuario(
+  pestana
+) {
+  if (
+    !navigator.onLine ||
+    !servidorDisponible
+  ) {
+    return;
+  }
+
+  let token =
+    localStorage.getItem(
+      SERVER_TOKEN_KEY
+    ) || '';
+
+  if (!token || !sesionOnline) {
+    const ok =
+      await revalidarSesionServidor();
+
+    if (!ok) return;
+
+    token =
+      localStorage.getItem(
+        SERVER_TOKEN_KEY
+      ) || '';
+  }
+
+  try {
+    const res =
+      await bridgeCall(
+        'getsolicitudesequipousuario',
+        {
+          pestana,
+          actorToken: token
+        },
+        20000
+      );
+
+    if (!res || !res.ok) {
+      return;
+    }
+
+    const servidor =
+      Array.isArray(res.solicitudes)
+        ? res.solicitudes
+        : [];
+
+    const serverIds =
+      new Set(
+        servidor
+          .map(x =>
+            String(x.clientId || '')
+          )
+          .filter(Boolean)
+      );
+
+    let cola =
+      leerColaSolicitudesEquipo();
+
+    servidor.forEach(sol => {
+      const clientId =
+        String(sol.clientId || '');
+
+      const idx =
+        cola.findIndex(x =>
+          String(x.clientId || '') ===
+          clientId
+        );
+
+      if (idx >= 0) {
+        cola[idx] = {
+          ...cola[idx],
+          ...sol,
+          estadoLocal: 'VALIDACION'
+        };
+      } else {
+        cola.push({
+          ...sol,
+          estadoLocal: 'VALIDACION',
+          creadoEn:
+            Number(sol.creadoEn || 0) ||
+            Date.now()
+        });
+      }
+    });
+
+    cola =
+      cola.filter(item => {
+        if (
+          String(item.pestana || '') !==
+          String(pestana || '')
+        ) {
+          return true;
+        }
+
+        if (
+          String(item.estadoLocal || '')
+            .toUpperCase() !==
+          'VALIDACION'
+        ) {
+          return true;
+        }
+
+        return serverIds.has(
+          String(item.clientId || '')
+        );
+      });
+
+    guardarColaSolicitudesEquipo(
+      cola
+    );
+
+  } catch (e) {
+    // Conserva el estado local si falla la reconciliación.
+  }
+}
+
 
 
 function valorVisibleParametro(valor) {
@@ -2001,27 +3100,75 @@ function abrirDetalleEquipo(equipo) {
   equipoActual = equipo || null;
   if (!equipoActual) return;
 
-  const titulo = equipoActual.nombre || equipoActual.id || 'Equipo';
-  const subtitulo = [equipoActual.id, equipoActual.tipo].filter(Boolean).join(' · ');
-  const estado = equipoActual.completo ? '✓ Datos completos' : '⚠ Datos incompletos';
+  const titulo =
+    equipoActual.nombre ||
+    equipoActual.id ||
+    'Equipo';
+
+  const subtitulo =
+    [equipoActual.id, equipoActual.tipo]
+      .filter(Boolean)
+      .join(' · ');
+
+  const baja =
+    instalacionActual
+      ? solicitudBajaEquipoLocal(
+          instalacionActual.pestana,
+          equipoActual.id
+        )
+      : null;
+
+  let estado =
+    equipoActual.completo
+      ? '✓ Datos completos'
+      : '⚠ Datos incompletos';
+
+  if (baja) {
+    estado =
+      String(baja.estadoLocal || 'SYNC')
+        .toUpperCase() === 'SYNC'
+        ? '⏳ Baja pendiente de sincronización'
+        : '🕵️ Baja pendiente de aprobación';
+  }
 
   document.getElementById('tituloMenuEquipo').textContent = titulo;
   document.getElementById('subtituloMenuEquipo').textContent = subtitulo;
   document.getElementById('estadoMenuEquipo').textContent = estado;
 
-  const params = equipoActual.params && typeof equipoActual.params === 'object'
-    ? Object.keys(equipoActual.params)
-    : [];
-  const fotos = Array.isArray(equipoActual.fotoIds)
-    ? equipoActual.fotoIds.filter(Boolean)
-    : [];
-  const comentarios = Array.isArray(equipoActual.comentarios)
-    ? equipoActual.comentarios
-    : [];
+  const params =
+    equipoActual.params &&
+    typeof equipoActual.params === 'object'
+      ? Object.keys(equipoActual.params)
+      : [];
+
+  const fotos =
+    Array.isArray(equipoActual.fotoIds)
+      ? equipoActual.fotoIds.filter(Boolean)
+      : [];
+
+  const comentarios =
+    Array.isArray(equipoActual.comentarios)
+      ? equipoActual.comentarios
+      : [];
 
   document.getElementById('countDatosEquipo').textContent = params.length;
   document.getElementById('countFotosEquipo').textContent = fotos.length;
   document.getElementById('countComentariosEquipo').textContent = comentarios.length;
+
+  const btnBaja =
+    document.getElementById('btnSolicitarBajaEquipo');
+
+  if (btnBaja) {
+    btnBaja.disabled = !!baja;
+    btnBaja.textContent = baja
+      ? (
+          String(baja.estadoLocal || 'SYNC')
+            .toUpperCase() === 'SYNC'
+            ? 'Baja pendiente de sincronización'
+            : 'Baja pendiente de aprobación'
+        )
+      : 'Solicitar baja del equipo';
+  }
 
   mostrarPantalla('pantallaMenuEquipo');
 }
@@ -5060,6 +6207,13 @@ async function cargarEquiposInstalacion(inst, {forzar = false} = {}) {
   }
 
   try {
+    await sincronizarColaSolicitudesEquipo({ silencioso: true });
+    await reconciliarSolicitudesEquipoUsuario(inst.pestana);
+  } catch (e) {
+    // Si falla la reconciliación, se conserva la cola local.
+  }
+
+  try {
     const res = await obtenerEquiposServidor(inst);
 
     if (!res) {
@@ -5327,6 +6481,7 @@ function salirAdmin() {
   adminTokenPwa = '';
   mostrarMensaje('msgAdminLogin', '', '');
   mostrarMensaje('msgAdminSolicitudes', '', '');
+  mostrarMensaje('msgAdminEquipos', '', '');
   mostrarMensaje('msgAdminRevisiones', '', '');
   mostrarMensaje('msgAdminFotos', '', '');
   mostrarMensaje('msgAdminGenerales', '', '');
@@ -5554,6 +6709,7 @@ async function cargarPanelAdmin() {
 
   try {
     await cargarSolicitudesAdmin();
+    await cargarSolicitudesEquipoAdmin();
     await cargarRevisionesAdmin();
     await cargarFotosAdmin();
     await cargarGeneralesAdmin();
@@ -5565,6 +6721,410 @@ async function cargarPanelAdmin() {
   }
 }
 
+
+
+function renderSolicitudesEquipoAdmin(items) {
+  const lista =
+    document.getElementById('listaEquiposAdmin');
+
+  const estado =
+    document.getElementById('estadoEquiposAdmin');
+
+  const datos =
+    Array.isArray(items)
+      ? items
+      : [];
+
+  lista.innerHTML = '';
+
+  if (!datos.length) {
+    lista.innerHTML =
+      '<div class="empty-state">No hay altas ni bajas pendientes.</div>';
+
+    estado.textContent =
+      '0 pendientes';
+
+    return;
+  }
+
+  datos.forEach(item => {
+    const modo =
+      String(item.modo || '')
+        .toUpperCase();
+
+    const card =
+      document.createElement('div');
+
+    card.className =
+      'request-card';
+
+    const titulo =
+      document.createElement('div');
+
+    titulo.className =
+      'request-user';
+
+    titulo.textContent =
+      (modo === 'BAJA'
+        ? 'Baja'
+        : 'Alta') +
+      ' · ' +
+      (
+        item.equipoNombre ||
+        (item.datos && item.datos.nombre) ||
+        item.equipoId ||
+        'Equipo'
+      );
+
+    const meta =
+      document.createElement('div');
+
+    meta.className =
+      'request-meta';
+
+    meta.textContent =
+      [
+        item.instalacionNombre ||
+          item.pestana ||
+          '',
+        item.nombre ||
+          item.usuario ||
+          '',
+        item.fecha || ''
+      ]
+        .filter(Boolean)
+        .join(' · ');
+
+    const resumen =
+      document.createElement('div');
+
+    resumen.className =
+      'proposal-summary';
+
+    const addRow = (etiqueta, valor) => {
+      const row =
+        document.createElement('div');
+
+      row.className =
+        'proposal-summary-row';
+
+      const lab =
+        document.createElement('strong');
+
+      lab.textContent = etiqueta;
+
+      const val =
+        document.createElement('div');
+
+      val.textContent =
+        String(
+          valor == null || valor === ''
+            ? '—'
+            : valor
+        );
+
+      row.appendChild(lab);
+      row.appendChild(val);
+      resumen.appendChild(row);
+    };
+
+    addRow(
+      'Operación',
+      modo === 'BAJA'
+        ? 'Baja del inventario activo'
+        : 'Alta de equipo nuevo'
+    );
+
+    addRow(
+      'ID',
+      modo === 'ALTA'
+        ? 'Se asignará al aprobar'
+        : item.equipoId
+    );
+
+    addRow(
+      'Tipo',
+      item.tipo ||
+      (item.datos && item.datos.tipo) ||
+      (item.snapshot && item.snapshot.tipo) ||
+      ''
+    );
+
+    const fuente =
+      modo === 'ALTA'
+        ? (
+            item.datos &&
+            item.datos.params
+              ? item.datos.params
+              : {}
+          )
+        : (
+            item.snapshot &&
+            item.snapshot.params
+              ? item.snapshot.params
+              : {}
+          );
+
+    Object.keys(fuente || {})
+      .filter(campo => {
+        const valor =
+          String(
+            fuente[campo] == null
+              ? ''
+              : fuente[campo]
+          ).trim();
+
+        return (
+          valor &&
+          valor.toUpperCase() !== 'N/C'
+        );
+      })
+      .forEach(campo => {
+        addRow(
+          campo,
+          fuente[campo]
+        );
+      });
+
+    if (modo === 'BAJA') {
+      const nota =
+        document.createElement('div');
+
+      nota.className =
+        'equipment-proposal-note';
+
+      nota.textContent =
+        'Al aprobar, el equipo se quita del inventario activo pero se archiva íntegramente para trazabilidad.';
+
+      resumen.appendChild(nota);
+    }
+
+    const acciones =
+      document.createElement('div');
+
+    acciones.className =
+      'request-actions';
+
+    const rechazar =
+      document.createElement('button');
+
+    rechazar.className =
+      'btn btn-danger';
+
+    rechazar.textContent =
+      'Rechazar';
+
+    rechazar.onclick = () =>
+      resolverSolicitudEquipoAdmin(
+        item.id,
+        'RECHAZAR',
+        modo
+      );
+
+    const aprobar =
+      document.createElement('button');
+
+    aprobar.className =
+      'btn btn-ok';
+
+    aprobar.textContent =
+      modo === 'BAJA'
+        ? 'Aprobar baja'
+        : 'Aprobar alta';
+
+    aprobar.onclick = () =>
+      resolverSolicitudEquipoAdmin(
+        item.id,
+        'APROBAR',
+        modo
+      );
+
+    acciones.appendChild(rechazar);
+    acciones.appendChild(aprobar);
+
+    card.appendChild(titulo);
+    card.appendChild(meta);
+    card.appendChild(resumen);
+    card.appendChild(acciones);
+    lista.appendChild(card);
+  });
+
+  estado.textContent =
+    datos.length +
+    (
+      datos.length === 1
+        ? ' pendiente'
+        : ' pendientes'
+    );
+}
+
+async function cargarSolicitudesEquipoAdmin() {
+  const lista =
+    document.getElementById('listaEquiposAdmin');
+
+  const estado =
+    document.getElementById('estadoEquiposAdmin');
+
+  if (!adminTokenPwa) {
+    salirAdmin();
+    return;
+  }
+
+  if (
+    !navigator.onLine ||
+    !servidorDisponible
+  ) {
+    lista.innerHTML =
+      '<div class="empty-state">Sin conexión con el servidor.</div>';
+
+    estado.textContent =
+      'Sin conexión';
+
+    return;
+  }
+
+  estado.textContent =
+    'Actualizando…';
+
+  mostrarMensaje(
+    'msgAdminEquipos',
+    '',
+    ''
+  );
+
+  try {
+    const res =
+      await bridgeCall(
+        'adminequipos',
+        {
+          adminToken:
+            adminTokenPwa
+        },
+        20000
+      );
+
+    if (!res || !res.ok) {
+      mostrarMensaje(
+        'msgAdminEquipos',
+        (res && res.msg) ||
+          'No se pudieron cargar las altas y bajas pendientes.',
+        'err'
+      );
+
+      estado.textContent =
+        'Error';
+
+      return;
+    }
+
+    renderSolicitudesEquipoAdmin(
+      res.solicitudes || []
+    );
+
+  } catch (e) {
+    mostrarMensaje(
+      'msgAdminEquipos',
+      e && e.message
+        ? e.message
+        : String(e),
+      'err'
+    );
+
+    estado.textContent =
+      'Error';
+  }
+}
+
+async function resolverSolicitudEquipoAdmin(
+  id,
+  decision,
+  modo
+) {
+  if (!adminTokenPwa || !id) return;
+
+  const aprobar =
+    decision === 'APROBAR';
+
+  const textoModo =
+    String(modo || '')
+      .toUpperCase() === 'BAJA'
+      ? 'baja'
+      : 'alta';
+
+  if (
+    !confirm(
+      aprobar
+        ? '¿Aprobar esta ' +
+          textoModo +
+          ' de equipo?'
+        : '¿Rechazar esta ' +
+          textoModo +
+          ' de equipo?'
+    )
+  ) {
+    return;
+  }
+
+  bloquearPantalla(
+    aprobar
+      ? 'Aprobando ' +
+        textoModo +
+        '…'
+      : 'Rechazando solicitud…',
+    'Actualizando el inventario.'
+  );
+
+  try {
+    const res =
+      await bridgeCall(
+        'adminresolverequipo',
+        {
+          solicitudId: id,
+          decision,
+          adminToken:
+            adminTokenPwa
+        },
+        30000
+      );
+
+    if (!res || !res.ok) {
+      mostrarMensaje(
+        'msgAdminEquipos',
+        (res && res.msg) ||
+          'No se pudo resolver la solicitud.',
+        'err'
+      );
+
+      return;
+    }
+
+    mostrarMensaje(
+      'msgAdminEquipos',
+      aprobar
+        ? (
+            textoModo === 'alta'
+              ? 'Alta aprobada. El equipo ya forma parte del inventario.'
+              : 'Baja aprobada. El equipo fue archivado y retirado del inventario activo.'
+          )
+        : 'Solicitud rechazada.',
+      aprobar ? 'ok' : 'warn'
+    );
+
+    await cargarSolicitudesEquipoAdmin();
+
+  } catch (e) {
+    mostrarMensaje(
+      'msgAdminEquipos',
+      e && e.message
+        ? e.message
+        : String(e),
+      'err'
+    );
+
+  } finally {
+    desbloquearPantalla();
+  }
+}
 
 function renderRevisionesAdmin(revisiones) {
   const lista = document.getElementById('listaRevisionesAdmin');
@@ -6319,9 +7879,23 @@ function cambiarUsuario() {
   const datosPendientes = leerColaDatos();
   const fotosPendientes = cantidadFotosPendientesLocal();
 
-  if (comentariosPendientes.length || datosPendientes.length || fotosPendientes) {
+  const equiposPendientes =
+    leerColaSolicitudesEquipo().filter(item =>
+      String(item.estadoLocal || 'SYNC').toUpperCase() === 'SYNC'
+    ).length;
+
+  if (
+    comentariosPendientes.length ||
+    datosPendientes.length ||
+    fotosPendientes ||
+    equiposPendientes
+  ) {
     const camposDatos = datosPendientes.reduce(
-      (acc, item) => acc + (Array.isArray(item.cambios) ? item.cambios.length : 0),
+      (acc, item) =>
+        acc +
+        (Array.isArray(item.cambios)
+          ? item.cambios.length
+          : 0),
       0
     );
 
@@ -6330,6 +7904,7 @@ function cambiarUsuario() {
       '\n\nComentarios: ' + comentariosPendientes.length +
       '\nDatos: ' + camposDatos +
       '\nFotos: ' + fotosPendientes +
+      '\nAltas/Bajas de equipos: ' + equiposPendientes +
       '\n\nConectate y sincronizá antes de cambiar de usuario para no perder trabajo de campo.'
     );
     return;
@@ -6360,7 +7935,10 @@ window.addEventListener('online', async () => {
       const hayPendientes =
         leerColaComentarios().length > 0 ||
         leerColaDatos().length > 0 ||
-        cantidadFotosPendientesLocal() > 0;
+        cantidadFotosPendientesLocal() > 0 ||
+        leerColaSolicitudesEquipo().some(item =>
+          String(item.estadoLocal || 'SYNC').toUpperCase() === 'SYNC'
+        );
 
       if (hayPendientes) {
         bloquearPantalla(
@@ -6373,6 +7951,7 @@ window.addEventListener('online', async () => {
         await sincronizarColaComentarios({ silencioso: true });
         await sincronizarColaDatos({ silencioso: true });
         await sincronizarColaFotos({ silencioso: true });
+        await sincronizarColaSolicitudesEquipo({ silencioso: true });
       } finally {
         if (hayPendientes) {
           desbloquearPantalla();
