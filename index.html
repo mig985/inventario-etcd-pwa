@@ -215,7 +215,7 @@
       font-size:clamp(.9rem, 3.7vw, 1rem);
     }
 
-    /* v0.4.5 — mejor lectura en celular */
+    /* v0.5.0 — mejor lectura en celular */
     body {
       font-size:clamp(17px, 4vw, 20px);
     }
@@ -274,7 +274,7 @@
       line-height:1.4;
     }
   
-    /* v0.4.5 — solicitud de acceso */
+    /* v0.5.0 — solicitud de acceso */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -320,7 +320,7 @@
     }
 
 
-    /* v0.4.5 — administración de solicitudes */
+    /* v0.5.0 — administración de solicitudes */
     .admin-list {
       display:grid;
       gap:.75rem;
@@ -372,7 +372,7 @@
     }
 
 
-    /* v0.4.5 — inventario de equipos */
+    /* v0.5.0 — inventario de equipos */
     .equipment-list {
       display:grid;
       gap:.65rem;
@@ -438,7 +438,7 @@
     }
 
 
-    /* v0.4.5 — detalle de equipo */
+    /* v0.5.0 — detalle de equipo */
     .equipment-card {
       cursor:pointer;
     }
@@ -508,7 +508,7 @@
     }
 
 
-    /* v0.4.5 — menú intermedio del equipo */
+    /* v0.5.0 — menú intermedio del equipo */
     .equipment-menu {
       display:grid;
       gap:1rem;
@@ -539,7 +539,7 @@
     }
 
 
-    /* v0.4.5 — fotos reales y contadores */
+    /* v0.5.0 — fotos reales y contadores */
     .menu-count {
       float:right;
       min-width:2rem;
@@ -591,7 +591,7 @@
     }
 
 
-    /* v0.4.5 — alta de comentarios */
+    /* v0.5.0 — alta de comentarios */
     .comment-editor {
       margin-bottom:1rem;
       padding:1rem;
@@ -625,7 +625,7 @@
     }
 
 
-    /* v0.4.5 — cola offline de comentarios */
+    /* v0.5.0 — cola offline de comentarios */
     .sync-pending {
       color:var(--warn);
       font-weight:700;
@@ -647,6 +647,64 @@
       font-size:.9rem;
       line-height:1.35;
     }
+
+
+    /* v0.5.0 — edición de datos online/offline */
+    .data-actions {
+      display:flex;
+      gap:.6rem;
+      flex-wrap:wrap;
+      margin:.8rem 0;
+    }
+
+    .data-edit-row {
+      display:grid;
+      gap:.45rem;
+      padding:.85rem 0;
+      border-bottom:1px solid var(--border);
+    }
+
+    .data-edit-row:last-child { border-bottom:none; }
+
+    .data-edit-label {
+      font-weight:700;
+      line-height:1.3;
+    }
+
+    .data-edit-input,
+    .data-edit-select {
+      width:100%;
+      box-sizing:border-box;
+      padding:.75rem .8rem;
+      border:1px solid var(--border);
+      border-radius:9px;
+      background:var(--surface);
+      color:var(--text);
+      font:inherit;
+    }
+
+    .data-field-note {
+      margin-top:.28rem;
+      font-size:.82rem;
+      color:var(--muted);
+      line-height:1.3;
+    }
+
+    .data-field-note.pending-sync { color:var(--warn); font-weight:700; }
+    .data-field-note.pending-review { color:var(--warn); font-weight:700; }
+    .data-field-note.conflict { color:#ff7b72; font-weight:700; }
+
+    .conflict-values {
+      display:grid;
+      gap:.35rem;
+      margin:.6rem 0;
+      padding:.7rem;
+      border-radius:8px;
+      background:var(--surface2);
+      font-size:.9rem;
+    }
+
+    .conflict-values strong { color:var(--text); }
 
 </style>
 </head>
@@ -677,7 +735,7 @@
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.4.5</div>
+      <div class="footer">v0.5.0</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -698,7 +756,7 @@
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.4.5</div>
+      <div class="footer">v0.5.0</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -719,7 +777,7 @@
         <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.4.5</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.0</div>
       </div>
     </section>
 
@@ -745,7 +803,7 @@
 
         <button class="btn btn-secondary" onclick="actualizarEquiposManual()">Actualizar equipos</button>
         <div id="msgEquipos" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.4.5</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.0</div>
       </div>
     </section>
 
@@ -781,11 +839,11 @@
         </div>
 
         <div class="policy-note">
-          Solo lectura en esta etapa. Si más adelante existe conflicto entre un cambio offline
-          y los datos del servidor, la resolución final corresponde al administrador.
+          Los datos pueden editarse con o sin señal. Si un valor del servidor cambió mientras
+          trabajabas offline, la PWA no lo pisa: el conflicto queda para decisión del administrador.
         </div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.4.5</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.0</div>
       </div>
     </section>
 
@@ -800,9 +858,18 @@
         </div>
 
         <div id="estadoDatosEquipo" class="mini-status"></div>
+
+        <div class="data-actions">
+          <button id="btnEditarDatos" class="btn btn-primary" onclick="activarEdicionDatos()">Editar datos</button>
+          <button id="btnGuardarDatos" class="btn btn-primary" onclick="guardarDatosDesdePwa()" style="display:none">Guardar cambios</button>
+          <button id="btnCancelarDatos" class="btn btn-secondary" onclick="cancelarEdicionDatos()" style="display:none">Cancelar</button>
+        </div>
+
+        <div id="msgDatos" class="message"></div>
+        <div id="estadoColaDatos" class="queue-status"></div>
         <div id="detalleParametros" class="detail-grid"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.4.5</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.0</div>
       </div>
     </section>
 
@@ -834,7 +901,7 @@
 
         <div id="detalleComentarios"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.4.5</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.0</div>
       </div>
     </section>
 
@@ -850,13 +917,13 @@
 
         <div id="detalleFotos"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.4.5</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.0</div>
       </div>
     </section>
 
     <section id="pantallaAdminLogin" class="screen card">
       <h1>Administrador</h1>
-      <p class="lead">Acceso online para revisar y resolver solicitudes de instalaciones.</p>
+      <p class="lead">Acceso online para revisar solicitudes y resolver conflictos de datos.</p>
 
       <div class="field">
         <label for="claveAdmin">Contraseña</label>
@@ -866,7 +933,7 @@
       <button id="btnAdminLogin" class="btn btn-primary" onclick="loginAdmin()">Ingresar como administrador</button>
       <button class="btn btn-secondary" onclick="salirAdmin()">Cancelar</button>
       <div id="msgAdminLogin" class="message"></div>
-      <div class="footer">v0.4.5</div>
+      <div class="footer">v0.5.0</div>
     </section>
 
     <section id="pantallaAdminSolicitudes" class="screen dashboard">
@@ -883,10 +950,21 @@
           <div class="empty-state">Cargando solicitudes…</div>
         </div>
 
-        <button class="btn btn-secondary" onclick="cargarSolicitudesAdmin()">Actualizar</button>
+        <div class="app-toolbar" style="margin-top:1.2rem">
+          <h2>Conflictos de datos</h2>
+          <div id="estadoConflictosAdmin" class="mini-status">Cargando…</div>
+        </div>
+
+        <div id="listaConflictosAdmin" class="admin-list">
+          <div class="empty-state">Cargando conflictos…</div>
+        </div>
+
+        <div id="msgAdminConflictos" class="message"></div>
+
+        <button class="btn btn-secondary" onclick="cargarPanelAdmin()">Actualizar</button>
         <button class="btn btn-secondary" onclick="salirAdmin()">Salir del administrador</button>
         <div id="msgAdminSolicitudes" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.4.5</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.0</div>
       </div>
     </section>
 
@@ -915,7 +993,7 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.4.5';
+const APP_VERSION = '0.5.0';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
@@ -923,6 +1001,7 @@ const INSTALLATIONS_KEY = 'inventario_etcd_instalaciones_v1';
 const ACCESS_REQUESTS_KEY = 'inventario_etcd_solicitudes_pendientes_v1';
 const EQUIPMENT_CACHE_PREFIX = 'inventario_etcd_equipos_v1:';
 const COMMENT_QUEUE_PREFIX = 'inventario_etcd_cola_comentarios_v1:';
+const DATA_QUEUE_PREFIX = 'inventario_etcd_cola_datos_v1:';
 
 const CHANNEL_TO_BRIDGE = 'inventario-etcd-pwa';
 const CHANNEL_FROM_BRIDGE = 'inventario-etcd-bridge';
@@ -938,6 +1017,8 @@ let instalacionSolicitudActual = null;
 let adminTokenPwa = '';
 let instalacionActual = null;
 let equipoActual = null;
+let edicionDatosActiva = false;
+let edicionDatosBase = {};
 
 function mostrarPantalla(id) {
   document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
@@ -1228,6 +1309,7 @@ async function ingresarConPin() {
 
     if (sesionOnline) {
       await sincronizarColaComentarios({ silencioso: true });
+      await sincronizarColaDatos({ silencioso: true });
     }
   } else {
     sesionOnline = false;
@@ -1427,7 +1509,14 @@ function guardarEquiposLocal(inst, respuesta) {
           fechaModificacion: String(e.fechaModificacion || ''),
           ultimaAccion: String(e.ultimaAccion || ''),
           validadoPor: String(e.validadoPor || ''),
-          fechaValidacion: String(e.fechaValidacion || '')
+          fechaValidacion: String(e.fechaValidacion || ''),
+          revisionesPendientes: Array.isArray(e.revisionesPendientes) ? e.revisionesPendientes : [],
+          pendientesCampos: e.pendientesCampos && typeof e.pendientesCampos === 'object' ? e.pendientesCampos : {},
+          pendientesOtros: Array.isArray(e.pendientesOtros) ? e.pendientesOtros : [],
+          cantidadPendientesCampos: Number(e.cantidadPendientesCampos || 0),
+          cantidadPendientesOtros: Number(e.cantidadPendientesOtros || 0),
+          conflictosPwa: Array.isArray(e.conflictosPwa) ? e.conflictosPwa : [],
+          datosPendientesSync: {}
         }))
       : [];
 
@@ -1439,8 +1528,13 @@ function guardarEquiposLocal(inst, respuesta) {
       parametros: Array.isArray(respuesta && respuesta.parametros)
         ? respuesta.parametros
         : [],
+      catalogo: respuesta && respuesta.catalogo && typeof respuesta.catalogo === 'object'
+        ? respuesta.catalogo
+        : null,
       equipos
     };
+
+    aplicarColaDatosAPaquete(paquete);
 
     localStorage.setItem(
       claveCacheEquipos(inst.pestana),
@@ -1456,9 +1550,12 @@ function guardarEquiposLocal(inst, respuesta) {
 
 function leerEquiposLocal(pestana) {
   try {
-    return JSON.parse(
+    const paquete = JSON.parse(
       localStorage.getItem(claveCacheEquipos(pestana)) || 'null'
     );
+
+    if (paquete) aplicarColaDatosAPaquete(paquete);
+    return paquete;
   } catch (e) {
     return null;
   }
@@ -1597,6 +1694,11 @@ function volverAMenuEquipo() {
 function abrirDatosEquipo() {
   if (!equipoActual) return;
 
+  aplicarColaDatosAEquipo(
+    instalacionActual ? instalacionActual.pestana : '',
+    equipoActual
+  );
+
   document.getElementById('tituloDatosEquipo').textContent =
     equipoActual.nombre || equipoActual.id || 'Equipo';
 
@@ -1606,7 +1708,12 @@ function abrirDatosEquipo() {
   document.getElementById('estadoDatosEquipo').textContent =
     equipoActual.completo ? '✓ Datos completos' : '⚠ Datos incompletos';
 
-  renderDetalleParametros(equipoActual);
+  edicionDatosActiva = false;
+  edicionDatosBase = {};
+  actualizarBotonesEdicionDatos();
+  mostrarMensaje('msgDatos', '', '');
+  actualizarEstadoColaDatos();
+  renderDetalleParametros(equipoActual, false);
   mostrarPantalla('pantallaDatosEquipo');
 }
 
@@ -1641,7 +1748,310 @@ function abrirFotosEquipo() {
   mostrarPantalla('pantallaFotosEquipo');
 }
 
-function renderDetalleParametros(equipo) {
+function normalizarClaveCampoPwa(valor) {
+  return String(valor || '').trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
+function claveColaDatos() {
+  const perfil = perfilLocal();
+  const usuario = perfil ? String(perfil.usuario || '').trim() : '';
+  return DATA_QUEUE_PREFIX + encodeURIComponent(usuario);
+}
+
+function leerColaDatos() {
+  try {
+    const datos = JSON.parse(
+      localStorage.getItem(claveColaDatos()) || '[]'
+    );
+    return Array.isArray(datos) ? datos : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function guardarColaDatos(items) {
+  localStorage.setItem(
+    claveColaDatos(),
+    JSON.stringify(Array.isArray(items) ? items : [])
+  );
+  actualizarEstadoColaDatos();
+}
+
+function generarClientIdCambioDatos() {
+  if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+    return window.crypto.randomUUID();
+  }
+
+  return (
+    'd-' +
+    Date.now() +
+    '-' +
+    Math.random().toString(36).slice(2, 12)
+  );
+}
+
+function encolarCambiosDatos(itemNuevo) {
+  let cola = leerColaDatos();
+
+  const idx = cola.findIndex(item =>
+    String(item.pestana || '') === String(itemNuevo.pestana || '') &&
+    (
+      String(item.equipoId || '') === String(itemNuevo.equipoId || '') ||
+      Number(item.filaNum) === Number(itemNuevo.filaNum)
+    )
+  );
+
+  if (idx < 0) {
+    const cambios = Array.isArray(itemNuevo.cambios)
+      ? itemNuevo.cambios.filter(c =>
+          String(c.nuevo == null ? '' : c.nuevo) !==
+          String(c.base == null ? '' : c.base)
+        )
+      : [];
+
+    if (!cambios.length) return null;
+
+    const item = {
+      ...itemNuevo,
+      clientId: itemNuevo.clientId || generarClientIdCambioDatos(),
+      cambios
+    };
+
+    cola.push(item);
+    guardarColaDatos(cola);
+    return item;
+  }
+
+  const existente = cola[idx];
+  const cambiosExistentes = Array.isArray(existente.cambios)
+    ? existente.cambios.map(c => ({ ...c }))
+    : [];
+
+  (itemNuevo.cambios || []).forEach(nuevo => {
+    const key = normalizarClaveCampoPwa(nuevo.campo);
+    const pos = cambiosExistentes.findIndex(c =>
+      normalizarClaveCampoPwa(c.campo) === key
+    );
+
+    if (pos >= 0) {
+      const baseOriginal = String(
+        cambiosExistentes[pos].base == null
+          ? ''
+          : cambiosExistentes[pos].base
+      );
+      const valorNuevo = String(
+        nuevo.nuevo == null ? '' : nuevo.nuevo
+      );
+
+      if (valorNuevo === baseOriginal) {
+        cambiosExistentes.splice(pos, 1);
+      } else {
+        cambiosExistentes[pos].nuevo = valorNuevo;
+      }
+    } else {
+      const base = String(nuevo.base == null ? '' : nuevo.base);
+      const valorNuevo = String(nuevo.nuevo == null ? '' : nuevo.nuevo);
+
+      if (base !== valorNuevo) {
+        cambiosExistentes.push({
+          campo: String(nuevo.campo || ''),
+          base,
+          nuevo: valorNuevo
+        });
+      }
+    }
+  });
+
+  if (!cambiosExistentes.length) {
+    cola.splice(idx, 1);
+    guardarColaDatos(cola);
+    return null;
+  }
+
+  existente.cambios = cambiosExistentes;
+  existente.creadoEn = Date.now();
+  cola[idx] = existente;
+  guardarColaDatos(cola);
+  return existente;
+}
+
+function aplicarColaDatosAEquipo(pestana, equipo) {
+  if (!equipo || typeof equipo !== 'object') return equipo;
+
+  if (!equipo.params || typeof equipo.params !== 'object') {
+    equipo.params = {};
+  }
+
+  equipo.datosPendientesSync = {};
+
+  leerColaDatos()
+    .filter(item =>
+      String(item.pestana || '') === String(pestana || '') &&
+      (
+        String(item.equipoId || '') === String(equipo.id || '') ||
+        Number(item.filaNum) === Number(equipo.fila)
+      )
+    )
+    .forEach(item => {
+      (item.cambios || []).forEach(c => {
+        const campo = String(c.campo || '');
+        if (!campo) return;
+
+        equipo.params[campo] = String(
+          c.nuevo == null ? '' : c.nuevo
+        );
+
+        equipo.datosPendientesSync[
+          normalizarClaveCampoPwa(campo)
+        ] = {
+          clientId: String(item.clientId || ''),
+          campo,
+          base: String(c.base == null ? '' : c.base),
+          nuevo: String(c.nuevo == null ? '' : c.nuevo)
+        };
+      });
+    });
+
+  return equipo;
+}
+
+function aplicarColaDatosAPaquete(paquete) {
+  if (!paquete || !Array.isArray(paquete.equipos)) return paquete;
+
+  paquete.equipos.forEach(e =>
+    aplicarColaDatosAEquipo(paquete.pestana, e)
+  );
+
+  return paquete;
+}
+
+function actualizarEstadoColaDatos() {
+  const el = document.getElementById('estadoColaDatos');
+  if (!el) return;
+
+  const items = leerColaDatos();
+  const campos = items.reduce(
+    (acc, item) => acc + (Array.isArray(item.cambios) ? item.cambios.length : 0),
+    0
+  );
+
+  if (!campos) {
+    el.textContent = '✓ Sin cambios de datos pendientes de sincronización';
+    el.className = 'queue-status sync-ok';
+    return;
+  }
+
+  el.textContent =
+    '⏳ ' +
+    campos +
+    ' dato' +
+    (campos === 1 ? '' : 's') +
+    ' pendiente' +
+    (campos === 1 ? '' : 's') +
+    ' de sincronización';
+
+  el.className = 'queue-status sync-pending';
+}
+
+function obtenerDefinicionesEditablesEquipo(equipo) {
+  if (!equipo) return [];
+
+  const paquete = instalacionActual
+    ? leerEquiposLocal(instalacionActual.pestana)
+    : null;
+
+  const catalogo = paquete && paquete.catalogo
+    ? paquete.catalogo
+    : null;
+
+  const defs = catalogo && catalogo.definiciones
+    ? catalogo.definiciones[equipo.tipo] || []
+    : [];
+
+  const salida = [];
+  const vistos = new Set();
+
+  defs.forEach(def => {
+    const campo = String(def.parametro || '').trim();
+    if (!campo) return;
+
+    const key = normalizarClaveCampoPwa(campo);
+    if (vistos.has(key)) return;
+    vistos.add(key);
+
+    salida.push({
+      campo,
+      obligatorio: def.obligatorio === true,
+      tipoDato: String(def.tipoDato || 'text'),
+      opciones: Array.isArray(def.opciones) ? def.opciones : [],
+      ayuda: String(def.ayuda || '')
+    });
+  });
+
+  const params = equipo.params && typeof equipo.params === 'object'
+    ? equipo.params
+    : {};
+
+  Object.keys(params).forEach(campo => {
+    const key = normalizarClaveCampoPwa(campo);
+    if (vistos.has(key)) return;
+
+    const valor = String(params[campo] == null ? '' : params[campo]).trim();
+    if (valor.toUpperCase() === 'N/C') return;
+
+    vistos.add(key);
+    salida.push({
+      campo,
+      obligatorio: false,
+      tipoDato: 'text',
+      opciones: [],
+      ayuda: ''
+    });
+  });
+
+  if (!salida.length) {
+    Object.keys(params).forEach(campo => {
+      salida.push({
+        campo,
+        obligatorio: false,
+        tipoDato: 'text',
+        opciones: [],
+        ayuda: ''
+      });
+    });
+  }
+
+  return salida;
+}
+
+function mapaConflictosEquipo(equipo) {
+  const mapa = {};
+
+  (Array.isArray(equipo && equipo.conflictosPwa)
+    ? equipo.conflictosPwa
+    : []
+  ).forEach(c => {
+    mapa[normalizarClaveCampoPwa(c.campo)] = c;
+  });
+
+  return mapa;
+}
+
+function mapaPendientesRevisionEquipo(equipo) {
+  const mapa = {};
+  const src = equipo && equipo.pendientesCampos &&
+    typeof equipo.pendientesCampos === 'object'
+      ? equipo.pendientesCampos
+      : {};
+
+  Object.keys(src).forEach(k => {
+    mapa[normalizarClaveCampoPwa(k)] = src[k];
+  });
+
+  return mapa;
+}
+
+function renderDetalleParametros(equipo, modoEdicion = false) {
   const cont = document.getElementById('detalleParametros');
   cont.innerHTML = '';
 
@@ -1649,15 +2059,115 @@ function renderDetalleParametros(equipo) {
     ? equipo.params
     : {};
 
-  const claves = Object.keys(params);
+  const definiciones = obtenerDefinicionesEditablesEquipo(equipo);
 
-  if (!claves.length) {
+  if (!definiciones.length) {
     cont.innerHTML = '<div class="empty-state">No hay parámetros cargados.</div>';
     return;
   }
 
-  claves.forEach(clave => {
-    const raw = params[clave];
+  const pendientesSync = equipo && equipo.datosPendientesSync &&
+    typeof equipo.datosPendientesSync === 'object'
+      ? equipo.datosPendientesSync
+      : {};
+
+  const conflictos = mapaConflictosEquipo(equipo);
+  const pendientesRevision = mapaPendientesRevisionEquipo(equipo);
+
+  definiciones.forEach(def => {
+    const campo = def.campo;
+    const key = normalizarClaveCampoPwa(campo);
+    const raw = String(params[campo] == null ? '' : params[campo]);
+    const conflicto = conflictos[key] || null;
+    const pendienteSync = pendientesSync[key] || null;
+    const pendienteRevision = pendientesRevision[key] || null;
+
+    if (modoEdicion) {
+      const row = document.createElement('div');
+      row.className = 'data-edit-row';
+
+      const label = document.createElement('label');
+      label.className = 'data-edit-label';
+      label.textContent = campo + (def.obligatorio ? ' *' : '');
+
+      let input;
+
+      if (Array.isArray(def.opciones) && def.opciones.length) {
+        input = document.createElement('select');
+        input.className = 'data-edit-select data-edit-input';
+
+        const vacio = document.createElement('option');
+        vacio.value = '';
+        vacio.textContent = '— Sin dato —';
+        input.appendChild(vacio);
+
+        def.opciones.forEach(op => {
+          const option = document.createElement('option');
+          option.value = String(op);
+          option.textContent = String(op);
+          input.appendChild(option);
+        });
+
+        if (raw && !def.opciones.includes(raw)) {
+          const actual = document.createElement('option');
+          actual.value = raw;
+          actual.textContent = raw + ' (actual)';
+          input.appendChild(actual);
+        }
+
+        input.value = raw;
+      } else {
+        input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'data-edit-input';
+        input.value = raw;
+        input.maxLength = 500;
+
+        const tipo = String(def.tipoDato || '').toLowerCase();
+        if (
+          tipo.includes('number') ||
+          tipo.includes('numero') ||
+          tipo.includes('número') ||
+          tipo.includes('decimal')
+        ) {
+          input.inputMode = 'decimal';
+        }
+      }
+
+      input.dataset.campo = campo;
+
+      if (conflicto) {
+        input.disabled = true;
+      }
+
+      const nota = document.createElement('div');
+      nota.className = 'data-field-note';
+
+      if (conflicto) {
+        nota.classList.add('conflict');
+        nota.textContent =
+          '⚠ Requiere decisión del administrador. Servidor: "' +
+          String(conflicto.valorServidor || '') +
+          '" · Propuesto: "' +
+          String(conflicto.valorPropuesto || '') +
+          '"';
+      } else if (pendienteSync) {
+        nota.classList.add('pending-sync');
+        nota.textContent = '⏳ Pendiente de sincronización';
+      } else if (pendienteRevision) {
+        nota.classList.add('pending-review');
+        nota.textContent = '⏳ Pendiente de validación del administrador';
+      } else if (def.ayuda) {
+        nota.textContent = def.ayuda;
+      }
+
+      row.appendChild(label);
+      row.appendChild(input);
+      if (nota.textContent) row.appendChild(nota);
+      cont.appendChild(row);
+      return;
+    }
+
     const valor = valorVisibleParametro(raw);
     const falta = valor === 'Sin dato';
 
@@ -1666,7 +2176,7 @@ function renderDetalleParametros(equipo) {
 
     const label = document.createElement('div');
     label.className = 'detail-label';
-    label.textContent = clave;
+    label.textContent = campo;
 
     const value = document.createElement('div');
     value.className = 'detail-value' + (falta ? ' missing' : '');
@@ -1674,10 +2184,407 @@ function renderDetalleParametros(equipo) {
 
     row.appendChild(label);
     row.appendChild(value);
+
+    if (conflicto || pendienteSync || pendienteRevision) {
+      const nota = document.createElement('div');
+      nota.className = 'data-field-note';
+
+      if (conflicto) {
+        nota.classList.add('conflict');
+        nota.textContent =
+          '⚠ Requiere decisión del administrador · servidor: "' +
+          String(conflicto.valorServidor || '') +
+          '" · propuesto: "' +
+          String(conflicto.valorPropuesto || '') +
+          '"';
+      } else if (pendienteSync) {
+        nota.classList.add('pending-sync');
+        nota.textContent = '⏳ Pendiente de sincronización';
+      } else {
+        nota.classList.add('pending-review');
+        nota.textContent = '⏳ Pendiente de validación del administrador';
+      }
+
+      row.appendChild(nota);
+    }
+
     cont.appendChild(row);
   });
 }
 
+function actualizarBotonesEdicionDatos() {
+  const editar = document.getElementById('btnEditarDatos');
+  const guardar = document.getElementById('btnGuardarDatos');
+  const cancelar = document.getElementById('btnCancelarDatos');
+
+  if (!editar || !guardar || !cancelar) return;
+
+  editar.style.display = edicionDatosActiva ? 'none' : '';
+  guardar.style.display = edicionDatosActiva ? '' : 'none';
+  cancelar.style.display = edicionDatosActiva ? '' : 'none';
+}
+
+function activarEdicionDatos() {
+  if (!equipoActual) return;
+
+  const defs = obtenerDefinicionesEditablesEquipo(equipoActual);
+  if (!defs.length) {
+    mostrarMensaje('msgDatos', 'No hay parámetros editables.', 'warn');
+    return;
+  }
+
+  edicionDatosBase = {};
+
+  defs.forEach(def => {
+    edicionDatosBase[def.campo] = String(
+      equipoActual.params && equipoActual.params[def.campo] != null
+        ? equipoActual.params[def.campo]
+        : ''
+    );
+  });
+
+  edicionDatosActiva = true;
+  actualizarBotonesEdicionDatos();
+  mostrarMensaje('msgDatos', '', '');
+  renderDetalleParametros(equipoActual, true);
+}
+
+function cancelarEdicionDatos() {
+  edicionDatosActiva = false;
+  edicionDatosBase = {};
+  actualizarBotonesEdicionDatos();
+  mostrarMensaje('msgDatos', '', '');
+  renderDetalleParametros(equipoActual, false);
+}
+
+function guardarEquipoActualEnCache() {
+  if (!instalacionActual || !equipoActual) return;
+
+  try {
+    const key = claveCacheEquipos(instalacionActual.pestana);
+    const paquete = JSON.parse(localStorage.getItem(key) || 'null');
+    if (!paquete || !Array.isArray(paquete.equipos)) return;
+
+    const idx = paquete.equipos.findIndex(e =>
+      String(e.id || '') === String(equipoActual.id || '') ||
+      Number(e.fila) === Number(equipoActual.fila)
+    );
+
+    if (idx < 0) return;
+
+    paquete.equipos[idx] = JSON.parse(JSON.stringify(equipoActual));
+    paquete.fecha = new Date().toISOString();
+    localStorage.setItem(key, JSON.stringify(paquete));
+  } catch (e) {
+    console.warn('No se pudo actualizar el equipo en caché:', e);
+  }
+}
+
+async function guardarDatosDesdePwa() {
+  if (!equipoActual || !instalacionActual) return;
+
+  const inputs = Array.from(
+    document.querySelectorAll('#detalleParametros .data-edit-input')
+  );
+
+  const cambios = [];
+
+  inputs.forEach(input => {
+    if (input.disabled) return;
+
+    const campo = String(input.dataset.campo || '');
+    if (!campo) return;
+
+    const base = String(
+      edicionDatosBase[campo] == null
+        ? ''
+        : edicionDatosBase[campo]
+    ).trim();
+
+    const nuevo = String(input.value == null ? '' : input.value).trim();
+
+    if (base !== nuevo) {
+      cambios.push({ campo, base, nuevo });
+    }
+  });
+
+  if (!cambios.length) {
+    cancelarEdicionDatos();
+    mostrarMensaje('msgDatos', 'No hiciste cambios.', 'warn');
+    return;
+  }
+
+  const perfil = perfilLocal();
+
+  if (!perfil) {
+    mostrarMensaje('msgDatos', 'No hay un usuario vinculado.', 'err');
+    return;
+  }
+
+  const item = encolarCambiosDatos({
+    clientId: generarClientIdCambioDatos(),
+    usuario: String(perfil.usuario || ''),
+    nombre: String(perfil.nombre || perfil.usuario || ''),
+    pestana: String(instalacionActual.pestana || ''),
+    instalacionNombre: String(instalacionActual.nombre || instalacionActual.pestana || ''),
+    filaNum: Number(equipoActual.fila || 0),
+    equipoId: String(equipoActual.id || ''),
+    equipoNombre: String(equipoActual.nombre || equipoActual.id || ''),
+    cambios,
+    creadoEn: Date.now()
+  });
+
+  if (!item) {
+    cambios.forEach(c => {
+      if (!equipoActual.params || typeof equipoActual.params !== 'object') {
+        equipoActual.params = {};
+      }
+      equipoActual.params[c.campo] = String(c.nuevo == null ? '' : c.nuevo);
+    });
+
+    aplicarColaDatosAEquipo(instalacionActual.pestana, equipoActual);
+    guardarEquipoActualEnCache();
+    cancelarEdicionDatos();
+    actualizarEstadoColaDatos();
+    mostrarMensaje('msgDatos', 'Los cambios volvieron al valor original.', 'ok');
+    return;
+  }
+
+  aplicarColaDatosAEquipo(instalacionActual.pestana, equipoActual);
+  guardarEquipoActualEnCache();
+
+  edicionDatosActiva = false;
+  edicionDatosBase = {};
+  actualizarBotonesEdicionDatos();
+  renderDetalleParametros(equipoActual, false);
+  actualizarEstadoColaDatos();
+
+  mostrarMensaje(
+    'msgDatos',
+    navigator.onLine && servidorDisponible
+      ? 'Cambios guardados. Sincronizando…'
+      : 'Cambios guardados en el celular. Quedaron pendientes de sincronización.',
+    'warn'
+  );
+
+  if (navigator.onLine && servidorDisponible) {
+    await sincronizarColaDatos();
+  }
+}
+
+function actualizarEquipoCacheDesdeRespuestaDatos(item, res) {
+  if (!item) return;
+
+  try {
+    const key = claveCacheEquipos(item.pestana);
+    const paquete = JSON.parse(localStorage.getItem(key) || 'null');
+    if (!paquete || !Array.isArray(paquete.equipos)) return;
+
+    const idx = paquete.equipos.findIndex(e =>
+      String(e.id || '') === String(item.equipoId || '') ||
+      Number(e.fila) === Number(item.filaNum)
+    );
+
+    if (idx < 0) return;
+
+    const equipo = paquete.equipos[idx];
+    if (!equipo.params || typeof equipo.params !== 'object') equipo.params = {};
+
+    const valores = res && res.valoresServidor && typeof res.valoresServidor === 'object'
+      ? res.valoresServidor
+      : {};
+
+    Object.keys(valores).forEach(campo => {
+      equipo.params[campo] = String(valores[campo] == null ? '' : valores[campo]);
+    });
+
+    if (res) {
+      equipo.estado = String(res.estado || equipo.estado || '');
+      equipo.revisionesPendientes = Array.isArray(res.revisionesPendientes)
+        ? res.revisionesPendientes
+        : equipo.revisionesPendientes || [];
+      equipo.pendientesCampos = res.pendientesCampos && typeof res.pendientesCampos === 'object'
+        ? res.pendientesCampos
+        : {};
+      equipo.pendientesOtros = Array.isArray(res.pendientesOtros)
+        ? res.pendientesOtros
+        : equipo.pendientesOtros || [];
+      equipo.cantidadPendientesCampos = Number(res.cantidadPendientesCampos || 0);
+      equipo.cantidadPendientesOtros = Number(res.cantidadPendientesOtros || 0);
+
+      const previos = Array.isArray(equipo.conflictosPwa)
+        ? equipo.conflictosPwa.filter(c =>
+            String(c.clientId || '') !== String(item.clientId || '')
+          )
+        : [];
+
+      equipo.conflictosPwa = previos.concat(
+        Array.isArray(res.conflictos) ? res.conflictos : []
+      );
+    }
+
+    equipo.datosPendientesSync = {};
+    aplicarColaDatosAPaquete(paquete);
+    paquete.fecha = new Date().toISOString();
+    localStorage.setItem(key, JSON.stringify(paquete));
+
+    if (
+      equipoActual &&
+      instalacionActual &&
+      String(instalacionActual.pestana || '') === String(item.pestana || '') &&
+      (
+        String(equipoActual.id || '') === String(item.equipoId || '') ||
+        Number(equipoActual.fila) === Number(item.filaNum)
+      )
+    ) {
+      equipoActual = paquete.equipos[idx];
+    }
+
+  } catch (e) {
+    console.warn('No se pudo actualizar el caché tras sincronizar datos:', e);
+  }
+}
+
+async function enviarItemDatosCola(item, actorToken) {
+  return bridgeCall('guardardatoscola', {
+    pestana: item.pestana,
+    filaNum: item.filaNum,
+    equipoId: item.equipoId,
+    cambios: item.cambios,
+    clientId: item.clientId,
+    actorToken
+  }, 25000);
+}
+
+async function sincronizarColaDatos({ silencioso = false } = {}) {
+  let cola = leerColaDatos();
+
+  if (!cola.length) {
+    actualizarEstadoColaDatos();
+    return { ok: true, enviados: 0, pendientes: 0, conflictos: 0 };
+  }
+
+  if (!navigator.onLine || !servidorDisponible) {
+    actualizarEstadoColaDatos();
+    return {
+      ok: false,
+      enviados: 0,
+      pendientes: cola.length,
+      conflictos: 0,
+      msg: 'Sin conexión'
+    };
+  }
+
+  let token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
+
+  if (!token || !sesionOnline) {
+    const ok = await revalidarSesionServidor();
+
+    if (!ok) {
+      actualizarEstadoColaDatos();
+      return {
+        ok: false,
+        enviados: 0,
+        pendientes: cola.length,
+        conflictos: 0,
+        msg: 'No se pudo validar la sesión'
+      };
+    }
+
+    token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
+  }
+
+  let enviados = 0;
+  let cantidadConflictos = 0;
+  let ultimoError = '';
+
+  for (const item of [...cola]) {
+    try {
+      let res = await enviarItemDatosCola(item, token);
+
+      if (
+        res &&
+        !res.ok &&
+        String(res.msg || '').toLowerCase().includes('sesión')
+      ) {
+        const ok = await revalidarSesionServidor();
+
+        if (!ok) {
+          ultimoError = 'Sesión vencida';
+          break;
+        }
+
+        token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
+        res = await enviarItemDatosCola(item, token);
+      }
+
+      if (!res || !res.ok) {
+        ultimoError = (res && res.msg) || 'No se pudieron sincronizar los datos';
+        break;
+      }
+
+      cantidadConflictos += Array.isArray(res.conflictos)
+        ? res.conflictos.length
+        : 0;
+
+      cola = cola.filter(x =>
+        String(x.clientId || '') !== String(item.clientId || '')
+      );
+
+      guardarColaDatos(cola);
+      actualizarEquipoCacheDesdeRespuestaDatos(item, res);
+      enviados++;
+
+    } catch (e) {
+      ultimoError = e && e.message ? e.message : String(e);
+      break;
+    }
+  }
+
+  actualizarEstadoColaDatos();
+
+  if (equipoActual && document.getElementById('pantallaDatosEquipo').classList.contains('active')) {
+    renderDetalleParametros(equipoActual, false);
+  }
+
+  if (!silencioso) {
+    if (cantidadConflictos > 0) {
+      mostrarMensaje(
+        'msgDatos',
+        'Se sincronizaron los cambios, pero ' +
+          cantidadConflictos +
+          ' dato' +
+          (cantidadConflictos === 1 ? '' : 's') +
+          ' quedó' +
+          (cantidadConflictos === 1 ? '' : 'aron') +
+          ' en conflicto para decisión del administrador.',
+        'warn'
+      );
+    } else if (!cola.length && enviados > 0) {
+      mostrarMensaje(
+        'msgDatos',
+        enviados === 1
+          ? 'Cambios sincronizados. Quedaron pendientes de validación cuando corresponda.'
+          : 'Cambios sincronizados correctamente.',
+        'ok'
+      );
+    } else if (ultimoError) {
+      mostrarMensaje(
+        'msgDatos',
+        'Quedaron cambios pendientes: ' + ultimoError,
+        'warn'
+      );
+    }
+  }
+
+  return {
+    ok: cola.length === 0,
+    enviados,
+    pendientes: cola.length,
+    conflictos: cantidadConflictos,
+    msg: ultimoError
+  };
+}
 
 
 function claveColaComentarios() {
@@ -2636,6 +3543,7 @@ function salirAdmin() {
   adminTokenPwa = '';
   mostrarMensaje('msgAdminLogin', '', '');
   mostrarMensaje('msgAdminSolicitudes', '', '');
+  mostrarMensaje('msgAdminConflictos', '', '');
 
   if (perfilLocal()) prepararPantallaPin();
   else mostrarPantalla('pantallaPrimeraVez');
@@ -2675,7 +3583,7 @@ async function loginAdmin() {
 
     adminTokenPwa = res.token;
     mostrarPantalla('pantallaAdminSolicitudes');
-    await cargarSolicitudesAdmin();
+    await cargarPanelAdmin();
 
   } catch (e) {
     mostrarMensaje(
@@ -2840,6 +3748,200 @@ async function resolverSolicitudAdmin(solicitudId, aprobar) {
   }
 }
 
+async function cargarPanelAdmin() {
+  await cargarSolicitudesAdmin();
+  await cargarConflictosAdmin();
+}
+
+function renderConflictosAdmin(conflictos) {
+  const lista = document.getElementById('listaConflictosAdmin');
+  const estado = document.getElementById('estadoConflictosAdmin');
+  const datos = Array.isArray(conflictos) ? conflictos : [];
+
+  lista.innerHTML = '';
+
+  if (!datos.length) {
+    lista.innerHTML =
+      '<div class="empty-state">No hay conflictos pendientes.</div>';
+    estado.textContent = '0 pendientes';
+    return;
+  }
+
+  datos.forEach(conf => {
+    const card = document.createElement('div');
+    card.className = 'request-card';
+
+    const usuario = document.createElement('div');
+    usuario.className = 'request-user';
+    usuario.textContent =
+      (conf.nombre || conf.usuario || 'Usuario') +
+      ' · ' +
+      (conf.equipoId || 'Equipo');
+
+    const meta = document.createElement('div');
+    meta.className = 'request-meta';
+    meta.textContent =
+      (conf.pestana || '') +
+      (conf.fecha ? ' · ' + conf.fecha : '');
+
+    const campo = document.createElement('div');
+    campo.className = 'request-installation';
+    campo.textContent = conf.campo || '(campo sin nombre)';
+
+    const valores = document.createElement('div');
+    valores.className = 'conflict-values';
+
+    const base = document.createElement('div');
+    base.innerHTML = '<strong>Base del usuario:</strong> ' +
+      escaparHtml(String(conf.valorBase || '∅'));
+
+    const servidor = document.createElement('div');
+    servidor.innerHTML = '<strong>Servidor:</strong> ' +
+      escaparHtml(String(conf.valorServidor || '∅'));
+
+    const propuesto = document.createElement('div');
+    propuesto.innerHTML = '<strong>Propuesto:</strong> ' +
+      escaparHtml(String(conf.valorPropuesto || '∅'));
+
+    valores.appendChild(base);
+    valores.appendChild(servidor);
+    valores.appendChild(propuesto);
+
+    const acciones = document.createElement('div');
+    acciones.className = 'request-actions';
+
+    const mantener = document.createElement('button');
+    mantener.className = 'btn btn-secondary';
+    mantener.textContent = 'Mantener servidor';
+    mantener.onclick = () =>
+      resolverConflictoAdmin(conf.id, 'SERVIDOR');
+
+    const aplicar = document.createElement('button');
+    aplicar.className = 'btn btn-ok';
+    aplicar.textContent = 'Aplicar propuesta';
+    aplicar.onclick = () =>
+      resolverConflictoAdmin(conf.id, 'PROPUESTO');
+
+    acciones.appendChild(mantener);
+    acciones.appendChild(aplicar);
+
+    card.appendChild(usuario);
+    card.appendChild(meta);
+    card.appendChild(campo);
+    card.appendChild(valores);
+    card.appendChild(acciones);
+    lista.appendChild(card);
+  });
+
+  estado.textContent =
+    datos.length +
+    (datos.length === 1 ? ' pendiente' : ' pendientes');
+}
+
+function escaparHtml(valor) {
+  return String(valor == null ? '' : valor)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+async function cargarConflictosAdmin() {
+  const lista = document.getElementById('listaConflictosAdmin');
+  const estado = document.getElementById('estadoConflictosAdmin');
+
+  if (!adminTokenPwa) {
+    salirAdmin();
+    return;
+  }
+
+  if (!navigator.onLine || !servidorDisponible) {
+    lista.innerHTML =
+      '<div class="empty-state">Sin conexión con el servidor.</div>';
+    estado.textContent = 'Sin conexión';
+    return;
+  }
+
+  estado.textContent = 'Actualizando…';
+  mostrarMensaje('msgAdminConflictos', '', '');
+
+  try {
+    const res = await bridgeCall('adminconflictos', {
+      adminToken: adminTokenPwa
+    }, 15000);
+
+    if (!res || !res.ok) {
+      mostrarMensaje(
+        'msgAdminConflictos',
+        (res && res.msg) || 'No se pudieron cargar los conflictos.',
+        'err'
+      );
+
+      if (res && String(res.msg || '').toLowerCase().includes('sesión')) {
+        adminTokenPwa = '';
+      }
+      return;
+    }
+
+    renderConflictosAdmin(res.conflictos || []);
+
+  } catch (e) {
+    mostrarMensaje(
+      'msgAdminConflictos',
+      e && e.message ? e.message : String(e),
+      'err'
+    );
+    estado.textContent = 'Error';
+  }
+}
+
+async function resolverConflictoAdmin(conflictoId, decision) {
+  if (!adminTokenPwa) return;
+
+  const texto = decision === 'PROPUESTO'
+    ? 'aplicar la propuesta del usuario'
+    : 'mantener el valor actual del servidor';
+
+  if (!confirm('¿Confirmar ' + texto + '?')) return;
+
+  mostrarMensaje('msgAdminConflictos', 'Procesando…', 'warn');
+
+  try {
+    const res = await bridgeCall('adminresolverconflicto', {
+      conflictoId,
+      decision,
+      adminToken: adminTokenPwa
+    }, 20000);
+
+    if (!res || !res.ok) {
+      mostrarMensaje(
+        'msgAdminConflictos',
+        (res && res.msg) || 'No se pudo resolver el conflicto.',
+        'err'
+      );
+      return;
+    }
+
+    mostrarMensaje(
+      'msgAdminConflictos',
+      decision === 'PROPUESTO'
+        ? 'Propuesta aplicada y conflicto resuelto.'
+        : 'Se mantuvo el valor del servidor y el conflicto quedó resuelto.',
+      'ok'
+    );
+
+    await cargarConflictosAdmin();
+
+  } catch (e) {
+    mostrarMensaje(
+      'msgAdminConflictos',
+      e && e.message ? e.message : String(e),
+      'err'
+    );
+  }
+}
+
 function abrirApp() {
   const perfil = perfilLocal();
   document.getElementById('bienvenida').textContent =
@@ -2854,17 +3956,20 @@ function bloquearApp() {
 }
 
 function cambiarUsuario() {
-  const pendientes = leerColaComentarios();
+  const comentariosPendientes = leerColaComentarios();
+  const datosPendientes = leerColaDatos();
 
-  if (pendientes.length) {
+  if (comentariosPendientes.length || datosPendientes.length) {
+    const camposDatos = datosPendientes.reduce(
+      (acc, item) => acc + (Array.isArray(item.cambios) ? item.cambios.length : 0),
+      0
+    );
+
     alert(
-      'Hay ' +
-      pendientes.length +
-      ' comentario' +
-      (pendientes.length === 1 ? '' : 's') +
-      ' pendiente' +
-      (pendientes.length === 1 ? '' : 's') +
-      ' de sincronización.\n\nConectate y sincronizá antes de cambiar de usuario para no perder trabajo de campo.'
+      'Hay trabajo pendiente de sincronización en este celular.' +
+      '\n\nComentarios: ' + comentariosPendientes.length +
+      '\nDatos: ' + camposDatos +
+      '\n\nConectate y sincronizá antes de cambiar de usuario para no perder trabajo de campo.'
     );
     return;
   }
@@ -2892,6 +3997,7 @@ window.addEventListener('online', async () => {
 
     if (sesionOnline) {
       await sincronizarColaComentarios({ silencioso: true });
+      await sincronizarColaDatos({ silencioso: true });
     }
 
     const bienvenida = document.getElementById('bienvenida');
