@@ -215,7 +215,7 @@
       font-size:clamp(.9rem, 3.7vw, 1rem);
     }
 
-    /* v0.7.0 — mejor lectura en celular */
+    /* v0.7.1 — mejor lectura en celular */
     body {
       font-size:clamp(17px, 4vw, 20px);
     }
@@ -274,7 +274,7 @@
       line-height:1.4;
     }
   
-    /* v0.7.0 — solicitud de acceso */
+    /* v0.7.1 — solicitud de acceso */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -320,7 +320,7 @@
     }
 
 
-    /* v0.7.0 — administración de solicitudes */
+    /* v0.7.1 — administración de solicitudes */
     .admin-list {
       display:grid;
       gap:.75rem;
@@ -372,7 +372,7 @@
     }
 
 
-    /* v0.7.0 — inventario de equipos */
+    /* v0.7.1 — inventario de equipos */
     .equipment-list {
       display:grid;
       gap:.65rem;
@@ -438,7 +438,7 @@
     }
 
 
-    /* v0.7.0 — detalle de equipo */
+    /* v0.7.1 — detalle de equipo */
     .equipment-card {
       cursor:pointer;
     }
@@ -508,7 +508,7 @@
     }
 
 
-    /* v0.7.0 — menú intermedio del equipo */
+    /* v0.7.1 — menú intermedio del equipo */
     .equipment-menu {
       display:grid;
       gap:1rem;
@@ -539,7 +539,7 @@
     }
 
 
-    /* v0.7.0 — fotos reales y contadores */
+    /* v0.7.1 — fotos reales y contadores */
     .menu-count {
       float:right;
       min-width:2rem;
@@ -591,7 +591,7 @@
     }
 
 
-    /* v0.7.0 — alta de comentarios */
+    /* v0.7.1 — alta de comentarios */
     .comment-editor {
       margin-bottom:1rem;
       padding:1rem;
@@ -625,7 +625,7 @@
     }
 
 
-    /* v0.7.0 — cola offline de comentarios */
+    /* v0.7.1 — cola offline de comentarios */
     .sync-pending {
       color:var(--warn);
       font-weight:700;
@@ -649,7 +649,7 @@
     }
 
 
-    /* v0.7.0 — edición de datos online/offline */
+    /* v0.7.1 — edición de datos online/offline */
     .data-actions {
       display:flex;
       gap:.6rem;
@@ -707,7 +707,7 @@
     .conflict-values strong { color:var(--text); }
 
 
-    /* v0.7.0 — bloqueo visual durante operaciones */
+    /* v0.7.1 — bloqueo visual durante operaciones */
     .busy-overlay {
       position:fixed;
       inset:0;
@@ -755,7 +755,7 @@
     @keyframes busy-spin { to { transform:rotate(360deg); } }
 
 
-    /* v0.7.0 — fotos online/offline */
+    /* v0.7.1 — fotos online/offline */
     .photo-editor {margin-bottom:1rem;padding:1rem;background:var(--surface2);border:1px solid var(--border);border-radius:10px;}
     .photo-actions {display:flex;gap:.65rem;flex-wrap:wrap;}
     .photo-pending-title {margin:.9rem 0 .55rem;font-weight:700;color:var(--text);}
@@ -763,7 +763,7 @@
     .photo-pending-badge {display:inline-block;margin-top:.45rem;font-size:.82rem;font-weight:700;color:var(--warn);}
 
 
-    /* v0.7.0 — propuestas de fotos con validación administrativa */
+    /* v0.7.1 — propuestas de fotos con validación administrativa */
     .photo-pending-server {
       border:1px dashed var(--accent);
       background:var(--surface2);
@@ -803,7 +803,7 @@
     }
 
 
-    /* v0.7.0 — acciones de foto offline + validación */
+    /* v0.7.1 — acciones de foto offline + validación */
     .photo-request-note {
       margin-top:.45rem;
       font-size:.82rem;
@@ -820,7 +820,7 @@
     }
 
 
-    /* v0.7.0 — visor de fotos para revisión ADMIN */
+    /* v0.7.1 — visor de fotos para revisión ADMIN */
     .photo-viewer {
       position:fixed;
       inset:0;
@@ -894,7 +894,7 @@
     }
 
 
-    /* v0.7.0 — altas/bajas de equipos con trabajo offline */
+    /* v0.7.1 — altas/bajas de equipos con trabajo offline */
     .equipment-actions {
       display:flex;
       gap:.65rem;
@@ -1046,7 +1046,7 @@
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.7.0</div>
+      <div class="footer">v0.7.1</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -1067,7 +1067,7 @@
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.7.0</div>
+      <div class="footer">v0.7.1</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -1088,7 +1088,7 @@
         <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.7.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.7.1</div>
       </div>
     </section>
 
@@ -1117,7 +1117,7 @@
           <button class="btn btn-secondary" onclick="actualizarEquiposManual()">Actualizar equipos</button>
         </div>
         <div id="msgEquipos" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.7.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.7.1</div>
       </div>
     </section>
 
@@ -1165,7 +1165,7 @@
           <div id="msgNuevoEquipo" class="message"></div>
         </div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.7.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.7.1</div>
       </div>
     </section>
 
@@ -1209,7 +1209,7 @@
           trabajabas offline, la PWA no lo pisa: el conflicto queda para decisión del administrador.
         </div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.7.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.7.1</div>
       </div>
     </section>
 
@@ -1235,7 +1235,7 @@
         <div id="estadoColaDatos" class="queue-status"></div>
         <div id="detalleParametros" class="detail-grid"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.7.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.7.1</div>
       </div>
     </section>
 
@@ -1267,7 +1267,7 @@
 
         <div id="detalleComentarios"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.7.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.7.1</div>
       </div>
     </section>
 
@@ -1295,7 +1295,7 @@
         <div id="detalleFotosPendientes"></div>
         <div id="detalleFotos"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.7.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.7.1</div>
       </div>
     </section>
 
@@ -1311,7 +1311,7 @@
       <button id="btnAdminLogin" class="btn btn-primary" onclick="loginAdmin()">Ingresar como administrador</button>
       <button class="btn btn-secondary" onclick="salirAdmin()">Cancelar</button>
       <div id="msgAdminLogin" class="message"></div>
-      <div class="footer">v0.7.0</div>
+      <div class="footer">v0.7.1</div>
     </section>
 
     <section id="pantallaAdminSolicitudes" class="screen dashboard">
@@ -1386,7 +1386,7 @@
         <button class="btn btn-secondary" onclick="cargarPanelAdmin()">Actualizar</button>
         <button class="btn btn-secondary" onclick="salirAdmin()">Salir del administrador</button>
         <div id="msgAdminSolicitudes" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.7.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.7.1</div>
       </div>
     </section>
 
@@ -1415,7 +1415,7 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.7.0';
+const APP_VERSION = '0.7.1';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
