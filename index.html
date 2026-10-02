@@ -215,7 +215,7 @@
       font-size:clamp(.9rem, 3.7vw, 1rem);
     }
 
-    /* v0.4.4 — mejor lectura en celular */
+    /* v0.4.5 — mejor lectura en celular */
     body {
       font-size:clamp(17px, 4vw, 20px);
     }
@@ -274,7 +274,7 @@
       line-height:1.4;
     }
   
-    /* v0.4.4 — solicitud de acceso */
+    /* v0.4.5 — solicitud de acceso */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -320,7 +320,7 @@
     }
 
 
-    /* v0.4.4 — administración de solicitudes */
+    /* v0.4.5 — administración de solicitudes */
     .admin-list {
       display:grid;
       gap:.75rem;
@@ -372,7 +372,7 @@
     }
 
 
-    /* v0.4.4 — inventario de equipos */
+    /* v0.4.5 — inventario de equipos */
     .equipment-list {
       display:grid;
       gap:.65rem;
@@ -438,7 +438,7 @@
     }
 
 
-    /* v0.4.4 — detalle de equipo */
+    /* v0.4.5 — detalle de equipo */
     .equipment-card {
       cursor:pointer;
     }
@@ -508,7 +508,7 @@
     }
 
 
-    /* v0.4.4 — menú intermedio del equipo */
+    /* v0.4.5 — menú intermedio del equipo */
     .equipment-menu {
       display:grid;
       gap:1rem;
@@ -539,7 +539,7 @@
     }
 
 
-    /* v0.4.4 — fotos reales y contadores */
+    /* v0.4.5 — fotos reales y contadores */
     .menu-count {
       float:right;
       min-width:2rem;
@@ -591,7 +591,7 @@
     }
 
 
-    /* v0.4.4 — alta de comentarios */
+    /* v0.4.5 — alta de comentarios */
     .comment-editor {
       margin-bottom:1rem;
       padding:1rem;
@@ -624,6 +624,30 @@
       margin-top:.7rem;
     }
 
+
+    /* v0.4.5 — cola offline de comentarios */
+    .sync-pending {
+      color:var(--warn);
+      font-weight:700;
+    }
+
+    .sync-ok {
+      color:var(--ok);
+      font-weight:700;
+    }
+
+    .sync-error {
+      color:#ff7b72;
+      font-weight:700;
+    }
+
+    .queue-status {
+      margin-top:.55rem;
+      color:var(--muted);
+      font-size:.9rem;
+      line-height:1.35;
+    }
+
 </style>
 </head>
 <body>
@@ -653,7 +677,7 @@
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.4.4</div>
+      <div class="footer">v0.4.5</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -674,7 +698,7 @@
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.4.4</div>
+      <div class="footer">v0.4.5</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -695,7 +719,7 @@
         <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.4.4</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.5</div>
       </div>
     </section>
 
@@ -721,7 +745,7 @@
 
         <button class="btn btn-secondary" onclick="actualizarEquiposManual()">Actualizar equipos</button>
         <div id="msgEquipos" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.4.4</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.5</div>
       </div>
     </section>
 
@@ -761,7 +785,7 @@
           y los datos del servidor, la resolución final corresponde al administrador.
         </div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.4.4</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.5</div>
       </div>
     </section>
 
@@ -778,7 +802,7 @@
         <div id="estadoDatosEquipo" class="mini-status"></div>
         <div id="detalleParametros" class="detail-grid"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.4.4</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.5</div>
       </div>
     </section>
 
@@ -805,11 +829,12 @@
             onclick="guardarComentarioDesdePwa()"
           >Guardar comentario</button>
           <div id="msgComentario" class="message"></div>
+          <div id="estadoColaComentarios" class="queue-status"></div>
         </div>
 
         <div id="detalleComentarios"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.4.4</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.5</div>
       </div>
     </section>
 
@@ -825,7 +850,7 @@
 
         <div id="detalleFotos"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.4.4</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.5</div>
       </div>
     </section>
 
@@ -841,7 +866,7 @@
       <button id="btnAdminLogin" class="btn btn-primary" onclick="loginAdmin()">Ingresar como administrador</button>
       <button class="btn btn-secondary" onclick="salirAdmin()">Cancelar</button>
       <div id="msgAdminLogin" class="message"></div>
-      <div class="footer">v0.4.4</div>
+      <div class="footer">v0.4.5</div>
     </section>
 
     <section id="pantallaAdminSolicitudes" class="screen dashboard">
@@ -861,7 +886,7 @@
         <button class="btn btn-secondary" onclick="cargarSolicitudesAdmin()">Actualizar</button>
         <button class="btn btn-secondary" onclick="salirAdmin()">Salir del administrador</button>
         <div id="msgAdminSolicitudes" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.4.4</div>
+        <div class="footer">Inventario ET/CD PWA · v0.4.5</div>
       </div>
     </section>
 
@@ -890,13 +915,14 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.4.4';
+const APP_VERSION = '0.4.5';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
 const INSTALLATIONS_KEY = 'inventario_etcd_instalaciones_v1';
 const ACCESS_REQUESTS_KEY = 'inventario_etcd_solicitudes_pendientes_v1';
 const EQUIPMENT_CACHE_PREFIX = 'inventario_etcd_equipos_v1:';
+const COMMENT_QUEUE_PREFIX = 'inventario_etcd_cola_comentarios_v1:';
 
 const CHANNEL_TO_BRIDGE = 'inventario-etcd-pwa';
 const CHANNEL_FROM_BRIDGE = 'inventario-etcd-bridge';
@@ -1199,6 +1225,10 @@ async function ingresarConPin() {
 
   if (navigator.onLine) {
     await revalidarSesionServidor();
+
+    if (sesionOnline) {
+      await sincronizarColaComentarios({ silencioso: true });
+    }
   } else {
     sesionOnline = false;
   }
@@ -1368,17 +1398,24 @@ function guardarEquiposLocal(inst, respuesta) {
             nombre: String(f.nombre || ''),
             rol: String(f.rol || '')
           })) : [],
-          comentarios: Array.isArray(e.comentarios) ? e.comentarios.map(c => ({
-            id: String(c.id || ''),
-            texto: String(c.texto || ''),
-            fechaHora: String(c.fechaHora || ''),
-            timestamp: Number(c.timestamp || 0),
-            usuario: String(c.usuario || ''),
-            nombre: String(c.nombre || ''),
-            rol: String(c.rol || ''),
-            editadoPor: String(c.editadoPor || ''),
-            fechaEdicion: String(c.fechaEdicion || '')
-          })) : [],
+          comentarios: comentariosConPendientes(
+            inst.pestana,
+            e.fila,
+            e.id,
+            Array.isArray(e.comentarios) ? e.comentarios.map(c => ({
+              id: String(c.id || ''),
+              clientId: String(c.clientId || ''),
+              texto: String(c.texto || ''),
+              fechaHora: String(c.fechaHora || ''),
+              timestamp: Number(c.timestamp || 0),
+              usuario: String(c.usuario || ''),
+              nombre: String(c.nombre || ''),
+              rol: String(c.rol || ''),
+              editadoPor: String(c.editadoPor || ''),
+              fechaEdicion: String(c.fechaEdicion || ''),
+              syncEstado: String(c.syncEstado || '')
+            })) : []
+          ),
           completo: e.completo === true,
           camposFaltantes: Array.isArray(e.camposFaltantes) ? e.camposFaltantes : [],
           estado: String(e.estado || ''),
@@ -1587,6 +1624,7 @@ function abrirComentariosEquipo() {
   mostrarMensaje('msgComentario', '', '');
 
   renderDetalleComentarios(equipoActual);
+  actualizarEstadoColaComentarios();
   mostrarPantalla('pantallaComentariosEquipo');
 }
 
@@ -1641,6 +1679,410 @@ function renderDetalleParametros(equipo) {
 }
 
 
+
+function claveColaComentarios() {
+  const perfil = perfilLocal();
+  const usuario = perfil ? String(perfil.usuario || '').trim() : '';
+  return COMMENT_QUEUE_PREFIX + encodeURIComponent(usuario);
+}
+
+function leerColaComentarios() {
+  try {
+    const datos = JSON.parse(
+      localStorage.getItem(claveColaComentarios()) || '[]'
+    );
+    return Array.isArray(datos) ? datos : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function guardarColaComentarios(items) {
+  localStorage.setItem(
+    claveColaComentarios(),
+    JSON.stringify(Array.isArray(items) ? items : [])
+  );
+  actualizarEstadoColaComentarios();
+}
+
+function generarClientIdComentario() {
+  if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+    return window.crypto.randomUUID();
+  }
+
+  return (
+    'c-' +
+    Date.now() +
+    '-' +
+    Math.random().toString(36).slice(2, 12)
+  );
+}
+
+function fechaLocalComentario(timestamp) {
+  const d = new Date(Number(timestamp || Date.now()));
+
+  if (Number.isNaN(d.getTime())) return '';
+
+  return d.toLocaleString('es-AR', {
+    day:'2-digit',
+    month:'2-digit',
+    year:'numeric',
+    hour:'2-digit',
+    minute:'2-digit'
+  });
+}
+
+function comentarioPendienteDesdeItem(item) {
+  return {
+    id: 'local-' + String(item.clientId || ''),
+    clientId: String(item.clientId || ''),
+    texto: String(item.texto || ''),
+    fechaHora: fechaLocalComentario(item.creadoEn),
+    timestamp: Number(item.creadoEn || Date.now()),
+    usuario: String(item.usuario || ''),
+    nombre: String(item.nombre || item.usuario || ''),
+    rol: 'USUARIO',
+    editadoPor: '',
+    fechaEdicion: '',
+    syncEstado: 'PENDIENTE'
+  };
+}
+
+function comentariosConPendientes(
+  pestana,
+  filaNum,
+  equipoId,
+  comentariosServidor
+) {
+  const base = Array.isArray(comentariosServidor)
+    ? comentariosServidor.map(c => ({ ...c }))
+    : [];
+
+  const clientIdsServidor = new Set(
+    base
+      .map(c => String(c.clientId || '').trim())
+      .filter(Boolean)
+  );
+
+  const pendientes = leerColaComentarios()
+    .filter(item =>
+      String(item.pestana || '') === String(pestana || '') &&
+      (
+        String(item.equipoId || '') === String(equipoId || '') ||
+        Number(item.filaNum) === Number(filaNum)
+      )
+    )
+    .filter(item =>
+      !clientIdsServidor.has(String(item.clientId || ''))
+    )
+    .map(comentarioPendienteDesdeItem);
+
+  return [...pendientes, ...base]
+    .sort((a, b) =>
+      Number(b.timestamp || 0) - Number(a.timestamp || 0)
+    );
+}
+
+function actualizarEstadoColaComentarios() {
+  const el = document.getElementById('estadoColaComentarios');
+  if (!el) return;
+
+  const cantidad = leerColaComentarios().length;
+
+  if (!cantidad) {
+    el.textContent = '✓ Sin cambios pendientes';
+    el.className = 'queue-status sync-ok';
+    return;
+  }
+
+  el.textContent =
+    '⏳ ' +
+    cantidad +
+    ' comentario' +
+    (cantidad === 1 ? '' : 's') +
+    ' pendiente' +
+    (cantidad === 1 ? '' : 's') +
+    ' de sincronización';
+
+  el.className = 'queue-status sync-pending';
+}
+
+function agregarComentarioPendienteLocal(item) {
+  const cola = leerColaComentarios();
+
+  if (!cola.some(x => String(x.clientId) === String(item.clientId))) {
+    cola.push(item);
+    guardarColaComentarios(cola);
+  }
+
+  const comentarioLocal = comentarioPendienteDesdeItem(item);
+
+  if (
+    instalacionActual &&
+    equipoActual &&
+    String(instalacionActual.pestana || '') === String(item.pestana || '') &&
+    (
+      String(equipoActual.id || '') === String(item.equipoId || '') ||
+      Number(equipoActual.fila) === Number(item.filaNum)
+    )
+  ) {
+    const actuales = Array.isArray(equipoActual.comentarios)
+      ? equipoActual.comentarios
+      : [];
+
+    if (
+      !actuales.some(c =>
+        String(c.clientId || '') === String(item.clientId)
+      )
+    ) {
+      equipoActual.comentarios = [
+        comentarioLocal,
+        ...actuales
+      ];
+    }
+
+    actualizarComentarioEnCache(equipoActual.comentarios);
+    renderDetalleComentarios(equipoActual);
+
+    const contador =
+      document.getElementById('countComentariosEquipo');
+
+    if (contador) {
+      contador.textContent = equipoActual.comentarios.length;
+    }
+  } else {
+    const paquete = leerEquiposLocal(item.pestana);
+
+    if (paquete && Array.isArray(paquete.equipos)) {
+      const idx = paquete.equipos.findIndex(e =>
+        String(e.id || '') === String(item.equipoId || '') ||
+        Number(e.fila) === Number(item.filaNum)
+      );
+
+      if (idx >= 0) {
+        const actuales = Array.isArray(paquete.equipos[idx].comentarios)
+          ? paquete.equipos[idx].comentarios
+          : [];
+
+        if (
+          !actuales.some(c =>
+            String(c.clientId || '') === String(item.clientId)
+          )
+        ) {
+          paquete.equipos[idx].comentarios = [
+            comentarioLocal,
+            ...actuales
+          ];
+
+          paquete.fecha = new Date().toISOString();
+
+          localStorage.setItem(
+            claveCacheEquipos(item.pestana),
+            JSON.stringify(paquete)
+          );
+        }
+      }
+    }
+  }
+}
+
+function actualizarComentariosCachePorEquipo(
+  pestana,
+  filaNum,
+  equipoId,
+  comentariosServidor
+) {
+  const comentarios = comentariosConPendientes(
+    pestana,
+    filaNum,
+    equipoId,
+    comentariosServidor
+  );
+
+  const paquete = leerEquiposLocal(pestana);
+
+  if (paquete && Array.isArray(paquete.equipos)) {
+    const idx = paquete.equipos.findIndex(e =>
+      String(e.id || '') === String(equipoId || '') ||
+      Number(e.fila) === Number(filaNum)
+    );
+
+    if (idx >= 0) {
+      paquete.equipos[idx].comentarios = comentarios;
+      paquete.fecha = new Date().toISOString();
+
+      localStorage.setItem(
+        claveCacheEquipos(pestana),
+        JSON.stringify(paquete)
+      );
+    }
+  }
+
+  if (
+    instalacionActual &&
+    equipoActual &&
+    String(instalacionActual.pestana || '') === String(pestana || '') &&
+    (
+      String(equipoActual.id || '') === String(equipoId || '') ||
+      Number(equipoActual.fila) === Number(filaNum)
+    )
+  ) {
+    equipoActual.comentarios = comentarios;
+
+    const pantallaComentarios =
+      document.getElementById('pantallaComentariosEquipo');
+
+    if (
+      pantallaComentarios &&
+      pantallaComentarios.classList.contains('active')
+    ) {
+      renderDetalleComentarios(equipoActual);
+    }
+
+    const contador =
+      document.getElementById('countComentariosEquipo');
+
+    if (contador) {
+      contador.textContent = comentarios.length;
+    }
+  }
+}
+
+async function enviarItemComentarioCola(item, actorToken) {
+  return bridgeCall('guardarcomentariocola', {
+    pestana: item.pestana,
+    filaNum: item.filaNum,
+    equipoId: item.equipoId,
+    texto: item.texto,
+    clientId: item.clientId,
+    actorToken
+  }, 20000);
+}
+
+async function sincronizarColaComentarios({ silencioso = false } = {}) {
+  let cola = leerColaComentarios();
+
+  if (!cola.length) {
+    actualizarEstadoColaComentarios();
+    return {
+      ok: true,
+      enviados: 0,
+      pendientes: 0
+    };
+  }
+
+  if (!navigator.onLine || !servidorDisponible) {
+    actualizarEstadoColaComentarios();
+    return {
+      ok: false,
+      enviados: 0,
+      pendientes: cola.length,
+      msg: 'Sin conexión'
+    };
+  }
+
+  let token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
+
+  if (!token || !sesionOnline) {
+    const ok = await revalidarSesionServidor();
+
+    if (!ok) {
+      actualizarEstadoColaComentarios();
+      return {
+        ok: false,
+        enviados: 0,
+        pendientes: cola.length,
+        msg: 'No se pudo validar la sesión'
+      };
+    }
+
+    token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
+  }
+
+  let enviados = 0;
+  let ultimoError = '';
+
+  // Se procesa en orden de creación. Solo se elimina de la cola
+  // cuando el servidor confirma el guardado.
+  for (const item of [...cola]) {
+    try {
+      let res = await enviarItemComentarioCola(item, token);
+
+      if (
+        res &&
+        !res.ok &&
+        String(res.msg || '').toLowerCase().includes('sesión')
+      ) {
+        const ok = await revalidarSesionServidor();
+
+        if (!ok) {
+          ultimoError = 'Sesión vencida';
+          break;
+        }
+
+        token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
+        res = await enviarItemComentarioCola(item, token);
+      }
+
+      if (!res || !res.ok) {
+        ultimoError =
+          (res && res.msg) ||
+          'No se pudo sincronizar un comentario';
+        break;
+      }
+
+      cola = cola.filter(x =>
+        String(x.clientId || '') !== String(item.clientId || '')
+      );
+
+      guardarColaComentarios(cola);
+
+      actualizarComentariosCachePorEquipo(
+        item.pestana,
+        item.filaNum,
+        item.equipoId,
+        Array.isArray(res.comentarios)
+          ? res.comentarios
+          : []
+      );
+
+      enviados++;
+
+    } catch (e) {
+      ultimoError =
+        e && e.message ? e.message : String(e);
+      break;
+    }
+  }
+
+  actualizarEstadoColaComentarios();
+
+  if (!silencioso) {
+    if (!cola.length && enviados > 0) {
+      mostrarMensaje(
+        'msgComentario',
+        enviados === 1
+          ? 'Comentario sincronizado correctamente.'
+          : enviados + ' comentarios sincronizados correctamente.',
+        'ok'
+      );
+    } else if (ultimoError) {
+      mostrarMensaje(
+        'msgComentario',
+        'Quedaron cambios pendientes: ' + ultimoError,
+        'warn'
+      );
+    }
+  }
+
+  return {
+    ok: cola.length === 0,
+    enviados,
+    pendientes: cola.length,
+    msg: ultimoError
+  };
+}
+
 function actualizarComentarioEnCache(comentarios) {
   if (!instalacionActual || !equipoActual) return;
 
@@ -1675,92 +2117,71 @@ async function guardarComentarioDesdePwa() {
   mostrarMensaje('msgComentario', '', '');
 
   if (!texto) {
-    mostrarMensaje('msgComentario', 'Escribí un comentario.', 'err');
-    return;
-  }
-
-  if (!navigator.onLine || !servidorDisponible) {
     mostrarMensaje(
       'msgComentario',
-      'En esta versión el comentario necesita conexión para guardarse. La cola offline se agregará en el próximo paso.',
-      'warn'
-    );
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = 'Guardando…';
-
-  try {
-    let token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
-
-    if (!token || !sesionOnline) {
-      const ok = await revalidarSesionServidor();
-      if (!ok) throw new Error('No se pudo validar la sesión.');
-      token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
-    }
-
-    let res = await bridgeCall('guardarcomentario', {
-      pestana: instalacionActual.pestana,
-      filaNum: equipoActual.fila,
-      equipoId: equipoActual.id,
-      texto,
-      actorToken: token
-    }, 20000);
-
-    if (res && !res.ok &&
-        String(res.msg || '').toLowerCase().includes('sesión')) {
-      const ok = await revalidarSesionServidor();
-      if (ok) {
-        token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
-        res = await bridgeCall('guardarcomentario', {
-          pestana: instalacionActual.pestana,
-          filaNum: equipoActual.fila,
-          equipoId: equipoActual.id,
-          texto,
-          actorToken: token
-        }, 20000);
-      }
-    }
-
-    if (!res || !res.ok) {
-      throw new Error(
-        (res && res.msg) || 'No se pudo guardar el comentario.'
-      );
-    }
-
-    equipoActual.comentarios = Array.isArray(res.comentarios)
-      ? res.comentarios
-      : [];
-
-    actualizarComentarioEnCache(equipoActual.comentarios);
-
-    renderDetalleComentarios(equipoActual);
-
-    const contador = document.getElementById('countComentariosEquipo');
-    if (contador) {
-      contador.textContent = equipoActual.comentarios.length;
-    }
-
-    if (textarea) textarea.value = '';
-
-    mostrarMensaje(
-      'msgComentario',
-      'Comentario guardado correctamente.',
-      'ok'
-    );
-
-  } catch (e) {
-    mostrarMensaje(
-      'msgComentario',
-      e && e.message ? e.message : String(e),
+      'Escribí un comentario.',
       'err'
     );
+    return;
+  }
+
+  const perfil = perfilLocal();
+
+  if (!perfil) {
+    mostrarMensaje(
+      'msgComentario',
+      'No hay un usuario vinculado.',
+      'err'
+    );
+    return;
+  }
+
+  const item = {
+    clientId: generarClientIdComentario(),
+    usuario: String(perfil.usuario || ''),
+    nombre: String(perfil.nombre || perfil.usuario || ''),
+    pestana: String(instalacionActual.pestana || ''),
+    instalacionNombre: String(
+      instalacionActual.nombre ||
+      instalacionActual.pestana ||
+      ''
+    ),
+    filaNum: Number(equipoActual.fila || 0),
+    equipoId: String(equipoActual.id || ''),
+    equipoNombre: String(
+      equipoActual.nombre ||
+      equipoActual.id ||
+      ''
+    ),
+    texto,
+    creadoEn: Date.now()
+  };
+
+  agregarComentarioPendienteLocal(item);
+
+  if (textarea) textarea.value = '';
+
+  mostrarMensaje(
+    'msgComentario',
+    navigator.onLine && servidorDisponible
+      ? 'Comentario guardado. Sincronizando…'
+      : 'Comentario guardado en el celular. Quedó pendiente de sincronización.',
+    'warn'
+  );
+
+  btn.disabled = true;
+  btn.textContent = 'Guardado';
+
+  try {
+    if (navigator.onLine && servidorDisponible) {
+      await sincronizarColaComentarios();
+    }
   } finally {
     btn.disabled = false;
     btn.textContent = 'Guardar comentario';
   }
 }
+
 
 function renderDetalleComentarios(equipo) {
   const cont = document.getElementById('detalleComentarios');
@@ -1788,7 +2209,20 @@ function renderDetalleComentarios(equipo) {
 
     const autor = c.nombre || c.usuario || 'Usuario';
     const fecha = c.fechaHora || '';
-    meta.textContent = [autor, fecha].filter(Boolean).join(' · ');
+    const estadoSync =
+      String(c.syncEstado || '').toUpperCase() === 'PENDIENTE'
+        ? '⏳ Pendiente de sincronización'
+        : '';
+
+    meta.textContent = [
+      autor,
+      fecha,
+      estadoSync
+    ].filter(Boolean).join(' · ');
+
+    if (estadoSync) {
+      meta.classList.add('sync-pending');
+    }
 
     card.appendChild(texto);
     card.appendChild(meta);
@@ -2420,6 +2854,21 @@ function bloquearApp() {
 }
 
 function cambiarUsuario() {
+  const pendientes = leerColaComentarios();
+
+  if (pendientes.length) {
+    alert(
+      'Hay ' +
+      pendientes.length +
+      ' comentario' +
+      (pendientes.length === 1 ? '' : 's') +
+      ' pendiente' +
+      (pendientes.length === 1 ? '' : 's') +
+      ' de sincronización.\n\nConectate y sincronizá antes de cambiar de usuario para no perder trabajo de campo.'
+    );
+    return;
+  }
+
   if (!confirm('¿Desvincular el usuario de este móvil? La próxima vinculación necesitará Internet.')) return;
 
   localStorage.removeItem(STORAGE_KEY);
@@ -2440,6 +2889,10 @@ window.addEventListener('online', async () => {
 
   if (perfilLocal()) {
     await revalidarSesionServidor();
+
+    if (sesionOnline) {
+      await sincronizarColaComentarios({ silencioso: true });
+    }
 
     const bienvenida = document.getElementById('bienvenida');
     if (bienvenida) {
