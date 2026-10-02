@@ -215,7 +215,7 @@
       font-size:clamp(.9rem, 3.7vw, 1rem);
     }
 
-    /* v0.5.1 — mejor lectura en celular */
+    /* v0.5.2 — mejor lectura en celular */
     body {
       font-size:clamp(17px, 4vw, 20px);
     }
@@ -274,7 +274,7 @@
       line-height:1.4;
     }
   
-    /* v0.5.1 — solicitud de acceso */
+    /* v0.5.2 — solicitud de acceso */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -320,7 +320,7 @@
     }
 
 
-    /* v0.5.1 — administración de solicitudes */
+    /* v0.5.2 — administración de solicitudes */
     .admin-list {
       display:grid;
       gap:.75rem;
@@ -372,7 +372,7 @@
     }
 
 
-    /* v0.5.1 — inventario de equipos */
+    /* v0.5.2 — inventario de equipos */
     .equipment-list {
       display:grid;
       gap:.65rem;
@@ -438,7 +438,7 @@
     }
 
 
-    /* v0.5.1 — detalle de equipo */
+    /* v0.5.2 — detalle de equipo */
     .equipment-card {
       cursor:pointer;
     }
@@ -508,7 +508,7 @@
     }
 
 
-    /* v0.5.1 — menú intermedio del equipo */
+    /* v0.5.2 — menú intermedio del equipo */
     .equipment-menu {
       display:grid;
       gap:1rem;
@@ -539,7 +539,7 @@
     }
 
 
-    /* v0.5.1 — fotos reales y contadores */
+    /* v0.5.2 — fotos reales y contadores */
     .menu-count {
       float:right;
       min-width:2rem;
@@ -591,7 +591,7 @@
     }
 
 
-    /* v0.5.1 — alta de comentarios */
+    /* v0.5.2 — alta de comentarios */
     .comment-editor {
       margin-bottom:1rem;
       padding:1rem;
@@ -625,7 +625,7 @@
     }
 
 
-    /* v0.5.1 — cola offline de comentarios */
+    /* v0.5.2 — cola offline de comentarios */
     .sync-pending {
       color:var(--warn);
       font-weight:700;
@@ -649,7 +649,7 @@
     }
 
 
-    /* v0.5.1 — edición de datos online/offline */
+    /* v0.5.2 — edición de datos online/offline */
     .data-actions {
       display:flex;
       gap:.6rem;
@@ -706,9 +706,66 @@
 
     .conflict-values strong { color:var(--text); }
 
+
+    /* v0.5.2 — bloqueo visual durante operaciones */
+    .busy-overlay {
+      position:fixed;
+      inset:0;
+      z-index:99999;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:1.5rem;
+      background:rgba(13,17,23,.86);
+      backdrop-filter:blur(3px);
+      -webkit-backdrop-filter:blur(3px);
+      touch-action:none;
+    }
+    .busy-overlay.show { display:flex; }
+    .busy-box {
+      width:min(320px, 88vw);
+      padding:1.35rem 1.1rem;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:var(--surface);
+      box-shadow:0 18px 50px rgba(0,0,0,.55);
+      text-align:center;
+    }
+    .busy-spinner {
+      width:54px;
+      height:54px;
+      margin:0 auto .95rem;
+      border:5px solid rgba(240,165,0,.22);
+      border-top-color:var(--accent);
+      border-radius:50%;
+      animation:busy-spin .78s linear infinite;
+    }
+    .busy-title {
+      color:var(--text);
+      font-size:1.05rem;
+      font-weight:700;
+      line-height:1.25;
+    }
+    .busy-sub {
+      margin-top:.45rem;
+      color:var(--muted);
+      font-size:.82rem;
+      line-height:1.35;
+    }
+    @keyframes busy-spin { to { transform:rotate(360deg); } }
+
 </style>
 </head>
 <body>
+
+<div id="busyOverlay" class="busy-overlay" aria-hidden="true" aria-live="polite">
+  <div class="busy-box" role="status" aria-busy="true">
+    <div class="busy-spinner" aria-hidden="true"></div>
+    <div id="busyTitle" class="busy-title">Procesando…</div>
+    <div id="busySub" class="busy-sub">Esperá un momento.</div>
+  </div>
+</div>
+
   <header class="header">
     <div>
       <div class="brand-title">⚡ Inventario ET/CD</div>
@@ -735,7 +792,7 @@
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.5.1</div>
+      <div class="footer">v0.5.2</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -756,7 +813,7 @@
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.5.1</div>
+      <div class="footer">v0.5.2</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -777,7 +834,7 @@
         <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.5.1</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.2</div>
       </div>
     </section>
 
@@ -803,7 +860,7 @@
 
         <button class="btn btn-secondary" onclick="actualizarEquiposManual()">Actualizar equipos</button>
         <div id="msgEquipos" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.5.1</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.2</div>
       </div>
     </section>
 
@@ -843,7 +900,7 @@
           trabajabas offline, la PWA no lo pisa: el conflicto queda para decisión del administrador.
         </div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.5.1</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.2</div>
       </div>
     </section>
 
@@ -869,7 +926,7 @@
         <div id="estadoColaDatos" class="queue-status"></div>
         <div id="detalleParametros" class="detail-grid"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.5.1</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.2</div>
       </div>
     </section>
 
@@ -901,7 +958,7 @@
 
         <div id="detalleComentarios"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.5.1</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.2</div>
       </div>
     </section>
 
@@ -917,7 +974,7 @@
 
         <div id="detalleFotos"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.5.1</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.2</div>
       </div>
     </section>
 
@@ -933,7 +990,7 @@
       <button id="btnAdminLogin" class="btn btn-primary" onclick="loginAdmin()">Ingresar como administrador</button>
       <button class="btn btn-secondary" onclick="salirAdmin()">Cancelar</button>
       <div id="msgAdminLogin" class="message"></div>
-      <div class="footer">v0.5.1</div>
+      <div class="footer">v0.5.2</div>
     </section>
 
     <section id="pantallaAdminSolicitudes" class="screen dashboard">
@@ -975,7 +1032,7 @@
         <button class="btn btn-secondary" onclick="cargarPanelAdmin()">Actualizar</button>
         <button class="btn btn-secondary" onclick="salirAdmin()">Salir del administrador</button>
         <div id="msgAdminSolicitudes" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.5.1</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.2</div>
       </div>
     </section>
 
@@ -1004,7 +1061,7 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.5.1';
+const APP_VERSION = '0.5.2';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
@@ -1075,6 +1132,55 @@ function actualizarEstadoConexion(texto, tipo) {
 
 function dormir(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+let busyDepth = 0;
+
+function bloquearPantalla(titulo = 'Procesando…', subtitulo = 'Esperá un momento.') {
+  const overlay = document.getElementById('busyOverlay');
+  const title = document.getElementById('busyTitle');
+  const sub = document.getElementById('busySub');
+
+  busyDepth++;
+  if (title) title.textContent = titulo;
+  if (sub) sub.textContent = subtitulo;
+
+  if (overlay) {
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden', 'false');
+  }
+  document.body.setAttribute('aria-busy', 'true');
+}
+
+function cambiarTextoBloqueo(titulo, subtitulo = 'Esperá un momento.') {
+  const title = document.getElementById('busyTitle');
+  const sub = document.getElementById('busySub');
+  if (title && titulo) title.textContent = titulo;
+  if (sub) sub.textContent = subtitulo;
+}
+
+function desbloquearPantalla(forzar = false) {
+  if (forzar) busyDepth = 0;
+  else busyDepth = Math.max(0, busyDepth - 1);
+
+  if (busyDepth > 0) return;
+
+  const overlay = document.getElementById('busyOverlay');
+  if (overlay) {
+    overlay.classList.remove('show');
+    overlay.setAttribute('aria-hidden', 'true');
+  }
+  document.body.removeAttribute('aria-busy');
+}
+
+async function conPantallaBloqueada(titulo, accion, subtitulo = 'Esperá un momento.') {
+  bloquearPantalla(titulo, subtitulo);
+  try {
+    return await accion();
+  } finally {
+    desbloquearPantalla();
+  }
 }
 
 function esOrigenGoogleAppsScript(origen) {
@@ -1209,16 +1315,17 @@ async function vincularMovil() {
     return;
   }
 
-  const disponible = await comprobarServidor();
-  if (!disponible) {
-    mostrarMensaje('msgInicial', 'La primera vinculación necesita conexión con el servidor.', 'warn');
-    return;
-  }
-
   btn.disabled = true;
   btn.textContent = 'Verificando…';
+  bloquearPantalla('Vinculando móvil…', 'Validando usuario y conexión.');
 
   try {
+    const disponible = await comprobarServidor();
+    if (!disponible) {
+      mostrarMensaje('msgInicial', 'La primera vinculación necesita conexión con el servidor.', 'warn');
+      return;
+    }
+
     const res = await bridgeCall('login', { usuario, pin }, 12000);
 
     if (!res || !res.ok) {
@@ -1237,6 +1344,7 @@ async function vincularMovil() {
   } finally {
     btn.disabled = false;
     btn.textContent = 'Vincular móvil';
+    desbloquearPantalla();
   }
 }
 
@@ -1314,22 +1422,36 @@ async function ingresarConPin() {
 
   btn.disabled = true;
   btn.textContent = 'Ingresando…';
+  bloquearPantalla(
+    'Ingresando…',
+    navigator.onLine
+      ? 'Validando sesión y sincronizando cambios pendientes.'
+      : 'Abriendo datos guardados en el celular.'
+  );
 
-  if (navigator.onLine) {
-    await revalidarSesionServidor();
+  try {
+    if (navigator.onLine) {
+      await revalidarSesionServidor();
 
-    if (sesionOnline) {
-      await sincronizarColaComentarios({ silencioso: true });
-      await sincronizarColaDatos({ silencioso: true });
+      if (sesionOnline) {
+        cambiarTextoBloqueo(
+          'Sincronizando…',
+          'Enviando cambios pendientes antes de continuar.'
+        );
+        await sincronizarColaComentarios({ silencioso: true });
+        await sincronizarColaDatos({ silencioso: true });
+      }
+    } else {
+      sesionOnline = false;
     }
-  } else {
-    sesionOnline = false;
+
+    abrirApp();
+
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Ingresar';
+    desbloquearPantalla();
   }
-
-  abrirApp();
-
-  btn.disabled = false;
-  btn.textContent = 'Ingresar';
 }
 
 function guardarInstalacionesLocal(instalaciones) {
@@ -1423,6 +1545,7 @@ async function enviarSolicitudAcceso() {
   btn.textContent = 'Enviando…';
   msg.className = 'message';
   msg.textContent = '';
+  bloquearPantalla('Enviando solicitud…', 'Esperá la confirmación del servidor.');
 
   try {
     const res = await bridgeCall('solicitaracceso', {
@@ -1461,6 +1584,7 @@ async function enviarSolicitudAcceso() {
   } finally {
     btn.disabled = false;
     btn.textContent = 'Solicitar permiso';
+    desbloquearPantalla();
   }
 }
 
@@ -2379,7 +2503,11 @@ async function guardarDatosDesdePwa() {
   );
 
   if (navigator.onLine && servidorDisponible) {
-    await sincronizarColaDatos();
+    await conPantallaBloqueada(
+      'Sincronizando datos…',
+      () => sincronizarColaDatos(),
+      'Guardando los cambios en el servidor.'
+    );
   }
 }
 
@@ -3092,7 +3220,11 @@ async function guardarComentarioDesdePwa() {
 
   try {
     if (navigator.onLine && servidorDisponible) {
-      await sincronizarColaComentarios();
+      await conPantallaBloqueada(
+        'Sincronizando comentario…',
+        () => sincronizarColaComentarios(),
+        'Guardando el comentario en el servidor.'
+      );
     }
   } finally {
     btn.disabled = false;
@@ -3246,7 +3378,11 @@ async function abrirInstalacion(inst) {
   mostrarMensaje('msgEquipos', '', '');
   mostrarPantalla('pantallaEquipos');
 
-  await cargarEquiposInstalacion(inst);
+  await conPantallaBloqueada(
+    'Cargando equipos…',
+    () => cargarEquiposInstalacion(inst),
+    'Leyendo el inventario de la instalación.'
+  );
 }
 
 async function obtenerEquiposServidor(inst, reintentarSesion = true) {
@@ -3350,24 +3486,30 @@ async function cargarEquiposInstalacion(inst, {forzar = false} = {}) {
 async function actualizarEquiposManual() {
   if (!instalacionActual) return;
 
-  const disponible = await comprobarServidor(true);
+  await conPantallaBloqueada(
+    'Actualizando equipos…',
+    async () => {
+      const disponible = await comprobarServidor(true);
 
-  if (!disponible) {
-    const cache = leerEquiposLocal(instalacionActual.pestana);
-    if (cache) renderEquipos(cache, 'cache');
+      if (!disponible) {
+        const cache = leerEquiposLocal(instalacionActual.pestana);
+        if (cache) renderEquipos(cache, 'cache');
 
-    mostrarMensaje(
-      'msgEquipos',
-      cache
-        ? 'Sin conexión. Se mantienen los datos guardados.'
-        : 'Sin conexión y sin inventario guardado.',
-      'warn'
-    );
-    return;
-  }
+        mostrarMensaje(
+          'msgEquipos',
+          cache
+            ? 'Sin conexión. Se mantienen los datos guardados.'
+            : 'Sin conexión y sin inventario guardado.',
+          'warn'
+        );
+        return;
+      }
 
-  await revalidarSesionServidor();
-  await cargarEquiposInstalacion(instalacionActual, {forzar:true});
+      await revalidarSesionServidor();
+      await cargarEquiposInstalacion(instalacionActual, {forzar:true});
+    },
+    'Consultando la versión más reciente del inventario.'
+  );
 }
 
 function renderInstalaciones(instalaciones, origen, fecha) {
@@ -3517,19 +3659,28 @@ async function cargarInstalaciones({forzar = false} = {}) {
 }
 
 async function actualizarInstalacionesManual() {
-  const disponible = await comprobarServidor(true);
-  if (!disponible) {
-    const cache = leerInstalacionesLocal();
-    if (cache) renderInstalaciones(cache.instalaciones, 'cache', cache.fecha);
-    return;
-  }
+  await conPantallaBloqueada(
+    'Actualizando instalaciones…',
+    async () => {
+      const disponible = await comprobarServidor(true);
 
-  // También renueva el perfil para traer permisos recién aprobados.
-  if (perfilLocal()) {
-    await revalidarSesionServidor();
-  }
+      if (!disponible) {
+        const cache = leerInstalacionesLocal();
+        if (cache) {
+          renderInstalaciones(cache.instalaciones, 'cache', cache.fecha);
+        }
+        return;
+      }
 
-  await cargarInstalaciones({forzar:true});
+      // También renueva el perfil para traer permisos recién aprobados.
+      if (perfilLocal()) {
+        await revalidarSesionServidor();
+      }
+
+      await cargarInstalaciones({forzar:true});
+    },
+    'Consultando permisos y datos actualizados.'
+  );
 }
 
 
@@ -3572,16 +3723,19 @@ async function loginAdmin() {
     return;
   }
 
-  const disponible = await comprobarServidor();
-  if (!disponible) {
-    mostrarMensaje('msgAdminLogin', 'El administrador necesita conexión con el servidor.', 'warn');
-    return;
-  }
-
   btn.disabled = true;
   btn.textContent = 'Verificando…';
+  bloquearPantalla(
+    'Ingresando como administrador…',
+    'Validando credenciales y cargando pendientes.'
+  );
 
   try {
+    const disponible = await comprobarServidor();
+    if (!disponible) {
+      mostrarMensaje('msgAdminLogin', 'El administrador necesita conexión con el servidor.', 'warn');
+      return;
+    }
     const res = await bridgeCall('adminlogin', { clave }, 12000);
 
     if (!res || !res.ok || !res.token) {
@@ -3606,6 +3760,7 @@ async function loginAdmin() {
   } finally {
     btn.disabled = false;
     btn.textContent = 'Ingresar como administrador';
+    desbloquearPantalla();
   }
 }
 
@@ -3724,6 +3879,7 @@ async function resolverSolicitudAdmin(solicitudId, aprobar) {
   if (!confirm('¿Confirmar ' + accion + ' esta solicitud?')) return;
 
   mostrarMensaje('msgAdminSolicitudes', 'Procesando…', 'warn');
+  bloquearPantalla('Procesando solicitud…', 'Esperá la confirmación del servidor.');
 
   try {
     const res = await bridgeCall('adminresolver', {
@@ -3757,13 +3913,30 @@ async function resolverSolicitudAdmin(solicitudId, aprobar) {
       e && e.message ? e.message : String(e),
       'err'
     );
+  } finally {
+    desbloquearPantalla();
   }
 }
 
 async function cargarPanelAdmin() {
-  await cargarSolicitudesAdmin();
-  await cargarRevisionesAdmin();
-  await cargarConflictosAdmin();
+  const yaBloqueado = busyDepth > 0;
+
+  if (!yaBloqueado) {
+    bloquearPantalla(
+      'Actualizando panel…',
+      'Cargando solicitudes, revisiones y conflictos.'
+    );
+  }
+
+  try {
+    await cargarSolicitudesAdmin();
+    await cargarRevisionesAdmin();
+    await cargarConflictosAdmin();
+  } finally {
+    if (!yaBloqueado) {
+      desbloquearPantalla();
+    }
+  }
 }
 
 
@@ -3918,6 +4091,7 @@ async function resolverRevisionAdmin(rev, decision) {
     'Procesando…',
     'warn'
   );
+  bloquearPantalla('Resolviendo revisión…', 'Esperá la confirmación del servidor.');
 
   try {
     const res = await bridgeCall('adminresolverrevision', {
@@ -3955,6 +4129,8 @@ async function resolverRevisionAdmin(rev, decision) {
       e && e.message ? e.message : String(e),
       'err'
     );
+  } finally {
+    desbloquearPantalla();
   }
 }
 
@@ -4111,6 +4287,7 @@ async function resolverConflictoAdmin(conflictoId, decision) {
   if (!confirm('¿Confirmar ' + texto + '?')) return;
 
   mostrarMensaje('msgAdminConflictos', 'Procesando…', 'warn');
+  bloquearPantalla('Resolviendo conflicto…', 'Esperá la confirmación del servidor.');
 
   try {
     const res = await bridgeCall('adminresolverconflicto', {
@@ -4144,6 +4321,8 @@ async function resolverConflictoAdmin(conflictoId, decision) {
       e && e.message ? e.message : String(e),
       'err'
     );
+  } finally {
+    desbloquearPantalla();
   }
 }
 
@@ -4201,8 +4380,25 @@ window.addEventListener('online', async () => {
     await revalidarSesionServidor();
 
     if (sesionOnline) {
-      await sincronizarColaComentarios({ silencioso: true });
-      await sincronizarColaDatos({ silencioso: true });
+      const hayPendientes =
+        leerColaComentarios().length > 0 ||
+        leerColaDatos().length > 0;
+
+      if (hayPendientes) {
+        bloquearPantalla(
+          'Sincronizando…',
+          'Volvió la conexión. Enviando cambios pendientes.'
+        );
+      }
+
+      try {
+        await sincronizarColaComentarios({ silencioso: true });
+        await sincronizarColaDatos({ silencioso: true });
+      } finally {
+        if (hayPendientes) {
+          desbloquearPantalla();
+        }
+      }
     }
 
     const bienvenida = document.getElementById('bienvenida');
@@ -4256,11 +4452,20 @@ document.getElementById('claveAdmin').addEventListener('keydown', e => {
 });
 
 async function iniciar() {
-  cargarBridge(false);
-  await comprobarServidor();
+  bloquearPantalla(
+    'Iniciando…',
+    'Comprobando conexión y preparando la aplicación.'
+  );
 
-  if (perfilLocal()) prepararPantallaPin();
-  else mostrarPantalla('pantallaPrimeraVez');
+  try {
+    cargarBridge(false);
+    await comprobarServidor();
+
+    if (perfilLocal()) prepararPantallaPin();
+    else mostrarPantalla('pantallaPrimeraVez');
+  } finally {
+    desbloquearPantalla(true);
+  }
 }
 
 if ('serviceWorker' in navigator) {
