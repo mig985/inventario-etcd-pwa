@@ -215,7 +215,7 @@
       font-size:clamp(.9rem, 3.7vw, 1rem);
     }
 
-    /* v0.5.2 — mejor lectura en celular */
+    /* v0.6.1 — mejor lectura en celular */
     body {
       font-size:clamp(17px, 4vw, 20px);
     }
@@ -274,7 +274,7 @@
       line-height:1.4;
     }
   
-    /* v0.5.2 — solicitud de acceso */
+    /* v0.6.1 — solicitud de acceso */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -320,7 +320,7 @@
     }
 
 
-    /* v0.5.2 — administración de solicitudes */
+    /* v0.6.1 — administración de solicitudes */
     .admin-list {
       display:grid;
       gap:.75rem;
@@ -372,7 +372,7 @@
     }
 
 
-    /* v0.5.2 — inventario de equipos */
+    /* v0.6.1 — inventario de equipos */
     .equipment-list {
       display:grid;
       gap:.65rem;
@@ -438,7 +438,7 @@
     }
 
 
-    /* v0.5.2 — detalle de equipo */
+    /* v0.6.1 — detalle de equipo */
     .equipment-card {
       cursor:pointer;
     }
@@ -508,7 +508,7 @@
     }
 
 
-    /* v0.5.2 — menú intermedio del equipo */
+    /* v0.6.1 — menú intermedio del equipo */
     .equipment-menu {
       display:grid;
       gap:1rem;
@@ -539,7 +539,7 @@
     }
 
 
-    /* v0.5.2 — fotos reales y contadores */
+    /* v0.6.1 — fotos reales y contadores */
     .menu-count {
       float:right;
       min-width:2rem;
@@ -591,7 +591,7 @@
     }
 
 
-    /* v0.5.2 — alta de comentarios */
+    /* v0.6.1 — alta de comentarios */
     .comment-editor {
       margin-bottom:1rem;
       padding:1rem;
@@ -625,7 +625,7 @@
     }
 
 
-    /* v0.5.2 — cola offline de comentarios */
+    /* v0.6.1 — cola offline de comentarios */
     .sync-pending {
       color:var(--warn);
       font-weight:700;
@@ -649,7 +649,7 @@
     }
 
 
-    /* v0.5.2 — edición de datos online/offline */
+    /* v0.6.1 — edición de datos online/offline */
     .data-actions {
       display:flex;
       gap:.6rem;
@@ -707,7 +707,7 @@
     .conflict-values strong { color:var(--text); }
 
 
-    /* v0.5.2 — bloqueo visual durante operaciones */
+    /* v0.6.1 — bloqueo visual durante operaciones */
     .busy-overlay {
       position:fixed;
       inset:0;
@@ -754,6 +754,54 @@
     }
     @keyframes busy-spin { to { transform:rotate(360deg); } }
 
+
+    /* v0.6.1 — fotos online/offline */
+    .photo-editor {margin-bottom:1rem;padding:1rem;background:var(--surface2);border:1px solid var(--border);border-radius:10px;}
+    .photo-actions {display:flex;gap:.65rem;flex-wrap:wrap;}
+    .photo-pending-title {margin:.9rem 0 .55rem;font-weight:700;color:var(--text);}
+    .photo-pending-card {border:1px dashed var(--accent);}
+    .photo-pending-badge {display:inline-block;margin-top:.45rem;font-size:.82rem;font-weight:700;color:var(--warn);}
+
+
+    /* v0.6.1 — propuestas de fotos con validación administrativa */
+    .photo-pending-server {
+      border:1px dashed var(--accent);
+      background:var(--surface2);
+    }
+    .photo-pending-server .photo-pending-badge {
+      display:inline-block;
+      margin-top:.45rem;
+      font-size:.82rem;
+      font-weight:700;
+      color:var(--warn);
+    }
+    .photo-replace-actions {
+      display:flex;
+      gap:.55rem;
+      flex-wrap:wrap;
+      margin-top:.65rem;
+    }
+    .admin-photo-preview {
+      width:100%;
+      max-height:240px;
+      object-fit:contain;
+      border-radius:8px;
+      background:#0d1117;
+      margin-top:.55rem;
+    }
+    .admin-photo-pair {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+      gap:.7rem;
+      margin-top:.65rem;
+    }
+    .admin-photo-label {
+      font-size:.8rem;
+      font-weight:700;
+      color:var(--muted);
+      margin-bottom:.3rem;
+    }
+
 </style>
 </head>
 <body>
@@ -792,7 +840,7 @@
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.5.2</div>
+      <div class="footer">v0.6.1</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -813,7 +861,7 @@
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.5.2</div>
+      <div class="footer">v0.6.1</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -834,7 +882,7 @@
         <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.5.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.6.1</div>
       </div>
     </section>
 
@@ -860,7 +908,7 @@
 
         <button class="btn btn-secondary" onclick="actualizarEquiposManual()">Actualizar equipos</button>
         <div id="msgEquipos" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.5.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.6.1</div>
       </div>
     </section>
 
@@ -900,7 +948,7 @@
           trabajabas offline, la PWA no lo pisa: el conflicto queda para decisión del administrador.
         </div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.5.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.6.1</div>
       </div>
     </section>
 
@@ -926,7 +974,7 @@
         <div id="estadoColaDatos" class="queue-status"></div>
         <div id="detalleParametros" class="detail-grid"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.5.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.6.1</div>
       </div>
     </section>
 
@@ -958,7 +1006,7 @@
 
         <div id="detalleComentarios"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.5.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.6.1</div>
       </div>
     </section>
 
@@ -972,9 +1020,21 @@
           </div>
         </div>
 
+        <div class="photo-editor">
+          <div class="photo-actions">
+            <button class="btn btn-primary" onclick="prepararAgregarFoto('CAMARA')">Tomar foto</button>
+            <button class="btn btn-secondary" onclick="prepararAgregarFoto('ARCHIVO')">Agregar foto</button>
+          </div>
+          <input id="inputFotoCamara" type="file" accept="image/*" capture="environment" hidden onchange="procesarFotoSeleccionada(this)">
+          <input id="inputFotoArchivo" type="file" accept="image/*" hidden onchange="procesarFotoSeleccionada(this)">
+          <div id="msgFoto" class="message"></div>
+          <div id="estadoColaFotos" class="queue-status"></div>
+        </div>
+
+        <div id="detalleFotosPendientes"></div>
         <div id="detalleFotos"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.5.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.6.1</div>
       </div>
     </section>
 
@@ -990,7 +1050,7 @@
       <button id="btnAdminLogin" class="btn btn-primary" onclick="loginAdmin()">Ingresar como administrador</button>
       <button class="btn btn-secondary" onclick="salirAdmin()">Cancelar</button>
       <div id="msgAdminLogin" class="message"></div>
-      <div class="footer">v0.5.2</div>
+      <div class="footer">v0.6.1</div>
     </section>
 
     <section id="pantallaAdminSolicitudes" class="screen dashboard">
@@ -1019,6 +1079,28 @@
         <div id="msgAdminRevisiones" class="message"></div>
 
         <div class="app-toolbar" style="margin-top:1.2rem">
+          <h2>Fotos por validar</h2>
+          <div id="estadoFotosAdmin" class="mini-status">Cargando…</div>
+        </div>
+
+        <div id="listaFotosAdmin" class="admin-list">
+          <div class="empty-state">Cargando fotos pendientes…</div>
+        </div>
+
+        <div id="msgAdminFotos" class="message"></div>
+
+        <div class="app-toolbar" style="margin-top:1.2rem">
+          <h2>Cambios generales por validar</h2>
+          <div id="estadoGeneralesAdmin" class="mini-status">Cargando…</div>
+        </div>
+
+        <div id="listaGeneralesAdmin" class="admin-list">
+          <div class="empty-state">Cargando cambios generales…</div>
+        </div>
+
+        <div id="msgAdminGenerales" class="message"></div>
+
+        <div class="app-toolbar" style="margin-top:1.2rem">
           <h2>Conflictos de datos</h2>
           <div id="estadoConflictosAdmin" class="mini-status">Cargando…</div>
         </div>
@@ -1032,7 +1114,7 @@
         <button class="btn btn-secondary" onclick="cargarPanelAdmin()">Actualizar</button>
         <button class="btn btn-secondary" onclick="salirAdmin()">Salir del administrador</button>
         <div id="msgAdminSolicitudes" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.5.2</div>
+        <div class="footer">Inventario ET/CD PWA · v0.6.1</div>
       </div>
     </section>
 
@@ -1061,7 +1143,7 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.5.2';
+const APP_VERSION = '0.6.1';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
@@ -1070,6 +1152,11 @@ const ACCESS_REQUESTS_KEY = 'inventario_etcd_solicitudes_pendientes_v1';
 const EQUIPMENT_CACHE_PREFIX = 'inventario_etcd_equipos_v1:';
 const COMMENT_QUEUE_PREFIX = 'inventario_etcd_cola_comentarios_v1:';
 const DATA_QUEUE_PREFIX = 'inventario_etcd_cola_datos_v1:';
+const PHOTO_PENDING_COUNT_PREFIX = 'inventario_etcd_fotos_pendientes_v1:';
+const PHOTO_DB_NAME = 'inventario_etcd_media_v1';
+const PHOTO_DB_VERSION = 1;
+const PHOTO_PENDING_STORE = 'fotosPendientes';
+const PHOTO_CACHE_STORE = 'fotosCache';
 
 const CHANNEL_TO_BRIDGE = 'inventario-etcd-pwa';
 const CHANNEL_FROM_BRIDGE = 'inventario-etcd-bridge';
@@ -1440,6 +1527,7 @@ async function ingresarConPin() {
         );
         await sincronizarColaComentarios({ silencioso: true });
         await sincronizarColaDatos({ silencioso: true });
+        await sincronizarColaFotos({ silencioso: true });
       }
     } else {
       sesionOnline = false;
@@ -1870,7 +1958,7 @@ function abrirComentariosEquipo() {
   mostrarPantalla('pantallaComentariosEquipo');
 }
 
-function abrirFotosEquipo() {
+async function abrirFotosEquipo() {
   if (!equipoActual) return;
 
   document.getElementById('tituloFotosEquipo').textContent =
@@ -1879,8 +1967,270 @@ function abrirFotosEquipo() {
   document.getElementById('subtituloFotosEquipo').textContent =
     [equipoActual.id, equipoActual.tipo].filter(Boolean).join(' · ');
 
+  mostrarMensaje('msgFoto', '', '');
   renderDetalleFotos(equipoActual);
+  await cargarFotosPendientesEquipo();
   mostrarPantalla('pantallaFotosEquipo');
+}
+
+let fotoModoActual = 'AGREGAR';
+let fotoObjetivoActual = '';
+
+function cantidadFotosPendientesLocal() {
+  // Desde v0.6.1 las fotos son exclusivamente online.
+  return 0;
+}
+
+async function sincronizarColaFotos() {
+  // Compatibilidad con llamadas de versiones anteriores.
+  // No existen fotos offline a partir de v0.6.1.
+  return { ok: true, enviados: 0, pendientes: 0 };
+}
+
+function generarClientIdFoto() {
+  if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+    return window.crypto.randomUUID();
+  }
+  return 'f-' + Date.now() + '-' + Math.random().toString(36).slice(2, 12);
+}
+
+function prepararAgregarFoto(origen) {
+  fotoModoActual = 'AGREGAR';
+  fotoObjetivoActual = '';
+  mostrarMensaje('msgFoto', '', '');
+
+  if (!navigator.onLine || !servidorDisponible) {
+    mostrarMensaje(
+      'msgFoto',
+      'Las fotos se cargan únicamente con conexión. Conectate a Internet para continuar.',
+      'warn'
+    );
+    return;
+  }
+
+  const id = origen === 'CAMARA' ? 'inputFotoCamara' : 'inputFotoArchivo';
+  const input = document.getElementById(id);
+  if (input) input.click();
+}
+
+function prepararReemplazoFoto(fotoId) {
+  fotoModoActual = 'REEMPLAZAR';
+  fotoObjetivoActual = String(fotoId || '').trim();
+  mostrarMensaje('msgFoto', '', '');
+
+  if (!navigator.onLine || !servidorDisponible) {
+    mostrarMensaje(
+      'msgFoto',
+      'El reemplazo de fotos se realiza únicamente con conexión.',
+      'warn'
+    );
+    return;
+  }
+
+  const input = document.getElementById('inputFotoArchivo');
+  if (input) input.click();
+}
+
+function cargarImagenDesdeArchivo(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve(img);
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('No se pudo leer la imagen seleccionada.'));
+    };
+    img.src = url;
+  });
+}
+
+function canvasAblob(canvas, calidad) {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      blob => blob ? resolve(blob) : reject(new Error('No se pudo preparar la foto.')),
+      'image/jpeg',
+      calidad
+    );
+  });
+}
+
+async function comprimirFotoArchivo(file) {
+  const img = await cargarImagenDesdeArchivo(file);
+  const maxDimension = 1600;
+  const escala = Math.min(1, maxDimension / Math.max(img.naturalWidth, img.naturalHeight));
+  const ancho = Math.max(1, Math.round(img.naturalWidth * escala));
+  const alto = Math.max(1, Math.round(img.naturalHeight * escala));
+  const canvas = document.createElement('canvas');
+  canvas.width = ancho;
+  canvas.height = alto;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0, ancho, alto);
+  let blob = await canvasAblob(canvas, 0.80);
+  if (blob.size > 1600000) blob = await canvasAblob(canvas, 0.64);
+  return blob;
+}
+
+function blobADataUrl(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ''));
+    reader.onerror = () => reject(reader.error || new Error('No se pudo preparar la foto.'));
+    reader.readAsDataURL(blob);
+  });
+}
+
+async function procesarFotoSeleccionada(input) {
+  const file = input && input.files ? input.files[0] : null;
+  if (input) input.value = '';
+  if (!file || !equipoActual || !instalacionActual) return;
+
+  if (!navigator.onLine || !servidorDisponible) {
+    mostrarMensaje(
+      'msgFoto',
+      'Las fotos se cargan únicamente con conexión.',
+      'warn'
+    );
+    return;
+  }
+
+  bloquearPantalla(
+    fotoModoActual === 'REEMPLAZAR' ? 'Enviando reemplazo…' : 'Subiendo foto…',
+    'La foto quedará pendiente de validación del administrador.'
+  );
+
+  try {
+    const blob = await comprimirFotoArchivo(file);
+    const base64Data = await blobADataUrl(blob);
+
+    let token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
+    if (!token || !sesionOnline) {
+      const ok = await revalidarSesionServidor();
+      if (!ok) throw new Error('No se pudo validar la sesión.');
+      token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
+    }
+
+    const res = await bridgeCall(
+      'proponerfoto',
+      {
+        pestana: instalacionActual.pestana,
+        filaNum: equipoActual.fila,
+        equipoId: equipoActual.id,
+        base64Data,
+        modo: fotoModoActual,
+        fotoObjetivoId: fotoObjetivoActual,
+        clientId: generarClientIdFoto(),
+        actorToken: token
+      },
+      60000
+    );
+
+    if (!res || !res.ok) {
+      throw new Error((res && res.msg) || 'No se pudo enviar la foto.');
+    }
+
+    mostrarMensaje(
+      'msgFoto',
+      fotoModoActual === 'REEMPLAZAR'
+        ? 'Reemplazo enviado. ⏳ Pendiente de validación del administrador.'
+        : 'Foto enviada. ⏳ Pendiente de validación del administrador.',
+      'warn'
+    );
+
+    fotoModoActual = 'AGREGAR';
+    fotoObjetivoActual = '';
+    await cargarFotosPendientesEquipo();
+
+  } catch (e) {
+    mostrarMensaje('msgFoto', e && e.message ? e.message : String(e), 'err');
+  } finally {
+    desbloquearPantalla();
+  }
+}
+
+async function cargarFotosPendientesEquipo() {
+  const cont = document.getElementById('detalleFotosPendientes');
+  const estado = document.getElementById('estadoColaFotos');
+  if (!cont || !equipoActual || !instalacionActual) return;
+
+  cont.innerHTML = '';
+
+  if (!navigator.onLine || !servidorDisponible) {
+    estado.textContent = 'Fotos: conexión requerida para cargar o reemplazar';
+    estado.className = 'queue-status sync-pending';
+    return;
+  }
+
+  try {
+    let token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
+    if (!token || !sesionOnline) {
+      const ok = await revalidarSesionServidor();
+      if (!ok) throw new Error('No se pudo validar la sesión.');
+      token = localStorage.getItem(SERVER_TOKEN_KEY) || '';
+    }
+
+    const res = await bridgeCall(
+      'getfotospendientes',
+      {
+        pestana: instalacionActual.pestana,
+        equipoId: equipoActual.id,
+        actorToken: token
+      },
+      20000
+    );
+
+    if (!res || !res.ok) throw new Error((res && res.msg) || 'No se pudieron leer las fotos pendientes.');
+
+    const pendientes = Array.isArray(res.fotos) ? res.fotos : [];
+
+    estado.textContent = pendientes.length
+      ? '⏳ ' + pendientes.length + ' foto' + (pendientes.length === 1 ? '' : 's') + ' pendiente' + (pendientes.length === 1 ? '' : 's') + ' de validación'
+      : '✓ Sin fotos pendientes de validación';
+    estado.className = pendientes.length ? 'queue-status sync-pending' : 'queue-status sync-ok';
+
+    if (!pendientes.length) return;
+
+    const titulo = document.createElement('div');
+    titulo.className = 'photo-pending-title';
+    titulo.textContent = 'Pendientes de validación del administrador';
+    cont.appendChild(titulo);
+
+    pendientes.forEach((p, i) => {
+      const card = document.createElement('div');
+      card.className = 'photo-card photo-pending-server';
+
+      const wrap = document.createElement('div');
+      wrap.className = 'photo-image-wrap';
+      const img = document.createElement('img');
+      img.className = 'photo-image';
+      img.alt = 'Foto propuesta';
+      img.src = 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(p.fotoNuevaId || '') + '&sz=w1200';
+      wrap.appendChild(img);
+
+      const meta = document.createElement('div');
+      meta.className = 'photo-meta';
+      meta.textContent = [
+        p.modo === 'REEMPLAZAR' ? 'Reemplazo de foto' : 'Nueva foto',
+        p.fecha || '',
+        p.nombre || p.usuario || ''
+      ].filter(Boolean).join(' · ');
+
+      const badge = document.createElement('div');
+      badge.className = 'photo-pending-badge';
+      badge.textContent = '⏳ Pendiente de validación del administrador';
+
+      card.appendChild(wrap);
+      card.appendChild(meta);
+      card.appendChild(badge);
+      cont.appendChild(card);
+    });
+
+  } catch (e) {
+    estado.textContent = 'No se pudieron cargar los pendientes';
+    estado.className = 'queue-status sync-error';
+  }
 }
 
 function normalizarClaveCampoPwa(valor) {
@@ -3284,13 +3634,8 @@ function renderDetalleFotos(equipo) {
   const cont = document.getElementById('detalleFotos');
   cont.innerHTML = '';
 
-  const infos = Array.isArray(equipo && equipo.fotoInfos)
-    ? equipo.fotoInfos
-    : [];
-
-  const ids = Array.isArray(equipo && equipo.fotoIds)
-    ? equipo.fotoIds.filter(Boolean)
-    : [];
+  const infos = Array.isArray(equipo && equipo.fotoInfos) ? equipo.fotoInfos : [];
+  const ids = Array.isArray(equipo && equipo.fotoIds) ? equipo.fotoIds.filter(Boolean) : [];
 
   if (!infos.length && !ids.length) {
     cont.innerHTML = '<div class="empty-state">Sin fotos asociadas.</div>';
@@ -3314,18 +3659,10 @@ function renderDetalleFotos(equipo) {
     img.className = 'photo-image';
     img.loading = 'lazy';
     img.alt = 'Foto ' + (i + 1) + ' del equipo';
-    img.src =
-      'https://drive.google.com/thumbnail?id=' +
-      encodeURIComponent(id) +
-      '&sz=w1200';
-
+    img.src = 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(id) + '&sz=w1200';
     img.onerror = function() {
-      wrap.innerHTML =
-        '<div class="photo-fallback">' +
-        'No se pudo mostrar esta imagen. Puede requerir conexión o permisos de Drive.' +
-        '</div>';
+      wrap.innerHTML = '<div class="photo-fallback">No se pudo mostrar esta imagen. Puede requerir conexión o permisos de Drive.</div>';
     };
-
     wrap.appendChild(img);
 
     const titulo = document.createElement('div');
@@ -3334,12 +3671,11 @@ function renderDetalleFotos(equipo) {
 
     const meta = document.createElement('div');
     meta.className = 'photo-meta';
-
     const autor = info.nombre || info.usuario || '';
-    meta.textContent = [
-      info.fechaHora || '',
-      autor
-    ].filter(Boolean).join(' · ');
+    meta.textContent = [info.fechaHora || '', autor].filter(Boolean).join(' · ');
+
+    const acciones = document.createElement('div');
+    acciones.className = 'photo-replace-actions';
 
     const link = document.createElement('a');
     link.className = 'photo-open-link';
@@ -3348,10 +3684,18 @@ function renderDetalleFotos(equipo) {
     link.rel = 'noopener noreferrer';
     link.textContent = 'Abrir foto';
 
+    const reemplazar = document.createElement('button');
+    reemplazar.className = 'btn btn-secondary';
+    reemplazar.textContent = 'Reemplazar foto';
+    reemplazar.onclick = () => prepararReemplazoFoto(id);
+
+    acciones.appendChild(link);
+    acciones.appendChild(reemplazar);
+
     card.appendChild(wrap);
     card.appendChild(titulo);
     card.appendChild(meta);
-    card.appendChild(link);
+    card.appendChild(acciones);
     cont.appendChild(card);
   }
 }
@@ -3706,6 +4050,8 @@ function salirAdmin() {
   mostrarMensaje('msgAdminLogin', '', '');
   mostrarMensaje('msgAdminSolicitudes', '', '');
   mostrarMensaje('msgAdminRevisiones', '', '');
+  mostrarMensaje('msgAdminFotos', '', '');
+  mostrarMensaje('msgAdminGenerales', '', '');
   mostrarMensaje('msgAdminConflictos', '', '');
 
   if (perfilLocal()) prepararPantallaPin();
@@ -3931,6 +4277,8 @@ async function cargarPanelAdmin() {
   try {
     await cargarSolicitudesAdmin();
     await cargarRevisionesAdmin();
+    await cargarFotosAdmin();
+    await cargarGeneralesAdmin();
     await cargarConflictosAdmin();
   } finally {
     if (!yaBloqueado) {
@@ -4133,6 +4481,156 @@ async function resolverRevisionAdmin(rev, decision) {
     desbloquearPantalla();
   }
 }
+
+
+function renderFotosAdmin(fotos) {
+  const lista = document.getElementById('listaFotosAdmin');
+  const estado = document.getElementById('estadoFotosAdmin');
+  const datos = Array.isArray(fotos) ? fotos : [];
+  lista.innerHTML = '';
+
+  if (!datos.length) {
+    lista.innerHTML = '<div class="empty-state">No hay fotos pendientes de validación.</div>';
+    estado.textContent = '0 pendientes';
+    return;
+  }
+
+  datos.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'request-card';
+
+    const titulo = document.createElement('div');
+    titulo.className = 'request-user';
+    titulo.textContent = (item.equipoNombre || item.equipoId || 'Equipo') + ' · ' + (item.modo === 'REEMPLAZAR' ? 'Reemplazo' : 'Nueva foto');
+
+    const meta = document.createElement('div');
+    meta.className = 'request-meta';
+    meta.textContent = [item.instalacionNombre || item.pestana || '', item.nombre || item.usuario || '', item.fecha || ''].filter(Boolean).join(' · ');
+
+    const previews = document.createElement('div');
+    previews.className = 'admin-photo-pair';
+
+    if (item.modo === 'REEMPLAZAR' && item.fotoObjetivoId) {
+      const anterior = document.createElement('div');
+      const lab = document.createElement('div');
+      lab.className = 'admin-photo-label';
+      lab.textContent = 'Foto actual';
+      const img = document.createElement('img');
+      img.className = 'admin-photo-preview';
+      img.src = 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(item.fotoObjetivoId) + '&sz=w900';
+      anterior.appendChild(lab);
+      anterior.appendChild(img);
+      previews.appendChild(anterior);
+    }
+
+    const propuesta = document.createElement('div');
+    const labNueva = document.createElement('div');
+    labNueva.className = 'admin-photo-label';
+    labNueva.textContent = 'Foto propuesta';
+    const imgNueva = document.createElement('img');
+    imgNueva.className = 'admin-photo-preview';
+    imgNueva.src = 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(item.fotoNuevaId || '') + '&sz=w900';
+    propuesta.appendChild(labNueva);
+    propuesta.appendChild(imgNueva);
+    previews.appendChild(propuesta);
+
+    const acciones = document.createElement('div');
+    acciones.className = 'request-actions';
+
+    const rechazar = document.createElement('button');
+    rechazar.className = 'btn btn-danger';
+    rechazar.textContent = 'Rechazar';
+    rechazar.onclick = () => resolverFotoAdmin(item.id, 'RECHAZAR');
+
+    const aprobar = document.createElement('button');
+    aprobar.className = 'btn btn-ok';
+    aprobar.textContent = item.modo === 'REEMPLAZAR' ? 'Aprobar reemplazo' : 'Aprobar foto';
+    aprobar.onclick = () => resolverFotoAdmin(item.id, 'APROBAR');
+
+    acciones.appendChild(rechazar);
+    acciones.appendChild(aprobar);
+
+    card.appendChild(titulo);
+    card.appendChild(meta);
+    card.appendChild(previews);
+    card.appendChild(acciones);
+    lista.appendChild(card);
+  });
+
+  estado.textContent = datos.length + (datos.length === 1 ? ' pendiente' : ' pendientes');
+}
+
+async function cargarFotosAdmin() {
+  const lista = document.getElementById('listaFotosAdmin');
+  const estado = document.getElementById('estadoFotosAdmin');
+  if (!adminTokenPwa) return;
+
+  if (!navigator.onLine || !servidorDisponible) {
+    lista.innerHTML = '<div class="empty-state">Sin conexión con el servidor.</div>';
+    estado.textContent = 'Sin conexión';
+    return;
+  }
+
+  estado.textContent = 'Actualizando…';
+  mostrarMensaje('msgAdminFotos', '', '');
+
+  try {
+    const res = await bridgeCall('adminfotos', { adminToken: adminTokenPwa }, 20000);
+    if (!res || !res.ok) {
+      mostrarMensaje('msgAdminFotos', (res && res.msg) || 'No se pudieron cargar las fotos pendientes.', 'err');
+      estado.textContent = 'Error';
+      return;
+    }
+    renderFotosAdmin(res.fotos || []);
+  } catch (e) {
+    mostrarMensaje('msgAdminFotos', e && e.message ? e.message : String(e), 'err');
+    estado.textContent = 'Error';
+  }
+}
+
+async function resolverFotoAdmin(id, decision) {
+  if (!adminTokenPwa || !id) return;
+  const aprobar = decision === 'APROBAR';
+  if (!confirm(aprobar ? '¿Aprobar esta foto?' : '¿Rechazar esta foto?')) return;
+
+  bloquearPantalla(
+    aprobar ? 'Aprobando foto…' : 'Rechazando foto…',
+    'Actualizando el inventario.'
+  );
+
+  try {
+    const res = await bridgeCall(
+      'adminresolverfoto',
+      { id, decision, adminToken: adminTokenPwa },
+      30000
+    );
+
+    if (!res || !res.ok) {
+      mostrarMensaje('msgAdminFotos', (res && res.msg) || 'No se pudo resolver la foto.', 'err');
+      return;
+    }
+
+    mostrarMensaje(
+      'msgAdminFotos',
+      aprobar ? 'Foto aprobada e incorporada al inventario.' : 'Foto rechazada.',
+      aprobar ? 'ok' : 'warn'
+    );
+
+    await cargarFotosAdmin();
+  } catch (e) {
+    mostrarMensaje('msgAdminFotos', e && e.message ? e.message : String(e), 'err');
+  } finally {
+    desbloquearPantalla();
+  }
+}
+
+function renderGeneralesAdmin(items) {
+  const lista=document.getElementById('listaGeneralesAdmin');const estado=document.getElementById('estadoGeneralesAdmin');const datos=Array.isArray(items)?items:[];lista.innerHTML='';
+  if(!datos.length){lista.innerHTML='<div class="empty-state">No hay cambios generales pendientes.</div>';estado.textContent='0 pendientes';return;}
+  datos.forEach(item=>{const card=document.createElement('div');card.className='request-card';const titulo=document.createElement('div');titulo.className='request-user';titulo.textContent=item.equipoNombre||item.equipoId||'Equipo';const meta=document.createElement('div');meta.className='request-meta';meta.textContent=(item.instalacionNombre||item.pestana||'')+' · '+(item.equipoId||'');const detalle=document.createElement('div');detalle.className='conflict-values';(item.cambios||[]).forEach(c=>{const f=document.createElement('div');f.innerHTML='<strong>'+escaparHtml(String(c.accion||c.tipo||'CAMBIO'))+'</strong> · '+escaparHtml(String(c.nombre||c.usuario||'Usuario'))+(c.fecha?' · '+escaparHtml(String(c.fecha)):'');detalle.appendChild(f);});const acciones=document.createElement('div');acciones.className='request-actions';const btn=document.createElement('button');btn.className='btn btn-ok';btn.textContent='Validar cambios generales';btn.onclick=()=>validarGeneralesAdmin(item);acciones.appendChild(btn);card.appendChild(titulo);card.appendChild(meta);card.appendChild(detalle);card.appendChild(acciones);lista.appendChild(card);});estado.textContent=datos.length+(datos.length===1?' equipo pendiente':' equipos pendientes');
+}
+async function cargarGeneralesAdmin(){const lista=document.getElementById('listaGeneralesAdmin');const estado=document.getElementById('estadoGeneralesAdmin');if(!adminTokenPwa){salirAdmin();return;}if(!navigator.onLine||!servidorDisponible){lista.innerHTML='<div class="empty-state">Sin conexión con el servidor.</div>';estado.textContent='Sin conexión';return;}estado.textContent='Actualizando…';mostrarMensaje('msgAdminGenerales','','');try{const res=await bridgeCall('admingenerales',{adminToken:adminTokenPwa},20000);if(!res||!res.ok){mostrarMensaje('msgAdminGenerales',res&&res.msg||'No se pudieron cargar los cambios generales.','err');estado.textContent='Error';return;}renderGeneralesAdmin(res.items||[]);}catch(e){mostrarMensaje('msgAdminGenerales',e&&e.message?e.message:String(e),'err');estado.textContent='Error';}}
+async function validarGeneralesAdmin(item){if(!adminTokenPwa||!item)return;if(!confirm('¿Validar los cambios generales pendientes de este equipo?'))return;bloquearPantalla('Validando cambios…','Actualizando el estado del equipo.');try{const res=await bridgeCall('adminvalidargenerales',{pestana:item.pestana,filaNum:item.filaNum,equipoId:item.equipoId,adminToken:adminTokenPwa},20000);if(!res||!res.ok){mostrarMensaje('msgAdminGenerales',res&&res.msg||'No se pudieron validar los cambios generales.','err');return;}mostrarMensaje('msgAdminGenerales','Cambios generales validados.','ok');await cargarGeneralesAdmin();}catch(e){mostrarMensaje('msgAdminGenerales',e&&e.message?e.message:String(e),'err');}finally{desbloquearPantalla();}}
 
 function renderConflictosAdmin(conflictos) {
   const lista = document.getElementById('listaConflictosAdmin');
@@ -4342,8 +4840,9 @@ function bloquearApp() {
 function cambiarUsuario() {
   const comentariosPendientes = leerColaComentarios();
   const datosPendientes = leerColaDatos();
+  const fotosPendientes = cantidadFotosPendientesLocal();
 
-  if (comentariosPendientes.length || datosPendientes.length) {
+  if (comentariosPendientes.length || datosPendientes.length || fotosPendientes) {
     const camposDatos = datosPendientes.reduce(
       (acc, item) => acc + (Array.isArray(item.cambios) ? item.cambios.length : 0),
       0
@@ -4353,6 +4852,7 @@ function cambiarUsuario() {
       'Hay trabajo pendiente de sincronización en este celular.' +
       '\n\nComentarios: ' + comentariosPendientes.length +
       '\nDatos: ' + camposDatos +
+      '\nFotos: ' + fotosPendientes +
       '\n\nConectate y sincronizá antes de cambiar de usuario para no perder trabajo de campo.'
     );
     return;
@@ -4382,7 +4882,8 @@ window.addEventListener('online', async () => {
     if (sesionOnline) {
       const hayPendientes =
         leerColaComentarios().length > 0 ||
-        leerColaDatos().length > 0;
+        leerColaDatos().length > 0 ||
+        cantidadFotosPendientesLocal() > 0;
 
       if (hayPendientes) {
         bloquearPantalla(
@@ -4394,6 +4895,7 @@ window.addEventListener('online', async () => {
       try {
         await sincronizarColaComentarios({ silencioso: true });
         await sincronizarColaDatos({ silencioso: true });
+        await sincronizarColaFotos({ silencioso: true });
       } finally {
         if (hayPendientes) {
           desbloquearPantalla();
