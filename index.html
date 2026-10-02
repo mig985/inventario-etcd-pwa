@@ -215,7 +215,7 @@
       font-size:clamp(.9rem, 3.7vw, 1rem);
     }
 
-    /* v0.5.0 — mejor lectura en celular */
+    /* v0.5.1 — mejor lectura en celular */
     body {
       font-size:clamp(17px, 4vw, 20px);
     }
@@ -274,7 +274,7 @@
       line-height:1.4;
     }
   
-    /* v0.5.0 — solicitud de acceso */
+    /* v0.5.1 — solicitud de acceso */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -320,7 +320,7 @@
     }
 
 
-    /* v0.5.0 — administración de solicitudes */
+    /* v0.5.1 — administración de solicitudes */
     .admin-list {
       display:grid;
       gap:.75rem;
@@ -372,7 +372,7 @@
     }
 
 
-    /* v0.5.0 — inventario de equipos */
+    /* v0.5.1 — inventario de equipos */
     .equipment-list {
       display:grid;
       gap:.65rem;
@@ -438,7 +438,7 @@
     }
 
 
-    /* v0.5.0 — detalle de equipo */
+    /* v0.5.1 — detalle de equipo */
     .equipment-card {
       cursor:pointer;
     }
@@ -508,7 +508,7 @@
     }
 
 
-    /* v0.5.0 — menú intermedio del equipo */
+    /* v0.5.1 — menú intermedio del equipo */
     .equipment-menu {
       display:grid;
       gap:1rem;
@@ -539,7 +539,7 @@
     }
 
 
-    /* v0.5.0 — fotos reales y contadores */
+    /* v0.5.1 — fotos reales y contadores */
     .menu-count {
       float:right;
       min-width:2rem;
@@ -591,7 +591,7 @@
     }
 
 
-    /* v0.5.0 — alta de comentarios */
+    /* v0.5.1 — alta de comentarios */
     .comment-editor {
       margin-bottom:1rem;
       padding:1rem;
@@ -625,7 +625,7 @@
     }
 
 
-    /* v0.5.0 — cola offline de comentarios */
+    /* v0.5.1 — cola offline de comentarios */
     .sync-pending {
       color:var(--warn);
       font-weight:700;
@@ -649,7 +649,7 @@
     }
 
 
-    /* v0.5.0 — edición de datos online/offline */
+    /* v0.5.1 — edición de datos online/offline */
     .data-actions {
       display:flex;
       gap:.6rem;
@@ -735,7 +735,7 @@
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.5.0</div>
+      <div class="footer">v0.5.1</div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -756,7 +756,7 @@
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.5.0</div>
+      <div class="footer">v0.5.1</div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -777,7 +777,7 @@
         <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.5.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.1</div>
       </div>
     </section>
 
@@ -803,7 +803,7 @@
 
         <button class="btn btn-secondary" onclick="actualizarEquiposManual()">Actualizar equipos</button>
         <div id="msgEquipos" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.5.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.1</div>
       </div>
     </section>
 
@@ -843,7 +843,7 @@
           trabajabas offline, la PWA no lo pisa: el conflicto queda para decisión del administrador.
         </div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.5.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.1</div>
       </div>
     </section>
 
@@ -869,7 +869,7 @@
         <div id="estadoColaDatos" class="queue-status"></div>
         <div id="detalleParametros" class="detail-grid"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.5.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.1</div>
       </div>
     </section>
 
@@ -901,7 +901,7 @@
 
         <div id="detalleComentarios"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.5.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.1</div>
       </div>
     </section>
 
@@ -917,13 +917,13 @@
 
         <div id="detalleFotos"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.5.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.1</div>
       </div>
     </section>
 
     <section id="pantallaAdminLogin" class="screen card">
       <h1>Administrador</h1>
-      <p class="lead">Acceso online para revisar solicitudes y resolver conflictos de datos.</p>
+      <p class="lead">Acceso online para revisar solicitudes, validar cambios de datos y resolver conflictos.</p>
 
       <div class="field">
         <label for="claveAdmin">Contraseña</label>
@@ -933,7 +933,7 @@
       <button id="btnAdminLogin" class="btn btn-primary" onclick="loginAdmin()">Ingresar como administrador</button>
       <button class="btn btn-secondary" onclick="salirAdmin()">Cancelar</button>
       <div id="msgAdminLogin" class="message"></div>
-      <div class="footer">v0.5.0</div>
+      <div class="footer">v0.5.1</div>
     </section>
 
     <section id="pantallaAdminSolicitudes" class="screen dashboard">
@@ -951,6 +951,17 @@
         </div>
 
         <div class="app-toolbar" style="margin-top:1.2rem">
+          <h2>Cambios de datos por validar</h2>
+          <div id="estadoRevisionesAdmin" class="mini-status">Cargando…</div>
+        </div>
+
+        <div id="listaRevisionesAdmin" class="admin-list">
+          <div class="empty-state">Cargando cambios pendientes…</div>
+        </div>
+
+        <div id="msgAdminRevisiones" class="message"></div>
+
+        <div class="app-toolbar" style="margin-top:1.2rem">
           <h2>Conflictos de datos</h2>
           <div id="estadoConflictosAdmin" class="mini-status">Cargando…</div>
         </div>
@@ -964,7 +975,7 @@
         <button class="btn btn-secondary" onclick="cargarPanelAdmin()">Actualizar</button>
         <button class="btn btn-secondary" onclick="salirAdmin()">Salir del administrador</button>
         <div id="msgAdminSolicitudes" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.5.0</div>
+        <div class="footer">Inventario ET/CD PWA · v0.5.1</div>
       </div>
     </section>
 
@@ -993,7 +1004,7 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.5.0';
+const APP_VERSION = '0.5.1';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
@@ -3543,6 +3554,7 @@ function salirAdmin() {
   adminTokenPwa = '';
   mostrarMensaje('msgAdminLogin', '', '');
   mostrarMensaje('msgAdminSolicitudes', '', '');
+  mostrarMensaje('msgAdminRevisiones', '', '');
   mostrarMensaje('msgAdminConflictos', '', '');
 
   if (perfilLocal()) prepararPantallaPin();
@@ -3750,7 +3762,200 @@ async function resolverSolicitudAdmin(solicitudId, aprobar) {
 
 async function cargarPanelAdmin() {
   await cargarSolicitudesAdmin();
+  await cargarRevisionesAdmin();
   await cargarConflictosAdmin();
+}
+
+
+function renderRevisionesAdmin(revisiones) {
+  const lista = document.getElementById('listaRevisionesAdmin');
+  const estado = document.getElementById('estadoRevisionesAdmin');
+  const datos = Array.isArray(revisiones) ? revisiones : [];
+
+  lista.innerHTML = '';
+
+  if (!datos.length) {
+    lista.innerHTML =
+      '<div class="empty-state">No hay cambios de datos pendientes de validación.</div>';
+    estado.textContent = '0 pendientes';
+    return;
+  }
+
+  datos.forEach(rev => {
+    const card = document.createElement('div');
+    card.className = 'request-card';
+
+    const titulo = document.createElement('div');
+    titulo.className = 'request-user';
+    titulo.textContent =
+      (rev.equipoNombre || rev.equipoId || 'Equipo') +
+      ' · ' +
+      (rev.campo || 'Dato');
+
+    const meta = document.createElement('div');
+    meta.className = 'request-meta';
+    meta.textContent =
+      (rev.instalacionNombre || rev.pestana || '') +
+      ' · ' +
+      (rev.nombre || rev.usuario || 'Usuario') +
+      (rev.fecha ? ' · ' + rev.fecha : '');
+
+    const valores = document.createElement('div');
+    valores.className = 'conflict-values';
+
+    const anterior = document.createElement('div');
+    anterior.innerHTML =
+      '<strong>Valor validado anterior:</strong> ' +
+      escaparHtml(String(rev.antes || '∅'));
+
+    const propuesto = document.createElement('div');
+    propuesto.innerHTML =
+      '<strong>Valor propuesto:</strong> ' +
+      escaparHtml(String(rev.despues || '∅'));
+
+    valores.appendChild(anterior);
+    valores.appendChild(propuesto);
+
+    const acciones = document.createElement('div');
+    acciones.className = 'request-actions';
+
+    const rechazar = document.createElement('button');
+    rechazar.className = 'btn btn-danger';
+    rechazar.textContent = 'Rechazar cambio';
+    rechazar.onclick = () =>
+      resolverRevisionAdmin(rev, 'RECHAZAR');
+
+    const aprobar = document.createElement('button');
+    aprobar.className = 'btn btn-ok';
+    aprobar.textContent = 'Validar cambio';
+    aprobar.onclick = () =>
+      resolverRevisionAdmin(rev, 'APROBAR');
+
+    acciones.appendChild(rechazar);
+    acciones.appendChild(aprobar);
+
+    card.appendChild(titulo);
+    card.appendChild(meta);
+    card.appendChild(valores);
+    card.appendChild(acciones);
+    lista.appendChild(card);
+  });
+
+  estado.textContent =
+    datos.length +
+    (datos.length === 1 ? ' pendiente' : ' pendientes');
+}
+
+async function cargarRevisionesAdmin() {
+  const lista = document.getElementById('listaRevisionesAdmin');
+  const estado = document.getElementById('estadoRevisionesAdmin');
+
+  if (!adminTokenPwa) {
+    salirAdmin();
+    return;
+  }
+
+  if (!navigator.onLine || !servidorDisponible) {
+    lista.innerHTML =
+      '<div class="empty-state">Sin conexión con el servidor.</div>';
+    estado.textContent = 'Sin conexión';
+    return;
+  }
+
+  estado.textContent = 'Actualizando…';
+  mostrarMensaje('msgAdminRevisiones', '', '');
+
+  try {
+    const res = await bridgeCall('adminrevisiones', {
+      adminToken: adminTokenPwa
+    }, 20000);
+
+    if (!res || !res.ok) {
+      mostrarMensaje(
+        'msgAdminRevisiones',
+        (res && res.msg) ||
+          'No se pudieron cargar los cambios pendientes.',
+        'err'
+      );
+
+      if (
+        res &&
+        String(res.msg || '').toLowerCase().includes('sesión')
+      ) {
+        adminTokenPwa = '';
+      }
+
+      estado.textContent = 'Error';
+      return;
+    }
+
+    renderRevisionesAdmin(res.revisiones || []);
+
+  } catch (e) {
+    mostrarMensaje(
+      'msgAdminRevisiones',
+      e && e.message ? e.message : String(e),
+      'err'
+    );
+    estado.textContent = 'Error';
+  }
+}
+
+async function resolverRevisionAdmin(rev, decision) {
+  if (!adminTokenPwa || !rev) return;
+
+  const aprobar = decision === 'APROBAR';
+
+  const texto = aprobar
+    ? 'validar el cambio de "' + rev.campo + '"'
+    : 'rechazar el cambio y restaurar el valor anterior de "' +
+      rev.campo + '"';
+
+  if (!confirm('¿Confirmar ' + texto + '?')) return;
+
+  mostrarMensaje(
+    'msgAdminRevisiones',
+    'Procesando…',
+    'warn'
+  );
+
+  try {
+    const res = await bridgeCall('adminresolverrevision', {
+      pestana: rev.pestana,
+      filaNum: rev.filaNum,
+      equipoId: rev.equipoId,
+      campo: rev.campo,
+      decision,
+      adminToken: adminTokenPwa
+    }, 20000);
+
+    if (!res || !res.ok) {
+      mostrarMensaje(
+        'msgAdminRevisiones',
+        (res && res.msg) ||
+          'No se pudo resolver el cambio pendiente.',
+        'err'
+      );
+      return;
+    }
+
+    mostrarMensaje(
+      'msgAdminRevisiones',
+      aprobar
+        ? 'Cambio validado correctamente.'
+        : 'Cambio rechazado y valor anterior restaurado.',
+      aprobar ? 'ok' : 'warn'
+    );
+
+    await cargarRevisionesAdmin();
+
+  } catch (e) {
+    mostrarMensaje(
+      'msgAdminRevisiones',
+      e && e.message ? e.message : String(e),
+      'err'
+    );
+  }
 }
 
 function renderConflictosAdmin(conflictos) {
