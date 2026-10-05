@@ -215,7 +215,7 @@
       font-size:clamp(.9rem, 3.7vw, 1rem);
     }
 
-    /* v0.7.1 — mejor lectura en celular */
+    /* v0.7.3 — mejor lectura en celular */
     body {
       font-size:clamp(17px, 4vw, 20px);
     }
@@ -274,7 +274,7 @@
       line-height:1.4;
     }
   
-    /* v0.7.1 — solicitud de acceso */
+    /* v0.7.3 — solicitud de acceso */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -320,7 +320,7 @@
     }
 
 
-    /* v0.7.1 — administración de solicitudes */
+    /* v0.7.3 — administración de solicitudes */
     .admin-list {
       display:grid;
       gap:.75rem;
@@ -372,7 +372,7 @@
     }
 
 
-    /* v0.7.1 — inventario de equipos */
+    /* v0.7.3 — inventario de equipos */
     .equipment-list {
       display:grid;
       gap:.65rem;
@@ -438,7 +438,7 @@
     }
 
 
-    /* v0.7.1 — detalle de equipo */
+    /* v0.7.3 — detalle de equipo */
     .equipment-card {
       cursor:pointer;
     }
@@ -508,7 +508,7 @@
     }
 
 
-    /* v0.7.1 — menú intermedio del equipo */
+    /* v0.7.3 — menú intermedio del equipo */
     .equipment-menu {
       display:grid;
       gap:1rem;
@@ -539,7 +539,7 @@
     }
 
 
-    /* v0.7.1 — fotos reales y contadores */
+    /* v0.7.3 — fotos reales y contadores */
     .menu-count {
       float:right;
       min-width:2rem;
@@ -591,7 +591,7 @@
     }
 
 
-    /* v0.7.1 — alta de comentarios */
+    /* v0.7.3 — alta de comentarios */
     .comment-editor {
       margin-bottom:1rem;
       padding:1rem;
@@ -625,7 +625,7 @@
     }
 
 
-    /* v0.7.1 — cola offline de comentarios */
+    /* v0.7.3 — cola offline de comentarios */
     .sync-pending {
       color:var(--warn);
       font-weight:700;
@@ -649,7 +649,7 @@
     }
 
 
-    /* v0.7.1 — edición de datos online/offline */
+    /* v0.7.3 — edición de datos online/offline */
     .data-actions {
       display:flex;
       gap:.6rem;
@@ -707,7 +707,7 @@
     .conflict-values strong { color:var(--text); }
 
 
-    /* v0.7.1 — bloqueo visual durante operaciones */
+    /* v0.7.3 — bloqueo visual durante operaciones */
     .busy-overlay {
       position:fixed;
       inset:0;
@@ -755,7 +755,7 @@
     @keyframes busy-spin { to { transform:rotate(360deg); } }
 
 
-    /* v0.7.1 — fotos online/offline */
+    /* v0.7.3 — fotos online/offline */
     .photo-editor {margin-bottom:1rem;padding:1rem;background:var(--surface2);border:1px solid var(--border);border-radius:10px;}
     .photo-actions {display:flex;gap:.65rem;flex-wrap:wrap;}
     .photo-pending-title {margin:.9rem 0 .55rem;font-weight:700;color:var(--text);}
@@ -763,7 +763,7 @@
     .photo-pending-badge {display:inline-block;margin-top:.45rem;font-size:.82rem;font-weight:700;color:var(--warn);}
 
 
-    /* v0.7.1 — propuestas de fotos con validación administrativa */
+    /* v0.7.3 — propuestas de fotos con validación administrativa */
     .photo-pending-server {
       border:1px dashed var(--accent);
       background:var(--surface2);
@@ -803,7 +803,7 @@
     }
 
 
-    /* v0.7.1 — acciones de foto offline + validación */
+    /* v0.7.3 — acciones de foto offline + validación */
     .photo-request-note {
       margin-top:.45rem;
       font-size:.82rem;
@@ -820,7 +820,7 @@
     }
 
 
-    /* v0.7.1 — visor de fotos para revisión ADMIN */
+    /* v0.7.3 — visor de fotos para revisión ADMIN */
     .photo-viewer {
       position:fixed;
       inset:0;
@@ -894,7 +894,7 @@
     }
 
 
-    /* v0.7.1 — altas/bajas de equipos con trabajo offline */
+    /* v0.7.3 — altas/bajas de equipos con trabajo offline */
     .equipment-actions {
       display:flex;
       gap:.65rem;
@@ -975,6 +975,316 @@
       font-weight:700;
     }
 
+
+    /* ========================================================
+       v0.7.3 — TIPOGRAFÍA RESPONSIVE Y LEGIBILIDAD MÓVIL
+       ======================================================== */
+    html {
+      font-size:clamp(17px, 4.45vw, 20px);
+      -webkit-text-size-adjust:100%;
+      text-size-adjust:100%;
+    }
+
+    body {
+      font-size:1rem;
+      line-height:1.5;
+    }
+
+    .brand-title {
+      font-size:clamp(1.18rem, 5.3vw, 1.42rem);
+      line-height:1.15;
+    }
+
+    .brand-sub {
+      font-size:clamp(.84rem, 3.5vw, .96rem);
+    }
+
+    .status {
+      font-size:clamp(.8rem, 3.25vw, .92rem);
+      line-height:1.2;
+      padding:.42rem .62rem;
+    }
+
+    h1 {
+      font-size:clamp(1.65rem, 7vw, 2.25rem);
+      line-height:1.12;
+    }
+
+    .lead {
+      font-size:clamp(.95rem, 3.9vw, 1.08rem);
+      line-height:1.5;
+    }
+
+    .field label {
+      font-size:clamp(.87rem, 3.55vw, .98rem);
+      line-height:1.25;
+    }
+
+    .field input,
+    .data-edit-input,
+    .data-edit-select,
+    .new-equipment-row input,
+    .new-equipment-row select,
+    .comment-editor textarea {
+      font-size:clamp(1rem, 4.15vw, 1.12rem);
+      min-height:52px;
+    }
+
+    .comment-editor textarea {
+      min-height:125px;
+    }
+
+    .btn {
+      min-height:54px;
+      font-size:clamp(1rem, 4.15vw, 1.14rem);
+      line-height:1.2;
+      padding:.82rem 1rem;
+    }
+
+    .message {
+      font-size:clamp(.92rem, 3.75vw, 1.02rem);
+      line-height:1.45;
+    }
+
+    .user-name {
+      font-size:clamp(1.05rem, 4.3vw, 1.2rem);
+    }
+
+    .user-id,
+    .mini-status {
+      font-size:clamp(.86rem, 3.45vw, .96rem);
+      line-height:1.35;
+    }
+
+    .app-toolbar h2 {
+      font-size:clamp(1.2rem, 4.8vw, 1.45rem);
+      line-height:1.2;
+    }
+
+    .inst-meta,
+    .inst-status,
+    .request-meta,
+    .equipment-meta,
+    .equipment-status,
+    .detail-label,
+    .comment-meta,
+    .photo-meta,
+    .policy-note,
+    .queue-status,
+    .data-field-note,
+    .conflict-values,
+    .photo-pending-badge,
+    .photo-pending-server .photo-pending-badge,
+    .admin-photo-label,
+    .photo-request-note,
+    .photo-viewer-zoom,
+    .equipment-proposal-note,
+    .new-equipment-help,
+    .proposal-summary,
+    .busy-sub {
+      font-size:clamp(.9rem, 3.6vw, 1rem);
+      line-height:1.4;
+    }
+
+    .detail-value,
+    .comment-text {
+      font-size:clamp(1rem, 4vw, 1.12rem);
+      line-height:1.48;
+    }
+
+    .section-title {
+      font-size:clamp(1.15rem, 4.7vw, 1.38rem);
+      line-height:1.25;
+    }
+
+    .equipment-menu-btn {
+      font-size:clamp(1.22rem, 5vw, 1.5rem);
+    }
+
+    .equipment-menu-btn small {
+      font-size:clamp(.92rem, 3.7vw, 1.02rem);
+      line-height:1.4;
+    }
+
+    .busy-title {
+      font-size:clamp(1.08rem, 4.4vw, 1.22rem);
+    }
+
+    .footer {
+      margin-top:1.25rem;
+      padding-top:.9rem;
+      border-top:1px solid rgba(125,133,144,.18);
+      font-size:clamp(.78rem, 3.15vw, .9rem);
+      line-height:1.4;
+    }
+
+    .footer-version {
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .footer-credit {
+      margin-top:.4rem;
+      color:var(--muted);
+      opacity:.9;
+      font-size:clamp(.74rem, 2.95vw, .86rem);
+      line-height:1.45;
+    }
+
+    @media (max-width: 520px) {
+      .header {
+        align-items:flex-start;
+        gap:.6rem;
+        padding:.82rem .78rem;
+      }
+
+      .wrap {
+        padding:.7rem;
+        align-items:flex-start;
+      }
+
+      .card {
+        max-width:none;
+        padding:1.05rem;
+        border-radius:12px;
+      }
+
+      .app-toolbar {
+        align-items:flex-start;
+      }
+
+      .back-row {
+        align-items:flex-start;
+      }
+
+      .back-row .btn {
+        min-height:50px;
+      }
+
+      .modal-card {
+        padding:1.05rem;
+      }
+
+      .request-actions,
+      .modal-actions {
+        grid-template-columns:1fr;
+      }
+
+      .photo-actions,
+      .photo-replace-actions,
+      .equipment-actions,
+      .data-actions {
+        display:grid;
+        grid-template-columns:1fr;
+      }
+
+      .photo-actions .btn,
+      .photo-replace-actions .btn,
+      .equipment-actions .btn,
+      .data-actions .btn {
+        width:100%;
+        margin-top:0;
+      }
+
+      .proposal-summary-row {
+        grid-template-columns:1fr;
+        gap:.18rem;
+      }
+
+      .photo-viewer-bar {
+        gap:.42rem;
+      }
+
+      .photo-viewer-bar .btn {
+        width:auto;
+        min-height:48px;
+        padding:.62rem .72rem;
+        font-size:.92rem;
+      }
+
+      .photo-viewer-title {
+        flex-basis:100%;
+      }
+    }
+
+    @media (min-width: 700px) {
+      html {
+        font-size:18px;
+      }
+
+      .card {
+        max-width:620px;
+      }
+
+      .dashboard {
+        max-width:760px;
+      }
+    }
+
+
+    /* ========================================================
+       v0.7.3 — FIX TARJETAS DE FOTO
+       Evita que "Abrir foto" invada fecha/autor.
+       ======================================================== */
+    .photo-card {
+      display:block;
+      overflow:hidden;
+    }
+
+    .photo-title {
+      display:block;
+      margin-top:.15rem;
+      margin-bottom:.15rem;
+      line-height:1.3;
+    }
+
+    .photo-meta {
+      display:block;
+      width:100%;
+      position:relative;
+      margin-top:.2rem;
+      margin-bottom:0;
+      line-height:1.45;
+      overflow-wrap:anywhere;
+      box-sizing:border-box;
+    }
+
+    .photo-actions-row {
+      display:grid;
+      grid-template-columns:1fr;
+      gap:.65rem;
+      width:100%;
+      margin-top:.9rem;
+      clear:both;
+      box-sizing:border-box;
+    }
+
+    .photo-actions-row .btn {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      min-height:54px;
+      margin:0;
+      box-sizing:border-box;
+      text-decoration:none;
+      line-height:1.2;
+    }
+
+    .photo-actions-row a.btn {
+      text-align:center;
+    }
+
+    @media (min-width:700px) {
+      .photo-actions-row {
+        grid-template-columns:repeat(3, minmax(0, 1fr));
+      }
+
+      .photo-actions-row .btn {
+        min-width:0;
+      }
+    }
+
 </style>
 </head>
 <body>
@@ -1046,7 +1356,10 @@
       <button id="btnVincular" class="btn btn-primary" onclick="vincularMovil()">Vincular móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgInicial" class="message"></div>
-      <div class="footer">v0.7.1</div>
+      <div class="footer">
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.3</div>
+          <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
+        </div>
     </section>
 
     <section id="pantallaPin" class="screen card">
@@ -1067,7 +1380,10 @@
       <button class="btn btn-secondary" onclick="cambiarUsuario()">Cambiar usuario de este móvil</button>
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgPin" class="message"></div>
-      <div class="footer">v0.7.1</div>
+      <div class="footer">
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.3</div>
+          <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
+        </div>
     </section>
 
     <section id="pantallaApp" class="screen dashboard">
@@ -1088,7 +1404,10 @@
         <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
-        <div class="footer">Inventario ET/CD PWA · v0.7.1</div>
+        <div class="footer">
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.3</div>
+          <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
+        </div>
       </div>
     </section>
 
@@ -1117,7 +1436,10 @@
           <button class="btn btn-secondary" onclick="actualizarEquiposManual()">Actualizar equipos</button>
         </div>
         <div id="msgEquipos" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.7.1</div>
+        <div class="footer">
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.3</div>
+          <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
+        </div>
       </div>
     </section>
 
@@ -1165,7 +1487,10 @@
           <div id="msgNuevoEquipo" class="message"></div>
         </div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.7.1</div>
+        <div class="footer">
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.3</div>
+          <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
+        </div>
       </div>
     </section>
 
@@ -1209,7 +1534,10 @@
           trabajabas offline, la PWA no lo pisa: el conflicto queda para decisión del administrador.
         </div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.7.1</div>
+        <div class="footer">
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.3</div>
+          <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
+        </div>
       </div>
     </section>
 
@@ -1235,7 +1563,10 @@
         <div id="estadoColaDatos" class="queue-status"></div>
         <div id="detalleParametros" class="detail-grid"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.7.1</div>
+        <div class="footer">
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.3</div>
+          <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
+        </div>
       </div>
     </section>
 
@@ -1267,7 +1598,10 @@
 
         <div id="detalleComentarios"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.7.1</div>
+        <div class="footer">
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.3</div>
+          <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
+        </div>
       </div>
     </section>
 
@@ -1295,7 +1629,10 @@
         <div id="detalleFotosPendientes"></div>
         <div id="detalleFotos"></div>
 
-        <div class="footer">Inventario ET/CD PWA · v0.7.1</div>
+        <div class="footer">
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.3</div>
+          <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
+        </div>
       </div>
     </section>
 
@@ -1311,7 +1648,10 @@
       <button id="btnAdminLogin" class="btn btn-primary" onclick="loginAdmin()">Ingresar como administrador</button>
       <button class="btn btn-secondary" onclick="salirAdmin()">Cancelar</button>
       <div id="msgAdminLogin" class="message"></div>
-      <div class="footer">v0.7.1</div>
+      <div class="footer">
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.3</div>
+          <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
+        </div>
     </section>
 
     <section id="pantallaAdminSolicitudes" class="screen dashboard">
@@ -1386,7 +1726,10 @@
         <button class="btn btn-secondary" onclick="cargarPanelAdmin()">Actualizar</button>
         <button class="btn btn-secondary" onclick="salirAdmin()">Salir del administrador</button>
         <div id="msgAdminSolicitudes" class="message"></div>
-        <div class="footer">Inventario ET/CD PWA · v0.7.1</div>
+        <div class="footer">
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.3</div>
+          <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
+        </div>
       </div>
     </section>
 
@@ -1415,7 +1758,7 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.7.1';
+const APP_VERSION = '0.7.3';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
