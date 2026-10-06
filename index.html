@@ -215,7 +215,7 @@
       font-size:clamp(.9rem, 3.7vw, 1rem);
     }
 
-    /* v0.7.7 — mejor lectura en celular */
+    /* v0.7.8 — mejor lectura en celular */
     body {
       font-size:clamp(17px, 4vw, 20px);
     }
@@ -274,7 +274,7 @@
       line-height:1.4;
     }
   
-    /* v0.7.7 — solicitud de acceso */
+    /* v0.7.8 — solicitud de acceso */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -320,7 +320,7 @@
     }
 
 
-    /* v0.7.7 — administración de solicitudes */
+    /* v0.7.8 — administración de solicitudes */
     .admin-list {
       display:grid;
       gap:.75rem;
@@ -372,7 +372,7 @@
     }
 
 
-    /* v0.7.7 — inventario de equipos */
+    /* v0.7.8 — inventario de equipos */
     .equipment-list {
       display:grid;
       gap:.65rem;
@@ -438,7 +438,7 @@
     }
 
 
-    /* v0.7.7 — detalle de equipo */
+    /* v0.7.8 — detalle de equipo */
     .equipment-card {
       cursor:pointer;
     }
@@ -508,7 +508,7 @@
     }
 
 
-    /* v0.7.7 — menú intermedio del equipo */
+    /* v0.7.8 — menú intermedio del equipo */
     .equipment-menu {
       display:grid;
       gap:1rem;
@@ -539,7 +539,7 @@
     }
 
 
-    /* v0.7.7 — fotos reales y contadores */
+    /* v0.7.8 — fotos reales y contadores */
     .menu-count {
       float:right;
       min-width:2rem;
@@ -591,7 +591,7 @@
     }
 
 
-    /* v0.7.7 — alta de comentarios */
+    /* v0.7.8 — alta de comentarios */
     .comment-editor {
       margin-bottom:1rem;
       padding:1rem;
@@ -625,7 +625,7 @@
     }
 
 
-    /* v0.7.7 — cola offline de comentarios */
+    /* v0.7.8 — cola offline de comentarios */
     .sync-pending {
       color:var(--warn);
       font-weight:700;
@@ -649,7 +649,7 @@
     }
 
 
-    /* v0.7.7 — edición de datos online/offline */
+    /* v0.7.8 — edición de datos online/offline */
     .data-actions {
       display:flex;
       gap:.6rem;
@@ -707,7 +707,7 @@
     .conflict-values strong { color:var(--text); }
 
 
-    /* v0.7.7 — bloqueo visual durante operaciones */
+    /* v0.7.8 — bloqueo visual durante operaciones */
     .busy-overlay {
       position:fixed;
       inset:0;
@@ -755,7 +755,7 @@
     @keyframes busy-spin { to { transform:rotate(360deg); } }
 
 
-    /* v0.7.7 — fotos online/offline */
+    /* v0.7.8 — fotos online/offline */
     .photo-editor {margin-bottom:1rem;padding:1rem;background:var(--surface2);border:1px solid var(--border);border-radius:10px;}
     .photo-actions {display:flex;gap:.65rem;flex-wrap:wrap;}
     .photo-pending-title {margin:.9rem 0 .55rem;font-weight:700;color:var(--text);}
@@ -763,7 +763,7 @@
     .photo-pending-badge {display:inline-block;margin-top:.45rem;font-size:.82rem;font-weight:700;color:var(--warn);}
 
 
-    /* v0.7.7 — propuestas de fotos con validación administrativa */
+    /* v0.7.8 — propuestas de fotos con validación administrativa */
     .photo-pending-server {
       border:1px dashed var(--accent);
       background:var(--surface2);
@@ -803,7 +803,7 @@
     }
 
 
-    /* v0.7.7 — acciones de foto offline + validación */
+    /* v0.7.8 — acciones de foto offline + validación */
     .photo-request-note {
       margin-top:.45rem;
       font-size:.82rem;
@@ -820,7 +820,7 @@
     }
 
 
-    /* v0.7.7 — visor de fotos para revisión ADMIN */
+    /* v0.7.8 — visor de fotos para revisión ADMIN */
     .photo-viewer {
       position:fixed;
       inset:0;
@@ -894,7 +894,7 @@
     }
 
 
-    /* v0.7.7 — altas/bajas de equipos con trabajo offline */
+    /* v0.7.8 — altas/bajas de equipos con trabajo offline */
     .equipment-actions {
       display:flex;
       gap:.65rem;
@@ -977,7 +977,7 @@
 
 
     /* ========================================================
-       v0.7.7 — TIPOGRAFÍA RESPONSIVE Y LEGIBILIDAD MÓVIL
+       v0.7.8 — TIPOGRAFÍA RESPONSIVE Y LEGIBILIDAD MÓVIL
        ======================================================== */
     html {
       font-size:clamp(17px, 4.45vw, 20px);
@@ -1223,7 +1223,7 @@
 
 
     /* ========================================================
-       v0.7.7 — FIX TARJETAS DE FOTO
+       v0.7.8 — FIX TARJETAS DE FOTO
        Evita que "Abrir foto" invada fecha/autor.
        ======================================================== */
     .photo-card {
@@ -1287,7 +1287,7 @@
 
 
     /* ========================================================
-       v0.7.7 — TIPOGRAFÍA RESPONSIVE REFINADA
+       v0.7.8 — TIPOGRAFÍA RESPONSIVE REFINADA
        Más legible en celular sin sobredimensionar tablet/PC.
        ======================================================== */
 
@@ -1503,7 +1503,7 @@
 
 
     /* ========================================================
-       v0.7.7 — IDENTIDAD INSTITUCIONAL
+       v0.7.8 — IDENTIDAD INSTITUCIONAL
        ======================================================== */
 
     .brand-block {
@@ -1584,7 +1584,7 @@
 
 
     /* ========================================================
-       v0.7.7 — CABECERA INSTITUCIONAL MÁS LEGIBLE
+       v0.7.8 — CABECERA INSTITUCIONAL MÁS LEGIBLE
        ======================================================== */
     .header.header-v077 {
       display:block;
@@ -1664,9 +1664,63 @@
       }
     }
 
+
+    /* ========================================================
+       v0.7.8 — SPLASH SCREEN INSTITUCIONAL
+       ======================================================== */
+    .startup-splash {
+      position:fixed;
+      inset:0;
+      z-index:200000;
+      background:#081015;
+      display:flex;
+      align-items:stretch;
+      justify-content:stretch;
+      opacity:1;
+      visibility:visible;
+      transition:
+        opacity .45s ease,
+        visibility .45s ease;
+      overflow:hidden;
+    }
+
+    .startup-splash.hide {
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+    }
+
+    .startup-splash-image {
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:cover;
+      object-position:center center;
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+
+    @media (orientation:landscape) {
+      .startup-splash-image {
+        object-fit:contain;
+        background:#081015;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .startup-splash {
+        transition:none;
+      }
+    }
+
 </style>
 </head>
 <body>
+
+<div id="startupSplash" class="startup-splash" aria-label="Subgerencia de Operaciones y Movimiento de Energía">
+  <img src="splash-inicio.png" class="startup-splash-image" alt="Subgerencia de Operaciones y Movimiento de Energía">
+</div>
+
 
 
 <div id="photoViewerAdmin" class="photo-viewer" aria-hidden="true">
@@ -1740,7 +1794,7 @@
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgInicial" class="message"></div>
       <div class="footer">
-          <div class="footer-version">Inventario ET/CD PWA · v0.7.7</div>
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.8</div>
           <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
         </div>
     </section>
@@ -1764,7 +1818,7 @@
       <button class="btn btn-secondary" onclick="abrirAdminLogin()">Administrador</button>
       <div id="msgPin" class="message"></div>
       <div class="footer">
-          <div class="footer-version">Inventario ET/CD PWA · v0.7.7</div>
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.8</div>
           <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
         </div>
     </section>
@@ -1788,7 +1842,7 @@
         <button class="btn btn-secondary" onclick="bloquearApp()">Bloquear</button>
         <button class="btn btn-secondary" onclick="cambiarUsuario()">Desvincular usuario</button>
         <div class="footer">
-          <div class="footer-version">Inventario ET/CD PWA · v0.7.7</div>
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.8</div>
           <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
         </div>
       </div>
@@ -1820,7 +1874,7 @@
         </div>
         <div id="msgEquipos" class="message"></div>
         <div class="footer">
-          <div class="footer-version">Inventario ET/CD PWA · v0.7.7</div>
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.8</div>
           <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
         </div>
       </div>
@@ -1871,7 +1925,7 @@
         </div>
 
         <div class="footer">
-          <div class="footer-version">Inventario ET/CD PWA · v0.7.7</div>
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.8</div>
           <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
         </div>
       </div>
@@ -1918,7 +1972,7 @@
         </div>
 
         <div class="footer">
-          <div class="footer-version">Inventario ET/CD PWA · v0.7.7</div>
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.8</div>
           <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
         </div>
       </div>
@@ -1947,7 +2001,7 @@
         <div id="detalleParametros" class="detail-grid"></div>
 
         <div class="footer">
-          <div class="footer-version">Inventario ET/CD PWA · v0.7.7</div>
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.8</div>
           <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
         </div>
       </div>
@@ -1982,7 +2036,7 @@
         <div id="detalleComentarios"></div>
 
         <div class="footer">
-          <div class="footer-version">Inventario ET/CD PWA · v0.7.7</div>
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.8</div>
           <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
         </div>
       </div>
@@ -2013,7 +2067,7 @@
         <div id="detalleFotos"></div>
 
         <div class="footer">
-          <div class="footer-version">Inventario ET/CD PWA · v0.7.7</div>
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.8</div>
           <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
         </div>
       </div>
@@ -2032,7 +2086,7 @@
       <button class="btn btn-secondary" onclick="salirAdmin()">Cancelar</button>
       <div id="msgAdminLogin" class="message"></div>
       <div class="footer">
-          <div class="footer-version">Inventario ET/CD PWA · v0.7.7</div>
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.8</div>
           <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
         </div>
     </section>
@@ -2110,7 +2164,7 @@
         <button class="btn btn-secondary" onclick="salirAdmin()">Salir del administrador</button>
         <div id="msgAdminSolicitudes" class="message"></div>
         <div class="footer">
-          <div class="footer-version">Inventario ET/CD PWA · v0.7.7</div>
+          <div class="footer-version">Inventario ET/CD PWA · v0.7.8</div>
           <div class="footer-credit">Diseño funcional y dirección técnica: Ing. Miguel Martínez<br>Desarrollo asistido por IA</div>
         </div>
       </div>
@@ -2141,7 +2195,7 @@
   ></iframe>
 
 <script>
-const APP_VERSION = '0.7.7';
+const APP_VERSION = '0.7.8';
 const BRIDGE_BASE_URL = 'https://script.google.com/macros/s/AKfycbxf0E3bdQTbSDzGlQ4YetnBrqn7TU3k6kMahbsyRdY72duzZZXffQYRXjiSF7Uviefs/exec?modo=bridge';
 const STORAGE_KEY = 'inventario_etcd_usuario_v1';
 const SERVER_TOKEN_KEY = 'inventario_etcd_token_v1';
@@ -2214,6 +2268,31 @@ function actualizarEstadoConexion(texto, tipo) {
   const el = document.getElementById('statusConexion');
   el.textContent = texto;
   el.className = 'status ' + tipo;
+}
+
+
+const STARTUP_SPLASH_MIN_MS = 2200;
+const startupSplashInicio = Date.now();
+
+async function ocultarSplashInicial() {
+  const transcurrido = Date.now() - startupSplashInicio;
+  const restante = Math.max(0, STARTUP_SPLASH_MIN_MS - transcurrido);
+
+  if (restante > 0) {
+    await dormir(restante);
+  }
+
+  const splash = document.getElementById('startupSplash');
+
+  if (!splash) return;
+
+  splash.classList.add('hide');
+
+  setTimeout(() => {
+    if (splash && splash.parentNode) {
+      splash.parentNode.removeChild(splash);
+    }
+  }, 520);
 }
 
 function dormir(ms) {
@@ -8780,19 +8859,21 @@ document.getElementById('claveAdmin').addEventListener('keydown', e => {
 });
 
 async function iniciar() {
-  bloquearPantalla(
-    'Iniciando…',
-    'Comprobando conexión y preparando la aplicación.'
-  );
-
   try {
     cargarBridge(false);
     await comprobarServidor();
 
     if (perfilLocal()) prepararPantallaPin();
     else mostrarPantalla('pantallaPrimeraVez');
+
+  } catch (e) {
+    console.error('Error durante el inicio de la aplicación:', e);
+
+    if (perfilLocal()) prepararPantallaPin();
+    else mostrarPantalla('pantallaPrimeraVez');
+
   } finally {
-    desbloquearPantalla(true);
+    await ocultarSplashInicial();
   }
 }
 
