@@ -1,6 +1,49 @@
-const CACHE_NAME = 'inventario-etcd-pwa-v0.8.0';
-const MEDIA_CACHE = 'inventario-etcd-media-v1';
-const APP_SHELL = ['./','./index.html','./manifest.json','./icon-192.png','./icon-512.png','./splash-inicio.png'];
-self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(APP_SHELL)));self.skipWaiting();});
-self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE_NAME&&key!==MEDIA_CACHE).map(key=>caches.delete(key)))));self.clients.claim();});
-self.addEventListener('fetch',event=>{const url=new URL(event.request.url);if(url.hostname==='script.google.com'||url.hostname==='script.googleusercontent.com'){return;}if(event.request.destination==='image'&&url.hostname==='drive.google.com'){event.respondWith(caches.open(MEDIA_CACHE).then(async cache=>{const cached=await cache.match(event.request);if(cached)return cached;try{const response=await fetch(event.request);cache.put(event.request,response.clone());return response;}catch(e){return cached||Response.error();}}));return;}if(event.request.mode==='navigate'){event.respondWith(fetch(event.request).then(response=>{const copia=response.clone();caches.open(CACHE_NAME).then(cache=>cache.put('./index.html',copia));return response;}).catch(()=>caches.match('./index.html')));return;}event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request).then(response=>{const copia=response.clone();caches.open(CACHE_NAME).then(cache=>cache.put(event.request,copia));return response;})));});
+const CACHE_NAME = 'gastos-app-v4';
+const APP_ASSETS = [
+  './',
+  './index.html',
+  './styles.css?v=4',
+  './app.js?v=4',
+  './manifest.webmanifest',
+  './icon.svg',
+  './icon-192.png',
+  './icon-512.png',
+  './apple-touch-icon.png',
+];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_ASSETS)));
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches
+      .keys()
+      .then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))))
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
+  event.respondWith(
+    fetch(event.request)
+      .then((response) => {
+        const copy = response.clone();
+        const requestUrl = new URL(event.request.url);
+
+        if (requestUrl.origin === self.location.origin) {
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        }
+
+        return response;
+      })
+      .catch(() => {
+        return caches.match(event.request).then((cached) => cached || caches.match('./index.html'));
+    })
+  );
+});
