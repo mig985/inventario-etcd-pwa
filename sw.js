@@ -1,9 +1,9 @@
-const CACHE_NAME = 'gastos-app-v4';
+const CACHE_NAME = 'gastos-app-v5';
 const APP_ASSETS = [
   './',
   './index.html',
-  './styles.css?v=4',
-  './app.js?v=4',
+  './styles.css?v=5',
+  './app.js?v=5',
   './manifest.webmanifest',
   './icon.svg',
   './icon-192.png',

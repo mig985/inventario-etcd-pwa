@@ -1,4 +1,10 @@
-const STORAGE_KEYS = {
+const APP_CONFIG = {
+  apiUrl:
+    'https://script.google.com/macros/s/AKfycby3RSKYE9VtHT72iW2rNGnAVujMTmOTKIR1vGgoAcCNcMjtBQDO17SuB7pYQAeiltfZaQ/exec',
+  secret: '2026',
+};
+
+const OLD_STORAGE_KEYS = {
   apiUrl: 'gastos.apiUrl',
   secret: 'gastos.secret',
 };
@@ -29,10 +35,7 @@ const els = {
     settings: document.getElementById('settingsView'),
   },
   navButtons: [...document.querySelectorAll('.bottom-nav button')],
-  apiUrl: document.getElementById('apiUrl'),
-  secret: document.getElementById('secret'),
-  saveSettings: document.getElementById('saveSettings'),
-  testConnection: document.getElementById('testConnection'),
+  refreshStatus: document.getElementById('refreshStatus'),
   balanceMetric: document.getElementById('balanceMetric'),
   expensesMetric: document.getElementById('expensesMetric'),
   incomeMetric: document.getElementById('incomeMetric'),
@@ -61,19 +64,16 @@ const els = {
 };
 
 function init() {
-  els.apiUrl.value = normalizeStoredApiUrl(localStorage.getItem(STORAGE_KEYS.apiUrl) || '');
-  els.secret.value = localStorage.getItem(STORAGE_KEYS.secret) || '';
+  localStorage.removeItem(OLD_STORAGE_KEYS.apiUrl);
+  localStorage.removeItem(OLD_STORAGE_KEYS.secret);
   els.date.value = toInputDate(new Date());
 
   bindEvents();
   setMode('payment');
-  setView(getApiUrl() ? 'home' : 'settings');
+  setView('home');
   setupPwaInstall();
   registerServiceWorker();
-
-  if (getApiUrl()) {
-    loadEverything();
-  }
+  loadEverything();
 }
 
 function bindEvents() {
@@ -98,17 +98,7 @@ function bindEvents() {
     button.addEventListener('click', () => setView(button.dataset.view));
   });
 
-  els.saveSettings.addEventListener('click', () => {
-    try {
-      saveSettings();
-      setStatus('Configuracion guardada.', 'ok');
-      setView('home');
-      loadEverything();
-    } catch (error) {
-      setStatus(error.message, 'error');
-    }
-  });
-  els.testConnection.addEventListener('click', testConnection);
+  els.refreshStatus.addEventListener('click', loadEverything);
 
   els.modePayment.addEventListener('click', () => setMode('payment'));
   els.modeDue.addEventListener('click', () => setMode('due'));
@@ -191,7 +181,7 @@ function setView(view) {
     home: state.dashboard?.month || 'Gastos',
     form: state.mode === 'payment' ? 'Nuevo gasto' : 'Nuevo vencimiento',
     alerts: 'Alertas',
-    settings: 'Configuracion',
+    settings: 'Mas',
   };
 
   els.monthTitle.textContent = titles[view] || 'Gastos';
@@ -219,39 +209,6 @@ async function loadEverything() {
   await withBusy('Cargando app', 'Leyendo cuentas, tablero y alertas...', async () => {
     await loadAccounts();
     await Promise.all([loadDashboard({ silent: true }), refreshAlerts({ silent: true })]);
-  });
-}
-
-function saveSettings() {
-  const normalizedUrl = normalizeApiUrl(els.apiUrl.value);
-
-  els.apiUrl.value = normalizedUrl;
-  localStorage.setItem(STORAGE_KEYS.apiUrl, normalizedUrl);
-  localStorage.setItem(STORAGE_KEYS.secret, els.secret.value.trim());
-}
-
-async function testConnection() {
-  try {
-    saveSettings();
-  } catch (error) {
-    setStatus(error.message, 'error');
-    return;
-  }
-
-  await withBusy('Probando conexion', 'Consultando Apps Script...', async () => {
-    try {
-      const response = await apiCall('accounts', { includeArchived: 'false' });
-
-      if (!response.ok) {
-        throw new Error(response.error || 'No se pudo validar la conexion.');
-      }
-
-      const count = Array.isArray(response.accounts) ? response.accounts.length : 0;
-      setStatus(`Conexion OK. ${count} cuentas activas.`, 'ok');
-      await loadEverything();
-    } catch (error) {
-      setStatus(error.message, 'error');
-    }
   });
 }
 
@@ -446,13 +403,13 @@ async function saveEntry() {
 
   if (!detail || !date) {
     setStatus('Falta cuenta o fecha.', 'error');
-    setView('settings');
+    setView('form');
     return;
   }
 
   if (state.mode === 'payment' && !amount) {
     setStatus('Falta monto.', 'error');
-    setView('settings');
+    setView('form');
     return;
   }
 
@@ -476,7 +433,7 @@ async function saveEntry() {
     setView('home');
   } catch (error) {
     setStatus(error.message, 'error');
-    setView('settings');
+    setView('form');
   } finally {
     setBusy(false);
   }
@@ -511,10 +468,10 @@ async function refreshAlerts(options = {}) {
 }
 
 function apiCall(action, params = {}) {
-  const apiUrl = getNormalizedApiUrl();
+  const apiUrl = getApiUrl();
 
   if (!apiUrl) {
-    return Promise.reject(new Error('Falta configurar la URL del Apps Script.'));
+    return Promise.reject(new Error('Falta definir la URL interna del Apps Script en app.js.'));
   }
 
   return new Promise((resolve, reject) => {
@@ -581,61 +538,11 @@ function shortLabel(detail) {
 }
 
 function getApiUrl() {
-  return els.apiUrl.value.trim();
-}
-
-function getNormalizedApiUrl() {
-  return normalizeApiUrl(getApiUrl());
-}
-
-function normalizeStoredApiUrl(value) {
-  try {
-    return normalizeApiUrl(value);
-  } catch (error) {
-    return String(value || '').trim();
-  }
-}
-
-function normalizeApiUrl(value) {
-  const raw = String(value || '').trim();
-
-  if (!raw) {
-    return '';
-  }
-
-  let url;
-
-  try {
-    url = new URL(raw);
-  } catch (error) {
-    throw new Error('La URL del Apps Script debe empezar con https://script.google.com/ y terminar en /exec.');
-  }
-
-  if (url.hostname === 'script.googleusercontent.com') {
-    throw new Error('Pegaste la URL temporal de googleusercontent. Copia la URL de implementacion que empieza con script.google.com/macros/s/ y termina en /exec.');
-  }
-
-  if (url.hostname !== 'script.google.com') {
-    throw new Error('La URL debe ser la de Apps Script: https://script.google.com/macros/s/.../exec');
-  }
-
-  url.pathname = url.pathname.replace(/\/macros\/u\/\d+\/s\//, '/macros/s/');
-
-  const match = url.pathname.match(/^(.*\/(?:exec|dev))\/?$/);
-
-  if (!match) {
-    throw new Error('La URL del Apps Script debe terminar en /exec.');
-  }
-
-  url.pathname = match[1];
-  url.search = '';
-  url.hash = '';
-
-  return url.toString();
+  return APP_CONFIG.apiUrl;
 }
 
 function getSecret() {
-  return els.secret.value.trim();
+  return APP_CONFIG.secret;
 }
 
 function setStatus(message, tone) {

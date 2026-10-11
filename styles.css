@@ -480,17 +480,6 @@ select:focus {
   margin-top: 14px;
 }
 
-.settings-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.settings-actions .secondary {
-  margin-top: 0;
-}
-
 .floating-action {
   position: sticky;
   bottom: 82px;
