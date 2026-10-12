@@ -4,6 +4,9 @@ const APP_CONFIG = {
   secret: '2026',
 };
 
+const CHANNEL_TO_BRIDGE = 'gastos-pwa';
+const CHANNEL_FROM_BRIDGE = 'gastos-bridge';
+
 const OLD_STORAGE_KEYS = {
   apiUrl: 'gastos.apiUrl',
   secret: 'gastos.secret',
@@ -19,11 +22,15 @@ const state = {
   installPrompt: null,
   currentDate: new Date(),
   busyCount: 0,
+  bridgeReady: false,
+  bridgeWindow: null,
+  bridgeOrigin: '',
+  bridgeSequence: 0,
+  bridgePending: new Map(),
 };
 
 const els = {
   installButton: document.getElementById('installButton'),
-  settingsButton: document.getElementById('settingsButton'),
   prevMonth: document.getElementById('prevMonth'),
   nextMonth: document.getElementById('nextMonth'),
   monthSelect: document.getElementById('monthSelect'),
@@ -32,10 +39,8 @@ const els = {
     home: document.getElementById('homeView'),
     form: document.getElementById('formView'),
     alerts: document.getElementById('alertsView'),
-    settings: document.getElementById('settingsView'),
   },
   navButtons: [...document.querySelectorAll('.bottom-nav button')],
-  refreshStatus: document.getElementById('refreshStatus'),
   balanceMetric: document.getElementById('balanceMetric'),
   expensesMetric: document.getElementById('expensesMetric'),
   incomeMetric: document.getElementById('incomeMetric'),
@@ -57,10 +62,10 @@ const els = {
   saveEntryLabel: document.getElementById('saveEntryLabel'),
   refreshAlerts: document.getElementById('refreshAlerts'),
   alerts: document.getElementById('alerts'),
-  status: document.getElementById('status'),
   busyOverlay: document.getElementById('busyOverlay'),
   busyTitle: document.getElementById('busyTitle'),
   busyText: document.getElementById('busyText'),
+  serverBridge: document.getElementById('serverBridge'),
 };
 
 function init() {
@@ -72,13 +77,13 @@ function init() {
   setMode('payment');
   setView('home');
   setupPwaInstall();
-  registerServiceWorker();
+  clearServiceWorkers();
+  loadBridge(true);
   loadEverything();
 }
 
 function bindEvents() {
   els.installButton.addEventListener('click', installApp);
-  els.settingsButton.addEventListener('click', () => setView('settings'));
   els.prevMonth.addEventListener('click', () => {
     navigateMonth(-1);
   });
@@ -97,8 +102,6 @@ function bindEvents() {
   els.navButtons.forEach((button) => {
     button.addEventListener('click', () => setView(button.dataset.view));
   });
-
-  els.refreshStatus.addEventListener('click', loadEverything);
 
   els.modePayment.addEventListener('click', () => setMode('payment'));
   els.modeDue.addEventListener('click', () => setMode('due'));
@@ -143,22 +146,152 @@ async function installApp() {
     ? 'En iPhone: Compartir > Agregar a pantalla de inicio.'
     : 'En el navegador: menu > Instalar app o Agregar a pantalla principal.';
 
-  setStatus(message, 'warn');
-  setView('settings');
+  window.alert(message);
 }
 
-function registerServiceWorker() {
+function clearServiceWorkers() {
   if (!('serviceWorker' in navigator)) {
     return;
   }
 
   window.addEventListener('load', () => {
     navigator.serviceWorker
-      .register('./sw.js')
-      .then((registration) => registration.update())
-      .catch(() => {
-        setStatus('No se pudo activar el modo instalable.', 'warn');
-      });
+      .getRegistrations()
+      .then((registrations) => Promise.all(registrations.map((registration) => registration.unregister())))
+      .catch(() => {});
+  });
+}
+
+function isGoogleAppsScriptOrigin(origin) {
+  try {
+    const host = new URL(origin).hostname;
+
+    return (
+      host === 'script.google.com' ||
+      host === 'script.googleusercontent.com' ||
+      host.endsWith('.googleusercontent.com')
+    );
+  } catch (error) {
+    return false;
+  }
+}
+
+function getBridgeUrl() {
+  const url = new URL(getApiUrl());
+
+  url.searchParams.set('modo', 'bridge');
+  url.searchParams.set('_', Date.now().toString());
+
+  return url.toString();
+}
+
+function loadBridge(force) {
+  if (!els.serverBridge || !navigator.onLine) {
+    return;
+  }
+
+  if (force || !els.serverBridge.getAttribute('src')) {
+    state.bridgeReady = false;
+    state.bridgeWindow = null;
+    state.bridgeOrigin = '';
+    els.serverBridge.src = getBridgeUrl();
+  }
+}
+
+window.addEventListener('message', (event) => {
+  const message = event.data || {};
+
+  if (message.channel !== CHANNEL_FROM_BRIDGE) {
+    return;
+  }
+
+  if (!isGoogleAppsScriptOrigin(event.origin)) {
+    return;
+  }
+
+  if (message.type === 'ready') {
+    state.bridgeWindow = event.source;
+    state.bridgeOrigin = event.origin;
+    state.bridgeReady = true;
+    return;
+  }
+
+  if (message.type === 'response') {
+    if (!state.bridgeWindow || event.source !== state.bridgeWindow) {
+      return;
+    }
+
+    if (state.bridgeOrigin && event.origin !== state.bridgeOrigin) {
+      return;
+    }
+
+    const pending = state.bridgePending.get(String(message.id || ''));
+
+    if (!pending) {
+      return;
+    }
+
+    state.bridgePending.delete(String(message.id || ''));
+    window.clearTimeout(pending.timer);
+
+    if (message.error) {
+      pending.reject(new Error(String(message.error)));
+      return;
+    }
+
+    pending.resolve(message.data);
+  }
+});
+
+async function waitForBridge(timeoutMs = 9000) {
+  if (!navigator.onLine) {
+    return false;
+  }
+
+  if (state.bridgeReady && state.bridgeWindow) {
+    return true;
+  }
+
+  loadBridge(false);
+
+  const start = Date.now();
+
+  while (Date.now() - start < timeoutMs) {
+    if (state.bridgeReady && state.bridgeWindow) {
+      return true;
+    }
+
+    await delay(100);
+  }
+
+  return false;
+}
+
+function bridgeCall(action, payload = {}, timeoutMs = 18000) {
+  return waitForBridge(Math.min(timeoutMs, 9000)).then((ready) => {
+    if (!ready || !state.bridgeWindow) {
+      throw new Error('No se pudo abrir el puente con Apps Script.');
+    }
+
+    const id = `rpc_${Date.now()}_${++state.bridgeSequence}`;
+
+    return new Promise((resolve, reject) => {
+      const timer = window.setTimeout(() => {
+        state.bridgePending.delete(id);
+        reject(new Error('Apps Script no respondio a tiempo.'));
+      }, timeoutMs);
+
+      state.bridgePending.set(id, { resolve, reject, timer });
+      state.bridgeWindow.postMessage(
+        {
+          channel: CHANNEL_TO_BRIDGE,
+          id,
+          action,
+          payload,
+        },
+        state.bridgeOrigin || '*'
+      );
+    });
   });
 }
 
@@ -181,7 +314,6 @@ function setView(view) {
     home: state.dashboard?.month || 'Gastos',
     form: state.mode === 'payment' ? 'Nuevo gasto' : 'Nuevo vencimiento',
     alerts: 'Alertas',
-    settings: 'Mas',
   };
 
   els.monthTitle.textContent = titles[view] || 'Gastos';
@@ -467,58 +599,21 @@ async function refreshAlerts(options = {}) {
   }
 }
 
-function apiCall(action, params = {}) {
+async function apiCall(action, params = {}) {
   const apiUrl = getApiUrl();
 
   if (!apiUrl) {
     return Promise.reject(new Error('Falta definir la URL interna del Apps Script en app.js.'));
   }
 
-  return new Promise((resolve, reject) => {
-    const callbackName = `jsonp_${Date.now()}_${Math.random().toString(16).slice(2)}`;
-    const url = new URL(apiUrl);
-    const script = document.createElement('script');
-    const timeoutId = window.setTimeout(() => {
-      cleanup();
-      reject(new Error('Apps Script no respondio. Revisa que sea la URL /exec nueva y que el acceso sea Cualquiera.'));
-    }, 18000);
+  const payload = { ...params };
+  const secret = getSecret();
 
-    window[callbackName] = (payload) => {
-      cleanup();
-      resolve(payload);
-    };
+  if (secret) {
+    payload.secret = secret;
+  }
 
-    url.searchParams.set('action', action);
-    url.searchParams.set('callback', callbackName);
-
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        url.searchParams.set(key, value);
-      }
-    });
-
-    const secret = getSecret();
-
-    if (secret) {
-      url.searchParams.set('secret', secret);
-    }
-
-    url.searchParams.set('_t', Date.now().toString());
-    script.src = url.toString();
-    script.async = true;
-    script.onerror = () => {
-      cleanup();
-      reject(new Error('No se pudo cargar Apps Script. Usa la URL de script.google.com que termina en /exec, sin /u/3 ni googleusercontent.'));
-    };
-
-    document.body.appendChild(script);
-
-    function cleanup() {
-      window.clearTimeout(timeoutId);
-      delete window[callbackName];
-      script.remove();
-    }
-  });
+  return bridgeCall(action, payload);
 }
 
 function iconForDetail(detail) {
@@ -545,7 +640,17 @@ function getSecret() {
   return APP_CONFIG.secret;
 }
 
+function delay(ms) {
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, ms);
+  });
+}
+
 function setStatus(message, tone) {
+  if (!els.status) {
+    return;
+  }
+
   els.status.textContent = message;
   els.status.className = tone || '';
 }

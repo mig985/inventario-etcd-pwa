@@ -2,7 +2,7 @@
   "name": "Gastos",
   "short_name": "Gastos",
   "description": "Carga de pagos, vencimientos y alertas desde Google Sheets.",
-  "start_url": "./",
+  "start_url": "./?v=10",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f6f7f9",
